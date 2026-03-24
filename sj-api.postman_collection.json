@@ -1,0 +1,263 @@
+{
+  "info": {
+    "name": "SJ - Endpoints usados (Proxy + Upstream)",
+    "description": "Colección con los endpoints usados por el proyecto.\n\nIncluye:\n- Proxy PHP del proyecto (/api/*.php)\n- Endpoints upstream del API (/wp-json/wp/v2)\n\nUsa el environment \"SJ - Local\" para variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Proxy API (PHP)",
+      "item": [
+        {
+          "name": "Listar productos (proxy) - /api/wp-products.php",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-products.php",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-products.php" ]
+            }
+          }
+        },
+        {
+          "name": "Producto por ID (proxy) - /api/wp-product.php?id={{productId}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-product.php?id={{productId}}",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-product.php" ],
+              "query": [
+                { "key": "id", "value": "{{productId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Producto por slug (proxy) - /api/wp-product.php?slug={{productSlug}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-product.php?slug={{productSlug}}",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-product.php" ],
+              "query": [
+                { "key": "slug", "value": "{{productSlug}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Producto por slug (proxy, debug sin cache) - /api/wp-product.php?slug={{productSlug}}&debug=1",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-product.php?slug={{productSlug}}&debug=1",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-product.php" ],
+              "query": [
+                { "key": "slug", "value": "{{productSlug}}" },
+                { "key": "debug", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar posts (proxy) - /api/wp-posts.php?per_page=3",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-posts.php?per_page=3",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-posts.php" ],
+              "query": [
+                { "key": "per_page", "value": "3" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Post por ID (proxy) - /api/wp-post.php?id={{postId}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-post.php?id={{postId}}",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-post.php" ],
+              "query": [
+                { "key": "id", "value": "{{postId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Post por slug (proxy) - /api/wp-post.php?slug={{postSlug}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{apiBaseUrl}}/api/wp-post.php?slug={{postSlug}}",
+              "host": [ "{{apiBaseUrl}}" ],
+              "path": [ "api", "wp-post.php" ],
+              "query": [
+                { "key": "slug", "value": "{{postSlug}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Upstream API (WP v2)",
+      "item": [
+        {
+          "name": "WP: Listar productos - /product?_embed=1&per_page=100",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/product?_embed=1&per_page=100",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "product" ],
+              "query": [
+                { "key": "_embed", "value": "1" },
+                { "key": "per_page", "value": "100" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "WP: Producto por ID - /product/{{productId}}?_embed=1",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/product/{{productId}}/?_embed=1",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "product", "{{productId}}", "" ],
+              "query": [
+                { "key": "_embed", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "WP: Producto por slug - /product?slug={{productSlug}}&_embed=1",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/product?slug={{productSlug}}&_embed=1",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "product" ],
+              "query": [
+                { "key": "slug", "value": "{{productSlug}}" },
+                { "key": "_embed", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "WP: Media de producto (adjuntos) - /media?parent={{productId}}&per_page=100",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/media?parent={{productId}}&per_page=100",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "media" ],
+              "query": [
+                { "key": "parent", "value": "{{productId}}" },
+                { "key": "per_page", "value": "100" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "WP: Listar posts - /posts?_embed=1&per_page=3&orderby=date&order=desc",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/posts?_embed=1&per_page=3&orderby=date&order=desc",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "posts" ],
+              "query": [
+                { "key": "_embed", "value": "1" },
+                { "key": "per_page", "value": "3" },
+                { "key": "orderby", "value": "date" },
+                { "key": "order", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "WP: Post por ID - /posts/{{postId}}?_embed=1",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/posts/{{postId}}/?_embed=1",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "posts", "{{postId}}", "" ],
+              "query": [
+                { "key": "_embed", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "WP: Post por slug - /posts?slug={{postSlug}}&_embed=1",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{wpBaseUrl}}/posts?slug={{postSlug}}&_embed=1",
+              "host": [ "{{wpBaseUrl}}" ],
+              "path": [ "posts" ],
+              "query": [
+                { "key": "slug", "value": "{{postSlug}}" },
+                { "key": "_embed", "value": "1" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

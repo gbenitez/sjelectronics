@@ -1,0 +1,3342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "name": "SJ Electronics - Sistema de Diseño Funcional Completo",
+    "id": "sj-electronics-design-system",
+    "version": "2.0.1",
+    "lastUpdated": "2026-02-07",
+    "description": "Sistema de diseño de alto nivel con especificaciones funcionales completas para componentes de UI, tokens, patrones de interacción y templates de página para e-commerce de electrónica",
+    "maintainers": ["SJ Electronics Design Team"],
+    "license": "Proprietary",
+    "frameworks": {
+      "compatible": ["React", "Vue", "Svelte", "Web Components"],
+      "preferred": "React"
+    },
+    "documentation": {
+      "storybook": true,
+      "figma": true,
+      "confluence": true
+    }
+  },
+  "conventions": {
+    "naming": {
+      "components": "PascalCase",
+      "props": "camelCase",
+      "tokens": "kebab-case",
+      "cssVars": "--sj-{category}-{name}",
+      "cssClasses": "sj-{component}--{modifier}",
+      "dataAttributes": "data-sj-{name}"
+    },
+    "units": {
+      "spacing": "px",
+      "radius": "px",
+      "fontSize": "px",
+      "lineHeight": "unitless",
+      "fontWeight": "numeric",
+      "duration": "ms",
+      "zIndex": "numeric"
+    },
+    "codeStyle": {
+      "indentation": 2,
+      "quotes": "single",
+      "semicolons": true,
+      "trailingComma": "all"
+    }
+  },
+  "themes": {
+    "current": "light",
+    "available": [
+      {
+        "id": "light",
+        "name": "Claro",
+        "default": true,
+        "description": "Tema principal con fondo blanco y alto contraste"
+      },
+      {
+        "id": "dark",
+        "name": "Oscuro",
+        "default": false,
+        "description": "Tema oscuro para reducir fatiga visual",
+        "status": "active"
+      }
+    ],
+    "switching": {
+      "enabled": true,
+      "persistence": "localStorage",
+      "transitionMs": 200,
+      "implementation": {
+        "mechanism": "tailwind-dark-class",
+        "className": "dark",
+        "rootElement": "html"
+      }
+    }
+  },
+  "tokens": {
+    "color": {
+      "brand": {
+        "primary": {
+          "50": { "value": "#FFF1F1", "contrast": 1.05, "usage": "fondos muy sutiles" },
+          "100": { "value": "#FFE0E0", "contrast": 1.12, "usage": "fondos sutiles, hover states" },
+          "200": { "value": "#FFC2C2", "contrast": 1.28, "usage": "bordes suaves" },
+          "300": { "value": "#FF9494", "contrast": 1.82, "usage": "bordes medios, disabled states" },
+          "400": { "value": "#FF5C5C", "contrast": 3.12, "usage": "iconos secundarios" },
+          "500": { "value": "#D3151E", "contrast": 4.86, "usage": "texto sobre blanco, iconos primarios" },
+          "600": { "value": "#B80F16", "contrast": 6.24, "usage": "botones primarios, CTAs principales (rojo SJ del catálogo)" },
+          "700": { "value": "#930C12", "contrast": 7.82, "usage": "hover de CTAs, estados activos" },
+          "800": { "value": "#74090E", "contrast": 9.45, "usage": "pressed states" },
+          "900": { "value": "#4E0508", "contrast": 12.28, "usage": "texto muy oscuro sobre rojos claros" }
+        },
+        "secondary": {
+          "50": { "value": "#EFF6FF", "contrast": 1.02 },
+          "100": { "value": "#DBEAFE", "contrast": 1.08 },
+          "200": { "value": "#BFDBFE", "contrast": 1.22 },
+          "300": { "value": "#93C5FD", "contrast": 1.58 },
+          "400": { "value": "#60A5FA", "contrast": 2.42 },
+          "500": { "value": "#2563EB", "contrast": 4.86 },
+          "600": { "value": "#1D4ED8", "contrast": 6.52 },
+          "700": { "value": "#1E40AF", "contrast": 8.24 },
+          "800": { "value": "#1E3A8A", "contrast": 10.12 },
+          "900": { "value": "#172554", "contrast": 13.86 }
+        },
+        "accent": {
+          "orange": { "value": "#FF6B35", "contrast": 3.52, "usage": "ofertas, urgencia" },
+          "yellow": { "value": "#FFD23F", "contrast": 1.86, "usage": "advertencias, destacados" },
+          "green": { "value": "#06D6A0", "contrast": 2.12, "usage": "éxito, disponibilidad" },
+          "purple": { "value": "#8B5CF6", "contrast": 4.24, "usage": "premium, especial" }
+        }
+      },
+      "neutral": {
+        "white": { "value": "#FFFFFF", "hex": "#FFFFFF" },
+        "50": { "value": "#F8FAFC", "hex": "#F8FAFC" },
+        "100": { "value": "#F1F5F9", "hex": "#F1F5F9" },
+        "200": { "value": "#E2E8F0", "hex": "#E2E8F0" },
+        "300": { "value": "#CBD5E1", "hex": "#CBD5E1" },
+        "400": { "value": "#94A3B8", "hex": "#94A3B8" },
+        "500": { "value": "#64748B", "hex": "#64748B" },
+        "600": { "value": "#475569", "hex": "#475569" },
+        "700": { "value": "#334155", "hex": "#334155" },
+        "800": { "value": "#1F2937", "hex": "#1F2937" },
+        "900": { "value": "#0B1220", "hex": "#0B1220" },
+        "black": { "value": "#000000", "hex": "#000000" }
+      },
+      "semantic": {
+        "text": {
+          "primary": { "value": "#0B1220", "token": "neutral.900", "usage": "Títulos, textos principales" },
+          "secondary": { "value": "#334155", "token": "neutral.700", "usage": "Subtítulos, descripciones" },
+          "tertiary": { "value": "#64748B", "token": "neutral.500", "usage": "Metadatos, labels secundarios" },
+          "muted": { "value": "#94A3B8", "token": "neutral.400", "usage": "Placeholders, texto deshabilitado" },
+          "inverse": { "value": "#FFFFFF", "token": "neutral.white", "usage": "Texto sobre fondos oscuros" },
+          "link": { "value": "#1D4ED8", "token": "brand.secondary.600", "usage": "Enlaces" },
+          "linkHover": { "value": "#1E40AF", "token": "brand.secondary.700", "usage": "Enlaces en hover" },
+          "linkVisited": { "value": "#7C3AED", "token": "brand.accent.purple", "usage": "Enlaces visitados" },
+          "brand": { "value": "#B80F16", "token": "brand.primary.600", "usage": "Texto de marca" }
+        },
+        "bg": {
+          "page": { "value": "#FFFFFF", "token": "neutral.white", "usage": "Fondo de página principal" },
+          "surface": { "value": "#FFFFFF", "token": "neutral.white", "usage": "Tarjetas, modales" },
+          "subtle": { "value": "#F8FAFC", "token": "neutral.50", "usage": "Secciones alternadas" },
+          "muted": { "value": "#F1F5F9", "token": "neutral.100", "usage": "Fondos deshabilitados" },
+          "elevated": { "value": "#FFFFFF", "token": "neutral.white", "usage": "Dropdowns, tooltips" },
+          "inverse": { "value": "#0B1220", "token": "neutral.900", "usage": "Footer, secciones oscuras" },
+          "overlay": { "value": "rgba(11, 18, 32, 0.65)", "usage": "Overlays de modales/drawers" }
+        },
+        "border": {
+          "default": { "value": "#E2E8F0", "token": "neutral.200", "usage": "Bordes estándar" },
+          "subtle": { "value": "#F1F5F9", "token": "neutral.100", "usage": "Bordes muy sutiles" },
+          "medium": { "value": "#CBD5E1", "token": "neutral.300", "usage": "Bordes más visibles" },
+          "strong": { "value": "#94A3B8", "token": "neutral.400", "usage": "Bordes enfatizados" },
+          "focus": { "value": "#2563EB", "token": "brand.secondary.500", "usage": "Bordes en foco" },
+          "error": { "value": "#EF4444", "usage": "Bordes de error" },
+          "success": { "value": "#10B981", "usage": "Bordes de éxito" }
+        },
+        "status": {
+          "success": {
+            "bg": { "value": "#ECFDF5", "usage": "Fondo de alertas de éxito" },
+            "fg": { "value": "#065F46", "usage": "Texto de éxito" },
+            "border": { "value": "#A7F3D0", "usage": "Borde de éxito" },
+            "icon": { "value": "#10B981", "usage": "Iconos de éxito" }
+          },
+          "warning": {
+            "bg": { "value": "#FFFBEB", "usage": "Fondo de alertas de advertencia" },
+            "fg": { "value": "#92400E", "usage": "Texto de advertencia" },
+            "border": { "value": "#FDE68A", "usage": "Borde de advertencia" },
+            "icon": { "value": "#F59E0B", "usage": "Iconos de advertencia" }
+          },
+          "danger": {
+            "bg": { "value": "#FEF2F2", "usage": "Fondo de alertas de error" },
+            "fg": { "value": "#991B1B", "usage": "Texto de error" },
+            "border": { "value": "#FECACA", "usage": "Borde de error" },
+            "icon": { "value": "#EF4444", "usage": "Iconos de error" }
+          },
+          "info": {
+            "bg": { "value": "#EFF6FF", "usage": "Fondo de alertas informativas" },
+            "fg": { "value": "#1E40AF", "usage": "Texto informativo" },
+            "border": { "value": "#BFDBFE", "usage": "Borde informativo" },
+            "icon": { "value": "#3B82F6", "usage": "Iconos informativos" }
+          }
+        },
+        "interactive": {
+          "default": { "value": "#FFFFFF", "usage": "Estado inicial de elementos interactivos" },
+          "hover": { "value": "#F8FAFC", "token": "neutral.50", "usage": "Hover sobre elementos clickeables" },
+          "active": { "value": "#F1F5F9", "token": "neutral.100", "usage": "Estado activo/pressed" },
+          "disabled": { "value": "#E2E8F0", "token": "neutral.200", "usage": "Elementos deshabilitados" },
+          "selected": { "value": "#DBEAFE", "token": "brand.secondary.100", "usage": "Elementos seleccionados" }
+        },
+        "modes": {
+          "dark": {
+            "text": {
+              "primary": { "value": "#FFFFFF", "usage": "Títulos, textos principales (dark)" },
+              "secondary": { "value": "rgba(255,255,255,0.78)", "usage": "Subtítulos, descripciones (dark)" },
+              "tertiary": { "value": "rgba(255,255,255,0.62)", "usage": "Metadatos, labels secundarios (dark)" },
+              "muted": { "value": "rgba(255,255,255,0.45)", "usage": "Placeholders, texto deshabilitado (dark)" },
+              "inverse": { "value": "#0B1220", "token": "neutral.900", "usage": "Texto sobre fondos claros (dark)" },
+              "link": { "value": "#60A5FA", "token": "brand.secondary.400", "usage": "Enlaces (dark)" },
+              "linkHover": { "value": "#93C5FD", "token": "brand.secondary.300", "usage": "Enlaces hover (dark)" },
+              "brand": { "value": "#FF5C5C", "token": "brand.primary.400", "usage": "Texto de marca (dark)" }
+            },
+            "bg": {
+              "page": { "value": "#0B1220", "token": "neutral.900", "usage": "Fondo de página (dark)" },
+              "surface": { "value": "#1F2937", "token": "neutral.800", "usage": "Tarjetas/superficies (dark)" },
+              "subtle": { "value": "rgba(255,255,255,0.04)", "usage": "Secciones alternadas (dark)" },
+              "muted": { "value": "rgba(255,255,255,0.06)", "usage": "Fondos deshabilitados (dark)" },
+              "elevated": { "value": "#1F2937", "token": "neutral.800", "usage": "Dropdowns/tooltips (dark)" },
+              "inverse": { "value": "#FFFFFF", "token": "neutral.white", "usage": "Footer/secciones claras (dark)" },
+              "overlay": { "value": "rgba(0, 0, 0, 0.65)", "usage": "Overlays (dark)" }
+            },
+            "border": {
+              "default": { "value": "rgba(255,255,255,0.10)", "usage": "Bordes estándar (dark)" },
+              "subtle": { "value": "rgba(255,255,255,0.06)", "usage": "Bordes sutiles (dark)" },
+              "medium": { "value": "rgba(255,255,255,0.14)", "usage": "Bordes visibles (dark)" },
+              "strong": { "value": "rgba(255,255,255,0.20)", "usage": "Bordes enfatizados (dark)" },
+              "focus": { "value": "#60A5FA", "token": "brand.secondary.400", "usage": "Borde en foco (dark)" }
+            },
+            "interactive": {
+              "default": { "value": "rgba(255,255,255,0.00)", "usage": "Estado inicial (dark)" },
+              "hover": { "value": "rgba(255,255,255,0.05)", "usage": "Hover (dark)" },
+              "active": { "value": "rgba(255,255,255,0.08)", "usage": "Active (dark)" },
+              "disabled": { "value": "rgba(255,255,255,0.10)", "usage": "Disabled (dark)" },
+              "selected": { "value": "rgba(96,165,250,0.22)", "usage": "Selected (dark)" }
+            }
+          }
+        }
+      },
+      "focusRing": {
+        "color": { "value": "rgba(37, 99, 235, 0.35)", "token": "brand.secondary.500" },
+        "width": { "value": 3, "unit": "px" },
+        "offset": { "value": 2, "unit": "px" },
+        "style": "solid"
+      }
+    },
+    "typography": {
+      "fontFamily": {
+        "display": {
+          "value": "Montserrat, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+          "fallback": "sans-serif",
+          "weights": [400, 500, 600, 700, 800],
+          "usage": "Títulos, headlines, navegación principal"
+        },
+        "body": {
+          "value": "Montserrat, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+          "fallback": "sans-serif",
+          "weights": [400, 500, 600, 700],
+          "usage": "Cuerpo de texto, bullets y fichas (alineado al catálogo)"
+        },
+        "mono": {
+          "value": "ui-monospace, 'SF Mono', 'Roboto Mono', 'Courier New', monospace",
+          "fallback": "monospace",
+          "weights": [400, 600],
+          "usage": "Código, SKUs, datos técnicos"
+        }
+      },
+      "fontWeight": {
+        "light": { "value": 300, "usage": "Raramente usado" },
+        "regular": { "value": 400, "usage": "Texto de cuerpo" },
+        "medium": { "value": 500, "usage": "Énfasis suave" },
+        "semibold": { "value": 600, "usage": "Títulos de cards, labels importantes" },
+        "bold": { "value": 700, "usage": "Títulos de sección, precios" },
+        "extrabold": { "value": 800, "usage": "Headlines principales" }
+      },
+      "lineHeight": {
+        "none": { "value": 1, "usage": "Iconos, badges" },
+        "tight": { "value": 1.15, "usage": "Headlines grandes" },
+        "snug": { "value": 1.25, "usage": "Títulos de cards" },
+        "normal": { "value": 1.5, "usage": "Texto de cuerpo estándar" },
+        "relaxed": { "value": 1.65, "usage": "Párrafos largos" },
+        "loose": { "value": 1.85, "usage": "Texto legal, disclaimers" }
+      },
+      "letterSpacing": {
+        "tighter": { "value": -0.04, "unit": "em" },
+        "tight": { "value": -0.02, "unit": "em" },
+        "normal": { "value": 0, "unit": "em" },
+        "wide": { "value": 0.02, "unit": "em" },
+        "wider": { "value": 0.04, "unit": "em" },
+        "ultraWide": { "value": 0.12, "unit": "em", "usage": "Títulos en mayúsculas tipo catálogo" },
+        "poster": { "value": 0.18, "unit": "em", "usage": "Títulos muy espaciados (ej: 'NEVERAS')" }
+      },
+      "scale": {
+        "2xs": {
+          "fontSize": 10,
+          "lineHeight": 12,
+          "letterSpacing": 0,
+          "usage": "Micro labels, badges muy pequeños"
+        },
+        "xs": {
+          "fontSize": 12,
+          "lineHeight": 16,
+          "letterSpacing": 0,
+          "usage": "Labels, badges, tooltips"
+        },
+        "sm": {
+          "fontSize": 14,
+          "lineHeight": 20,
+          "letterSpacing": 0,
+          "usage": "Texto secundario, metadatos"
+        },
+        "md": {
+          "fontSize": 16,
+          "lineHeight": 24,
+          "letterSpacing": 0,
+          "usage": "Texto de cuerpo base"
+        },
+        "lg": {
+          "fontSize": 18,
+          "lineHeight": 28,
+          "letterSpacing": 0,
+          "usage": "Texto destacado, precios"
+        },
+        "xl": {
+          "fontSize": 20,
+          "lineHeight": 28,
+          "letterSpacing": -0.01,
+          "usage": "Subtítulos de sección"
+        },
+        "2xl": {
+          "fontSize": 24,
+          "lineHeight": 32,
+          "letterSpacing": -0.01,
+          "usage": "Títulos de sección"
+        },
+        "3xl": {
+          "fontSize": 30,
+          "lineHeight": 36,
+          "letterSpacing": -0.02,
+          "usage": "Títulos de página mobile"
+        },
+        "4xl": {
+          "fontSize": 36,
+          "lineHeight": 44,
+          "letterSpacing": -0.02,
+          "usage": "Títulos de página desktop"
+        },
+        "5xl": {
+          "fontSize": 48,
+          "lineHeight": 56,
+          "letterSpacing": -0.03,
+          "usage": "Hero headlines desktop"
+        },
+        "6xl": {
+          "fontSize": 60,
+          "lineHeight": 68,
+          "letterSpacing": -0.03,
+          "usage": "Display text especial"
+        }
+      },
+      "textStyles": {
+        "display": {
+          "fontFamily": "display",
+          "fontSize": "5xl",
+          "fontWeight": "bold",
+          "lineHeight": "tight",
+          "letterSpacing": "tight"
+        },
+        "h1": {
+          "fontFamily": "display",
+          "fontSize": "4xl",
+          "fontWeight": "bold",
+          "lineHeight": "tight"
+        },
+        "h2": {
+          "fontFamily": "display",
+          "fontSize": "3xl",
+          "fontWeight": "bold",
+          "lineHeight": "snug"
+        },
+        "h3": {
+          "fontFamily": "display",
+          "fontSize": "2xl",
+          "fontWeight": "semibold",
+          "lineHeight": "snug"
+        },
+        "h4": {
+          "fontFamily": "display",
+          "fontSize": "xl",
+          "fontWeight": "semibold",
+          "lineHeight": "normal"
+        },
+        "body": {
+          "fontFamily": "body",
+          "fontSize": "md",
+          "fontWeight": "regular",
+          "lineHeight": "normal"
+        },
+        "bodyLarge": {
+          "fontFamily": "body",
+          "fontSize": "lg",
+          "fontWeight": "regular",
+          "lineHeight": "normal"
+        },
+        "bodySmall": {
+          "fontFamily": "body",
+          "fontSize": "sm",
+          "fontWeight": "regular",
+          "lineHeight": "normal"
+        },
+        "caption": {
+          "fontFamily": "body",
+          "fontSize": "xs",
+          "fontWeight": "regular",
+          "lineHeight": "snug"
+        },
+        "overline": {
+          "fontFamily": "body",
+          "fontSize": "xs",
+          "fontWeight": "semibold",
+          "lineHeight": "none",
+          "letterSpacing": "wider",
+          "textTransform": "uppercase"
+        },
+        "sectionTitleCaps": {
+          "fontFamily": "display",
+          "fontSize": "3xl",
+          "fontWeight": "bold",
+          "lineHeight": "snug",
+          "letterSpacing": "poster",
+          "textTransform": "uppercase"
+        }
+      }
+    },
+    "spacing": {
+      "0": { "value": 0, "rem": 0 },
+      "0.5": { "value": 2, "rem": 0.125 },
+      "1": { "value": 4, "rem": 0.25 },
+      "1.5": { "value": 6, "rem": 0.375 },
+      "2": { "value": 8, "rem": 0.5 },
+      "2.5": { "value": 10, "rem": 0.625 },
+      "3": { "value": 12, "rem": 0.75 },
+      "3.5": { "value": 14, "rem": 0.875 },
+      "4": { "value": 16, "rem": 1 },
+      "5": { "value": 20, "rem": 1.25 },
+      "6": { "value": 24, "rem": 1.5 },
+      "7": { "value": 28, "rem": 1.75 },
+      "8": { "value": 32, "rem": 2 },
+      "9": { "value": 36, "rem": 2.25 },
+      "10": { "value": 40, "rem": 2.5 },
+      "11": { "value": 44, "rem": 2.75 },
+      "12": { "value": 48, "rem": 3 },
+      "14": { "value": 56, "rem": 3.5 },
+      "16": { "value": 64, "rem": 4 },
+      "20": { "value": 80, "rem": 5 },
+      "24": { "value": 96, "rem": 6 },
+      "28": { "value": 112, "rem": 7 },
+      "32": { "value": 128, "rem": 8 }
+    },
+    "sizing": {
+      "icon": {
+        "2xs": { "value": 12, "usage": "Iconos inline muy pequeños" },
+        "xs": { "value": 16, "usage": "Iconos inline" },
+        "sm": { "value": 20, "usage": "Iconos en botones pequeños" },
+        "md": { "value": 24, "usage": "Iconos estándar" },
+        "lg": { "value": 32, "usage": "Iconos destacados" },
+        "xl": { "value": 40, "usage": "Iconos grandes" },
+        "2xl": { "value": 48, "usage": "Iconos hero" }
+      },
+      "avatar": {
+        "xs": { "value": 24 },
+        "sm": { "value": 32 },
+        "md": { "value": 40 },
+        "lg": { "value": 48 },
+        "xl": { "value": 64 },
+        "2xl": { "value": 96 }
+      },
+      "minTouch": {
+        "value": 44,
+        "usage": "Tamaño mínimo de área táctil (iOS/Android guidelines)"
+      }
+    },
+    "radius": {
+      "none": { "value": 0 },
+      "xs": { "value": 4 },
+      "sm": { "value": 6 },
+      "md": { "value": 10 },
+      "lg": { "value": 14 },
+      "xl": { "value": 18 },
+      "2xl": { "value": 24 },
+      "3xl": { "value": 32 },
+      "pill": { "value": 9999 },
+      "circle": { "value": "50%" }
+    },
+    "shadow": {
+      "none": { "value": "none" },
+      "xs": {
+        "value": "0 1px 2px rgba(11, 18, 32, 0.04)",
+        "usage": "Bordes sutiles elevados"
+      },
+      "sm": {
+        "value": "0 1px 3px rgba(11, 18, 32, 0.08), 0 1px 2px rgba(11, 18, 32, 0.04)",
+        "usage": "Cards, botones elevados"
+      },
+      "md": {
+        "value": "0 4px 6px rgba(11, 18, 32, 0.08), 0 2px 4px rgba(11, 18, 32, 0.04)",
+        "usage": "Dropdowns, popovers"
+      },
+      "lg": {
+        "value": "0 10px 15px rgba(11, 18, 32, 0.08), 0 4px 6px rgba(11, 18, 32, 0.04)",
+        "usage": "Modales, drawers"
+      },
+      "xl": {
+        "value": "0 20px 25px rgba(11, 18, 32, 0.1), 0 10px 10px rgba(11, 18, 32, 0.04)",
+        "usage": "Overlays grandes"
+      },
+      "2xl": {
+        "value": "0 25px 50px rgba(11, 18, 32, 0.15)",
+        "usage": "Elementos con máxima elevación"
+      },
+      "inner": {
+        "value": "inset 0 2px 4px rgba(11, 18, 32, 0.06)",
+        "usage": "Inputs, campos hundidos"
+      }
+    },
+    "motion": {
+      "duration": {
+        "instant": { "value": 0, "usage": "Sin animación" },
+        "fast": { "value": 120, "usage": "Feedback inmediato (hover, active)" },
+        "normal": { "value": 200, "usage": "Transiciones estándar" },
+        "moderate": { "value": 300, "usage": "Transiciones más elaboradas" },
+        "slow": { "value": 400, "usage": "Animaciones complejas" },
+        "slower": { "value": 600, "usage": "Animaciones muy elaboradas" }
+      },
+      "easing": {
+        "linear": { "value": "linear", "curve": "cubic-bezier(0, 0, 1, 1)" },
+        "easeIn": { "value": "ease-in", "curve": "cubic-bezier(0.4, 0, 1, 1)" },
+        "easeOut": { "value": "ease-out", "curve": "cubic-bezier(0, 0, 0.2, 1)" },
+        "easeInOut": { "value": "ease-in-out", "curve": "cubic-bezier(0.4, 0, 0.2, 1)" },
+        "standard": { "value": "standard", "curve": "cubic-bezier(0.2, 0, 0, 1)" },
+        "emphasized": { "value": "emphasized", "curve": "cubic-bezier(0.4, 0, 0.2, 1)" },
+        "spring": { "value": "spring", "curve": "cubic-bezier(0.5, 1.5, 0.5, 1)" }
+      },
+      "presets": {
+        "fadeIn": {
+          "duration": "normal",
+          "easing": "easeOut",
+          "keyframes": [
+            { "opacity": 0 },
+            { "opacity": 1 }
+          ]
+        },
+        "fadeOut": {
+          "duration": "normal",
+          "easing": "easeIn",
+          "keyframes": [
+            { "opacity": 1 },
+            { "opacity": 0 }
+          ]
+        },
+        "slideUp": {
+          "duration": "moderate",
+          "easing": "emphasized",
+          "keyframes": [
+            { "transform": "translateY(20px)", "opacity": 0 },
+            { "transform": "translateY(0)", "opacity": 1 }
+          ]
+        },
+        "slideDown": {
+          "duration": "moderate",
+          "easing": "emphasized",
+          "keyframes": [
+            { "transform": "translateY(-20px)", "opacity": 0 },
+            { "transform": "translateY(0)", "opacity": 1 }
+          ]
+        },
+        "scaleIn": {
+          "duration": "fast",
+          "easing": "spring",
+          "keyframes": [
+            { "transform": "scale(0.95)", "opacity": 0 },
+            { "transform": "scale(1)", "opacity": 1 }
+          ]
+        }
+      },
+      "preferences": {
+        "respectReducedMotion": true,
+        "fallbackDuration": "instant"
+      }
+    },
+    "breakpoints": {
+      "xs": {
+        "value": 360,
+        "label": "Extra Small (Mobile Portrait)",
+        "container": 360
+      },
+      "sm": {
+        "value": 480,
+        "label": "Small (Mobile Landscape)",
+        "container": 480
+      },
+      "md": {
+        "value": 768,
+        "label": "Medium (Tablet Portrait)",
+        "container": 720
+      },
+      "lg": {
+        "value": 1024,
+        "label": "Large (Tablet Landscape / Desktop)",
+        "container": 960
+      },
+      "xl": {
+        "value": 1280,
+        "label": "Extra Large (Desktop)",
+        "container": 1200
+      },
+      "2xl": {
+        "value": 1440,
+        "label": "2X Large (Large Desktop)",
+        "container": 1320
+      },
+      "3xl": {
+        "value": 1920,
+        "label": "3X Large (HD)",
+        "container": 1600
+      }
+    },
+    "grid": {
+      "columns": {
+        "mobile": 4,
+        "tablet": 8,
+        "desktop": 12
+      },
+      "gutter": {
+        "mobile": 16,
+        "tablet": 20,
+        "desktop": 24
+      },
+      "margin": {
+        "mobile": 16,
+        "tablet": 24,
+        "desktop": 24
+      }
+    },
+    "zIndex": {
+      "base": { "value": 0, "usage": "Contenido normal" },
+      "sticky": { "value": 10, "usage": "Headers sticky" },
+      "dropdown": { "value": 20, "usage": "Dropdowns, menus" },
+      "fixed": { "value": 30, "usage": "Elementos fixed (navbar)" },
+      "overlay": { "value": 40, "usage": "Overlays de modales" },
+      "modal": { "value": 50, "usage": "Modales, drawers" },
+      "popover": { "value": 60, "usage": "Tooltips, popovers" },
+      "toast": { "value": 70, "usage": "Notificaciones toast" },
+      "spotlight": { "value": 80, "usage": "Tours, highlights" },
+      "debug": { "value": 9999, "usage": "Herramientas de debug" }
+    },
+    "borders": {
+      "width": {
+        "none": 0,
+        "thin": 1,
+        "medium": 2,
+        "thick": 4
+      },
+      "style": {
+        "solid": "solid",
+        "dashed": "dashed",
+        "dotted": "dotted"
+      }
+    },
+    "opacity": {
+      "0": 0,
+      "5": 0.05,
+      "10": 0.1,
+      "20": 0.2,
+      "30": 0.3,
+      "40": 0.4,
+      "50": 0.5,
+      "60": 0.6,
+      "70": 0.7,
+      "80": 0.8,
+      "90": 0.9,
+      "95": 0.95,
+      "100": 1
+    }
+  },
+  "accessibility": {
+    "wcag": {
+      "level": "AA",
+      "version": "2.1",
+      "requirements": {
+        "colorContrast": {
+          "normal": 4.5,
+          "large": 3.0,
+          "nonText": 3.0
+        },
+        "tapTargetSize": {
+          "min": 44,
+          "preferred": 48
+        },
+        "focusIndicator": {
+          "required": true,
+          "minContrastRatio": 3.0
+        }
+      }
+    },
+    "keyboard": {
+      "navigation": true,
+      "shortcuts": true,
+      "trapFocus": {
+        "modals": true,
+        "drawers": true
+      },
+      "skipLinks": true
+    },
+    "screenReader": {
+      "announcements": true,
+      "liveRegions": true,
+      "ariaLabels": "required"
+    },
+    "motion": {
+      "respectPrefersReducedMotion": true,
+      "alternatives": "provide-static-alternatives"
+    },
+    "color": {
+      "notSoleIndicator": true,
+      "contrastChecked": true
+    }
+  },
+  "iconography": {
+    "library": "lucide-react",
+    "style": "outlined",
+    "strokeWidth": 2,
+    "sizes": {
+      "inherit": "1em",
+      "xs": 16,
+      "sm": 20,
+      "md": 24,
+      "lg": 32,
+      "xl": 40
+    },
+    "commonIcons": {
+      "navigation": ["Menu", "X", "ChevronDown", "ChevronRight", "ArrowLeft", "ArrowRight"],
+      "actions": ["Plus", "Minus", "Trash2", "Edit2", "Save", "Copy", "Check", "X"],
+      "ecommerce": ["ShoppingCart", "Heart", "Search", "Filter", "Package", "Truck", "CreditCard"],
+      "social": ["Facebook", "Instagram", "Twitter", "Youtube", "Mail"],
+      "status": ["CheckCircle", "AlertCircle", "AlertTriangle", "Info", "XCircle"],
+      "user": ["User", "UserPlus", "LogIn", "LogOut", "Settings"]
+    }
+  },
+  "components": {
+    "Button": {
+      "description": "Botón clickeable para acciones primarias y secundarias",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": ["primary", "secondary", "outline", "ghost", "destructive", "link"],
+          "default": "primary",
+          "description": "Estilo visual del botón"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["xs", "sm", "md", "lg", "xl"],
+          "default": "md",
+          "description": "Tamaño del botón"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Deshabilita interacciones"
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false,
+          "description": "Muestra spinner y deshabilita"
+        },
+        "fullWidth": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ocupa 100% del ancho del contenedor"
+        },
+        "icon": {
+          "type": "ReactNode",
+          "description": "Icono a mostrar (izquierda por defecto)"
+        },
+        "iconPosition": {
+          "type": "enum",
+          "values": ["left", "right"],
+          "default": "left"
+        },
+        "onClick": {
+          "type": "function",
+          "signature": "(event: MouseEvent) => void",
+          "description": "Callback al hacer click"
+        },
+        "href": {
+          "type": "string",
+          "description": "Si se provee, renderiza como <a>"
+        },
+        "type": {
+          "type": "enum",
+          "values": ["button", "submit", "reset"],
+          "default": "button"
+        }
+      },
+      "variants": {
+        "primary": {
+          "description": "CTA principal, alta visibilidad",
+          "bg": "brand.primary.600",
+          "fg": "text.inverse",
+          "border": "transparent",
+          "states": {
+            "hover": { "bg": "brand.primary.700" },
+            "active": { "bg": "brand.primary.800" },
+            "focus": { "ring": true },
+            "disabled": { "bg": "neutral.200", "fg": "neutral.500", "cursor": "not-allowed" },
+            "loading": { "opacity": 0.7, "cursor": "wait" }
+          }
+        },
+        "secondary": {
+          "description": "Acción secundaria importante",
+          "bg": "neutral.900",
+          "fg": "text.inverse",
+          "border": "transparent",
+          "states": {
+            "hover": { "bg": "neutral.800" },
+            "active": { "bg": "neutral.900" },
+            "focus": { "ring": true },
+            "disabled": { "bg": "neutral.200", "fg": "neutral.500" }
+          }
+        },
+        "outline": {
+          "description": "Acción de menor prioridad",
+          "bg": "transparent",
+          "fg": "text.primary",
+          "border": "border.strong",
+          "states": {
+            "hover": { "bg": "neutral.50" },
+            "active": { "bg": "neutral.100" },
+            "focus": { "ring": true },
+            "disabled": { "fg": "neutral.500", "border": "neutral.200" }
+          }
+        },
+        "ghost": {
+          "description": "Acción terciaria, mínima",
+          "bg": "transparent",
+          "fg": "text.primary",
+          "border": "transparent",
+          "states": {
+            "hover": { "bg": "neutral.50" },
+            "active": { "bg": "neutral.100" },
+            "focus": { "ring": true },
+            "disabled": { "fg": "neutral.500" }
+          }
+        },
+        "destructive": {
+          "description": "Acciones destructivas (eliminar, cancelar)",
+          "bg": "status.danger.fg",
+          "fg": "text.inverse",
+          "border": "transparent",
+          "states": {
+            "hover": { "bg": "#B91C1C" },
+            "active": { "bg": "#991B1B" },
+            "focus": { "ring": true },
+            "disabled": { "bg": "neutral.200", "fg": "neutral.500" }
+          }
+        },
+        "link": {
+          "description": "Estilo de enlace",
+          "bg": "transparent",
+          "fg": "text.link",
+          "border": "transparent",
+          "textDecoration": "underline",
+          "states": {
+            "hover": { "fg": "text.linkHover" },
+            "focus": { "ring": true },
+            "disabled": { "fg": "neutral.500" }
+          }
+        }
+      },
+      "sizes": {
+        "xs": {
+          "height": 32,
+          "paddingX": 12,
+          "fontSize": "sm",
+          "iconSize": "xs"
+        },
+        "sm": {
+          "height": 36,
+          "paddingX": 14,
+          "fontSize": "sm",
+          "iconSize": "sm"
+        },
+        "md": {
+          "height": 44,
+          "paddingX": 16,
+          "fontSize": "md",
+          "iconSize": "md"
+        },
+        "lg": {
+          "height": 48,
+          "paddingX": 20,
+          "fontSize": "lg",
+          "iconSize": "md"
+        },
+        "xl": {
+          "height": 56,
+          "paddingX": 24,
+          "fontSize": "lg",
+          "iconSize": "lg"
+        }
+      },
+      "styling": {
+        "fontFamily": "body",
+        "fontWeight": "semibold",
+        "radius": "pill",
+        "transition": {
+          "properties": ["background-color", "border-color", "color", "transform", "box-shadow"],
+          "duration": "fast",
+          "easing": "easeOut"
+        },
+        "focusRing": {
+          "width": 3,
+          "offset": 2,
+          "color": "focusRing.color"
+        }
+      },
+      "a11y": {
+        "ariaLabel": "required-if-icon-only",
+        "ariaDisabled": "sync-with-disabled-prop",
+        "ariaLoading": "sync-with-loading-prop",
+        "keyboardNav": ["Enter", "Space"]
+      },
+      "examples": [
+        {
+          "name": "Primary CTA",
+          "props": { "variant": "primary", "size": "lg" },
+          "content": "Comprar ahora"
+        },
+        {
+          "name": "Add to Cart",
+          "props": { "variant": "primary", "size": "md", "icon": "ShoppingCart" },
+          "content": "Agregar al carrito"
+        },
+        {
+          "name": "Delete Action",
+          "props": { "variant": "destructive", "size": "sm", "icon": "Trash2" },
+          "content": "Eliminar"
+        }
+      ]
+    },
+    "Input": {
+      "description": "Campo de entrada de texto con validación y estados",
+      "props": {
+        "type": {
+          "type": "enum",
+          "values": ["text", "email", "password", "number", "tel", "url", "search"],
+          "default": "text"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg"],
+          "default": "md"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label del campo"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "helperText": {
+          "type": "string",
+          "description": "Texto de ayuda debajo del input"
+        },
+        "error": {
+          "type": "string",
+          "description": "Mensaje de error (pone el campo en estado error)"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "icon": {
+          "type": "ReactNode",
+          "description": "Icono dentro del input (izquierda)"
+        },
+        "iconPosition": {
+          "type": "enum",
+          "values": ["left", "right"],
+          "default": "left"
+        },
+        "clearable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Muestra botón X para limpiar"
+        },
+        "value": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(value: string, event: ChangeEvent) => void"
+        },
+        "onFocus": {
+          "type": "function"
+        },
+        "onBlur": {
+          "type": "function"
+        }
+      },
+      "sizes": {
+        "sm": {
+          "height": 36,
+          "paddingX": 10,
+          "fontSize": "sm"
+        },
+        "md": {
+          "height": 44,
+          "paddingX": 12,
+          "fontSize": "md"
+        },
+        "lg": {
+          "height": 52,
+          "paddingX": 14,
+          "fontSize": "lg"
+        }
+      },
+      "states": {
+        "default": {
+          "bg": "bg.surface",
+          "fg": "text.primary",
+          "border": "border.default",
+          "placeholder": "text.muted"
+        },
+        "hover": {
+          "border": "border.medium"
+        },
+        "focus": {
+          "border": "border.focus",
+          "ring": true
+        },
+        "error": {
+          "border": "border.error",
+          "fg": "status.danger.fg"
+        },
+        "disabled": {
+          "bg": "bg.muted",
+          "fg": "text.muted",
+          "cursor": "not-allowed"
+        }
+      },
+      "styling": {
+        "fontFamily": "body",
+        "radius": "md",
+        "transition": {
+          "properties": ["border-color", "box-shadow"],
+          "duration": "fast"
+        }
+      },
+      "validation": {
+        "showErrorIcon": true,
+        "showSuccessIcon": false,
+        "realTimeValidation": false,
+        "validateOnBlur": true
+      },
+      "a11y": {
+        "ariaLabel": "derived-from-label",
+        "ariaDescribedBy": "linked-to-helper-or-error",
+        "ariaInvalid": "sync-with-error-state",
+        "ariaRequired": "sync-with-required-prop"
+      }
+    },
+    "Textarea": {
+      "description": "Campo de entrada multilínea",
+      "extends": "Input",
+      "props": {
+        "rows": {
+          "type": "number",
+          "default": 4
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "showCharCount": {
+          "type": "boolean",
+          "default": false
+        },
+        "autoResize": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "Select": {
+      "description": "Selector dropdown de opciones",
+      "props": {
+        "options": {
+          "type": "array",
+          "items": { "value": "string", "label": "string", "disabled": "boolean" },
+          "required": true
+        },
+        "value": {
+          "type": "string | string[]"
+        },
+        "multiple": {
+          "type": "boolean",
+          "default": false
+        },
+        "searchable": {
+          "type": "boolean",
+          "default": false
+        },
+        "clearable": {
+          "type": "boolean",
+          "default": false
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Seleccionar..."
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg"],
+          "default": "md"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "error": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(value: string | string[]) => void"
+        }
+      },
+      "behavior": {
+        "openOn": "click",
+        "closeOn": ["clickOutside", "selectOption", "escape"],
+        "maxHeight": 300,
+        "virtualScroll": true,
+        "scrollThreshold": 50
+      },
+      "styling": {
+        "inheritsFrom": "Input",
+        "dropdown": {
+          "bg": "bg.elevated",
+          "border": "border.default",
+          "radius": "md",
+          "shadow": "md",
+          "padding": 4
+        },
+        "option": {
+          "height": 40,
+          "paddingX": 12,
+          "radius": "sm",
+          "hover": { "bg": "interactive.hover" },
+          "selected": { "bg": "interactive.selected", "fg": "brand.secondary.600" }
+        }
+      }
+    },
+    "Checkbox": {
+      "description": "Casilla de verificación",
+      "props": {
+        "checked": {
+          "type": "boolean",
+          "default": false
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "error": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(checked: boolean) => void"
+        }
+      },
+      "sizing": {
+        "boxSize": 20,
+        "iconSize": 16,
+        "gap": 8
+      },
+      "states": {
+        "unchecked": {
+          "bg": "bg.surface",
+          "border": "border.strong"
+        },
+        "checked": {
+          "bg": "brand.secondary.600",
+          "border": "brand.secondary.600",
+          "fg": "text.inverse"
+        },
+        "indeterminate": {
+          "bg": "brand.secondary.600",
+          "border": "brand.secondary.600",
+          "icon": "Minus"
+        },
+        "disabled": {
+          "bg": "bg.muted",
+          "border": "border.default",
+          "opacity": 0.5
+        }
+      },
+      "styling": {
+        "radius": "sm",
+        "transition": {
+          "properties": ["background-color", "border-color"],
+          "duration": "fast"
+        }
+      }
+    },
+    "Radio": {
+      "description": "Botón de opción única",
+      "props": {
+        "value": {
+          "type": "string",
+          "required": true
+        },
+        "checked": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(value: string) => void"
+        }
+      },
+      "sizing": {
+        "circleSize": 20,
+        "dotSize": 10,
+        "gap": 8
+      },
+      "states": {
+        "unchecked": {
+          "bg": "bg.surface",
+          "border": "border.strong"
+        },
+        "checked": {
+          "border": "brand.secondary.600",
+          "dot": { "bg": "brand.secondary.600" }
+        },
+        "disabled": {
+          "bg": "bg.muted",
+          "border": "border.default",
+          "opacity": 0.5
+        }
+      },
+      "styling": {
+        "radius": "circle",
+        "transition": {
+          "properties": ["border-color", "transform"],
+          "duration": "fast"
+        }
+      }
+    },
+    "Switch": {
+      "description": "Toggle switch on/off",
+      "props": {
+        "checked": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(checked: boolean) => void"
+        }
+      },
+      "sizes": {
+        "sm": {
+          "trackWidth": 36,
+          "trackHeight": 20,
+          "thumbSize": 16
+        },
+        "md": {
+          "trackWidth": 44,
+          "trackHeight": 24,
+          "thumbSize": 20
+        },
+        "lg": {
+          "trackWidth": 52,
+          "trackHeight": 28,
+          "thumbSize": 24
+        }
+      },
+      "states": {
+        "off": {
+          "trackBg": "neutral.300",
+          "thumbBg": "neutral.white",
+          "thumbPosition": "left"
+        },
+        "on": {
+          "trackBg": "brand.secondary.600",
+          "thumbBg": "neutral.white",
+          "thumbPosition": "right"
+        },
+        "disabled": {
+          "opacity": 0.5
+        }
+      },
+      "styling": {
+        "trackRadius": "pill",
+        "thumbShadow": "sm",
+        "transition": {
+          "properties": ["background-color", "transform"],
+          "duration": "fast",
+          "easing": "emphasized"
+        }
+      }
+    },
+    "Badge": {
+      "description": "Etiqueta pequeña para indicadores de estado",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": ["default", "promo", "new", "success", "warning", "danger", "info"],
+          "default": "default"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["xs", "sm", "md"],
+          "default": "sm"
+        },
+        "icon": {
+          "type": "ReactNode"
+        },
+        "dot": {
+          "type": "boolean",
+          "default": false,
+          "description": "Muestra un punto en lugar de texto"
+        }
+      },
+      "variants": {
+        "default": {
+          "bg": "neutral.100",
+          "fg": "text.secondary",
+          "border": "transparent"
+        },
+        "promo": {
+          "bg": "brand.primary.600",
+          "fg": "text.inverse",
+          "border": "transparent"
+        },
+        "new": {
+          "bg": "brand.secondary.600",
+          "fg": "text.inverse",
+          "border": "transparent"
+        },
+        "success": {
+          "bg": "status.success.bg",
+          "fg": "status.success.fg",
+          "border": "status.success.border"
+        },
+        "warning": {
+          "bg": "status.warning.bg",
+          "fg": "status.warning.fg",
+          "border": "status.warning.border"
+        },
+        "danger": {
+          "bg": "status.danger.bg",
+          "fg": "status.danger.fg",
+          "border": "status.danger.border"
+        },
+        "info": {
+          "bg": "status.info.bg",
+          "fg": "status.info.fg",
+          "border": "status.info.border"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "paddingX": 6,
+          "paddingY": 2,
+          "fontSize": "2xs",
+          "iconSize": "2xs"
+        },
+        "sm": {
+          "paddingX": 8,
+          "paddingY": 3,
+          "fontSize": "xs",
+          "iconSize": "xs"
+        },
+        "md": {
+          "paddingX": 10,
+          "paddingY": 4,
+          "fontSize": "sm",
+          "iconSize": "sm"
+        }
+      },
+      "styling": {
+        "fontFamily": "body",
+        "fontWeight": "semibold",
+        "radius": "pill",
+        "lineHeight": "none"
+      }
+    },
+    "Card": {
+      "description": "Contenedor elevado para agrupar contenido relacionado",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": ["default", "outlined", "elevated"],
+          "default": "default"
+        },
+        "padding": {
+          "type": "enum | number",
+          "values": ["none", "sm", "md", "lg"],
+          "default": "md"
+        },
+        "clickable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Añade efectos hover y cursor pointer"
+        },
+        "onClick": {
+          "type": "function"
+        },
+        "href": {
+          "type": "string",
+          "description": "Si se provee, envuelve en <a>"
+        }
+      },
+      "variants": {
+        "default": {
+          "bg": "bg.surface",
+          "border": "transparent",
+          "shadow": "none"
+        },
+        "outlined": {
+          "bg": "bg.surface",
+          "border": "border.default",
+          "shadow": "none"
+        },
+        "elevated": {
+          "bg": "bg.elevated",
+          "border": "transparent",
+          "shadow": "sm"
+        }
+      },
+      "padding": {
+        "none": 0,
+        "sm": 12,
+        "md": 16,
+        "lg": 20
+      },
+      "states": {
+        "default": {},
+        "hover": {
+          "shadow": "md",
+          "transform": "translateY(-1px)",
+          "condition": "clickable === true"
+        },
+        "active": {
+          "transform": "translateY(0)",
+          "condition": "clickable === true"
+        }
+      },
+      "styling": {
+        "radius": "lg",
+        "transition": {
+          "properties": ["box-shadow", "transform"],
+          "duration": "fast"
+        }
+      },
+      "composition": {
+        "CardHeader": {
+          "padding": "16px",
+          "borderBottom": "border.subtle"
+        },
+        "CardBody": {
+          "padding": "16px"
+        },
+        "CardFooter": {
+          "padding": "16px",
+          "borderTop": "border.subtle"
+        }
+      }
+    },
+    "Modal": {
+      "description": "Diálogo modal que bloquea la interacción con el resto de la página",
+      "props": {
+        "open": {
+          "type": "boolean",
+          "required": true
+        },
+        "onClose": {
+          "type": "function",
+          "required": true,
+          "signature": "() => void"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg", "xl", "full"],
+          "default": "md"
+        },
+        "closeOnOverlayClick": {
+          "type": "boolean",
+          "default": true
+        },
+        "closeOnEscape": {
+          "type": "boolean",
+          "default": true
+        },
+        "showCloseButton": {
+          "type": "boolean",
+          "default": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "footer": {
+          "type": "ReactNode"
+        }
+      },
+      "sizes": {
+        "sm": { "maxWidth": 400 },
+        "md": { "maxWidth": 600 },
+        "lg": { "maxWidth": 800 },
+        "xl": { "maxWidth": 1000 },
+        "full": { "maxWidth": "calc(100vw - 32px)", "maxHeight": "calc(100vh - 32px)" }
+      },
+      "structure": {
+        "overlay": {
+          "bg": "bg.overlay",
+          "zIndex": "modal",
+          "animation": "fadeIn",
+          "duration": "normal"
+        },
+        "panel": {
+          "bg": "bg.surface",
+          "radius": "xl",
+          "shadow": "2xl",
+          "padding": 24,
+          "maxHeight": "calc(100vh - 64px)",
+          "overflow": "auto",
+          "animation": "slideUp + fadeIn",
+          "duration": "moderate"
+        },
+        "header": {
+          "marginBottom": 16,
+          "display": "flex",
+          "justifyContent": "space-between",
+          "alignItems": "center"
+        },
+        "body": {
+          "overflow": "auto"
+        },
+        "footer": {
+          "marginTop": 20,
+          "borderTop": "border.subtle",
+          "paddingTop": 16,
+          "display": "flex",
+          "justifyContent": "flex-end",
+          "gap": 12
+        }
+      },
+      "behavior": {
+        "trapFocus": true,
+        "returnFocusOnClose": true,
+        "scrollLock": true,
+        "closeOnOverlayClick": true,
+        "closeOnEscape": true
+      },
+      "a11y": {
+        "role": "dialog",
+        "ariaModal": true,
+        "ariaLabelledBy": "modal-title",
+        "ariaDescribedBy": "modal-body"
+      }
+    },
+    "Drawer": {
+      "description": "Panel lateral deslizante",
+      "props": {
+        "open": {
+          "type": "boolean",
+          "required": true
+        },
+        "onClose": {
+          "type": "function",
+          "required": true
+        },
+        "position": {
+          "type": "enum",
+          "values": ["left", "right", "top", "bottom"],
+          "default": "right"
+        },
+        "size": {
+          "type": "enum | number",
+          "values": ["sm", "md", "lg", "full"],
+          "default": "md"
+        },
+        "closeOnOverlayClick": {
+          "type": "boolean",
+          "default": true
+        },
+        "closeOnEscape": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "sizes": {
+        "sm": 320,
+        "md": 400,
+        "lg": 560,
+        "full": "100%"
+      },
+      "structure": {
+        "overlay": {
+          "bg": "bg.overlay",
+          "zIndex": "modal",
+          "animation": "fadeIn"
+        },
+        "panel": {
+          "bg": "bg.surface",
+          "padding": 20,
+          "shadow": "xl",
+          "animation": {
+            "left": "slideInFromLeft",
+            "right": "slideInFromRight",
+            "top": "slideInFromTop",
+            "bottom": "slideInFromBottom"
+          }
+        }
+      },
+      "behavior": {
+        "trapFocus": true,
+        "scrollLock": true,
+        "returnFocusOnClose": true
+      }
+    },
+    "Dropdown": {
+      "description": "Menu desplegable contextual",
+      "props": {
+        "trigger": {
+          "type": "ReactNode",
+          "required": true,
+          "description": "Elemento que abre el dropdown"
+        },
+        "items": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "label": "string",
+            "icon": "ReactNode",
+            "onClick": "function",
+            "disabled": "boolean",
+            "divider": "boolean"
+          }
+        },
+        "placement": {
+          "type": "enum",
+          "values": ["top", "bottom", "left", "right", "top-start", "bottom-end"],
+          "default": "bottom-start"
+        },
+        "offset": {
+          "type": "number",
+          "default": 8
+        }
+      },
+      "styling": {
+        "menu": {
+          "bg": "bg.elevated",
+          "border": "border.default",
+          "radius": "md",
+          "shadow": "md",
+          "padding": 4,
+          "minWidth": 180,
+          "maxHeight": 400,
+          "overflow": "auto"
+        },
+        "item": {
+          "height": 40,
+          "paddingX": 12,
+          "paddingY": 8,
+          "radius": "sm",
+          "fontSize": "sm",
+          "gap": 8,
+          "hover": { "bg": "interactive.hover" },
+          "active": { "bg": "interactive.active" },
+          "disabled": { "opacity": 0.5, "cursor": "not-allowed" }
+        },
+        "divider": {
+          "height": 1,
+          "bg": "border.subtle",
+          "marginY": 4
+        }
+      },
+      "behavior": {
+        "openOn": "click",
+        "closeOn": ["clickOutside", "selectItem", "escape"],
+        "keyboardNav": true
+      }
+    },
+    "Toast": {
+      "description": "Notificación temporal no intrusiva",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": ["success", "danger", "warning", "info"],
+          "default": "info"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "number",
+          "default": 5000,
+          "description": "Duración en ms (0 = no auto-close)"
+        },
+        "closable": {
+          "type": "boolean",
+          "default": true
+        },
+        "action": {
+          "type": "object",
+          "properties": {
+            "label": "string",
+            "onClick": "function"
+          }
+        }
+      },
+      "variants": {
+        "success": {
+          "bg": "status.success.bg",
+          "fg": "status.success.fg",
+          "border": "status.success.border",
+          "icon": "CheckCircle",
+          "iconColor": "status.success.icon"
+        },
+        "danger": {
+          "bg": "status.danger.bg",
+          "fg": "status.danger.fg",
+          "border": "status.danger.border",
+          "icon": "XCircle",
+          "iconColor": "status.danger.icon"
+        },
+        "warning": {
+          "bg": "status.warning.bg",
+          "fg": "status.warning.fg",
+          "border": "status.warning.border",
+          "icon": "AlertTriangle",
+          "iconColor": "status.warning.icon"
+        },
+        "info": {
+          "bg": "status.info.bg",
+          "fg": "status.info.fg",
+          "border": "status.info.border",
+          "icon": "Info",
+          "iconColor": "status.info.icon"
+        }
+      },
+      "styling": {
+        "radius": "lg",
+        "shadow": "lg",
+        "padding": 16,
+        "minWidth": 320,
+        "maxWidth": 480,
+        "gap": 12
+      },
+      "positioning": {
+        "container": {
+          "position": "fixed",
+          "zIndex": "toast",
+          "presets": {
+            "top-left": { "top": 16, "left": 16 },
+            "top-center": { "top": 16, "left": "50%", "transform": "translateX(-50%)" },
+            "top-right": { "top": 16, "right": 16 },
+            "bottom-left": { "bottom": 16, "left": 16 },
+            "bottom-center": { "bottom": 16, "left": "50%", "transform": "translateX(-50%)" },
+            "bottom-right": { "bottom": 16, "right": 16 }
+          },
+          "default": "bottom-right"
+        },
+        "stack": {
+          "gap": 12,
+          "maxVisible": 5
+        }
+      },
+      "animation": {
+        "enter": "slideInFromRight + fadeIn",
+        "exit": "slideOutToRight + fadeOut",
+        "duration": "normal"
+      }
+    },
+    "Tabs": {
+      "description": "Navegación por pestañas",
+      "props": {
+        "items": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "id": "string",
+            "label": "string",
+            "icon": "ReactNode",
+            "disabled": "boolean",
+            "badge": "number | string"
+          }
+        },
+        "activeTab": {
+          "type": "string",
+          "required": true
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(tabId: string) => void"
+        },
+        "variant": {
+          "type": "enum",
+          "values": ["line", "enclosed", "pills"],
+          "default": "line"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg"],
+          "default": "md"
+        }
+      },
+      "variants": {
+        "line": {
+          "tabList": {
+            "borderBottom": "border.default"
+          },
+          "tab": {
+            "paddingX": 16,
+            "paddingY": 12,
+            "borderBottom": "2px solid transparent",
+            "inactive": {
+              "fg": "text.tertiary"
+            },
+            "active": {
+              "fg": "text.primary",
+              "borderBottom": "2px solid brand.primary.600"
+            },
+            "hover": {
+              "fg": "text.secondary"
+            }
+          }
+        },
+        "enclosed": {
+          "tab": {
+            "paddingX": 16,
+            "paddingY": 10,
+            "border": "border.default",
+            "radius": "md md 0 0",
+            "inactive": {
+              "bg": "bg.subtle",
+              "fg": "text.tertiary"
+            },
+            "active": {
+              "bg": "bg.surface",
+              "fg": "text.primary",
+              "borderBottom": "transparent"
+            }
+          }
+        },
+        "pills": {
+          "tab": {
+            "paddingX": 16,
+            "paddingY": 8,
+            "radius": "pill",
+            "inactive": {
+              "bg": "transparent",
+              "fg": "text.tertiary"
+            },
+            "active": {
+              "bg": "brand.primary.100",
+              "fg": "brand.primary.700"
+            },
+            "hover": {
+              "bg": "interactive.hover"
+            }
+          }
+        }
+      },
+      "behavior": {
+        "keyboardNav": true,
+        "arrowKeys": true
+      }
+    },
+    "Breadcrumb": {
+      "description": "Navegación jerárquica de ubicación",
+      "props": {
+        "items": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "label": "string",
+            "href": "string",
+            "icon": "ReactNode"
+          }
+        },
+        "separator": {
+          "type": "string | ReactNode",
+          "default": "/"
+        },
+        "maxItems": {
+          "type": "number",
+          "description": "Colapsa items intermedios si excede"
+        }
+      },
+      "styling": {
+        "fontSize": "sm",
+        "gap": 8,
+        "item": {
+          "fg": "text.link",
+          "hover": { "fg": "text.linkHover", "textDecoration": "underline" }
+        },
+        "current": {
+          "fg": "text.primary",
+          "fontWeight": "medium",
+          "cursor": "default"
+        },
+        "separator": {
+          "fg": "text.muted",
+          "paddingX": 4
+        }
+      },
+      "a11y": {
+        "nav": true,
+        "ariaLabel": "breadcrumb"
+      }
+    },
+    "Pagination": {
+      "description": "Control de navegación por páginas",
+      "props": {
+        "currentPage": {
+          "type": "number",
+          "required": true
+        },
+        "totalPages": {
+          "type": "number",
+          "required": true
+        },
+        "onPageChange": {
+          "type": "function",
+          "signature": "(page: number) => void",
+          "required": true
+        },
+        "siblingsCount": {
+          "type": "number",
+          "default": 1,
+          "description": "Número de páginas a mostrar a cada lado de la actual"
+        },
+        "showFirstLast": {
+          "type": "boolean",
+          "default": true
+        },
+        "showPrevNext": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "styling": {
+        "gap": 4,
+        "button": {
+          "width": 40,
+          "height": 40,
+          "radius": "md",
+          "fontSize": "sm",
+          "inactive": {
+            "bg": "transparent",
+            "fg": "text.secondary",
+            "hover": { "bg": "interactive.hover" }
+          },
+          "active": {
+            "bg": "brand.secondary.600",
+            "fg": "text.inverse"
+          },
+          "disabled": {
+            "fg": "text.muted",
+            "cursor": "not-allowed"
+          }
+        },
+        "ellipsis": {
+          "fg": "text.muted"
+        }
+      },
+      "behavior": {
+        "scrollToTop": true,
+        "scrollBehavior": "smooth"
+      }
+    },
+    "Spinner": {
+      "description": "Indicador de carga",
+      "props": {
+        "size": {
+          "type": "enum | number",
+          "values": ["xs", "sm", "md", "lg", "xl"],
+          "default": "md"
+        },
+        "color": {
+          "type": "string",
+          "default": "brand.primary.600"
+        },
+        "thickness": {
+          "type": "number",
+          "default": 2,
+          "description": "Grosor del anillo en px"
+        }
+      },
+      "sizes": {
+        "xs": 16,
+        "sm": 20,
+        "md": 24,
+        "lg": 32,
+        "xl": 40
+      },
+      "animation": {
+        "type": "rotate",
+        "duration": 800,
+        "easing": "linear",
+        "infinite": true
+      }
+    },
+    "Skeleton": {
+      "description": "Placeholder animado durante carga",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": ["text", "circular", "rectangular"],
+          "default": "rectangular"
+        },
+        "width": {
+          "type": "number | string"
+        },
+        "height": {
+          "type": "number | string"
+        },
+        "animation": {
+          "type": "enum",
+          "values": ["pulse", "wave", "none"],
+          "default": "pulse"
+        }
+      },
+      "styling": {
+        "bg": "neutral.200",
+        "radius": {
+          "text": "sm",
+          "circular": "circle",
+          "rectangular": "md"
+        },
+        "animation": {
+          "pulse": {
+            "keyframes": [
+              { "opacity": 1 },
+              { "opacity": 0.5 },
+              { "opacity": 1 }
+            ],
+            "duration": 1500
+          },
+          "wave": {
+            "keyframes": "shimmer-left-to-right",
+            "duration": 1500
+          }
+        }
+      }
+    },
+    "Avatar": {
+      "description": "Imagen de perfil o inicial de usuario",
+      "props": {
+        "src": {
+          "type": "string",
+          "description": "URL de la imagen"
+        },
+        "alt": {
+          "type": "string",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Nombre para generar iniciales"
+        },
+        "size": {
+          "type": "enum | number",
+          "values": ["xs", "sm", "md", "lg", "xl", "2xl"],
+          "default": "md"
+        },
+        "shape": {
+          "type": "enum",
+          "values": ["circle", "square"],
+          "default": "circle"
+        },
+        "badge": {
+          "type": "ReactNode",
+          "description": "Badge en esquina inferior derecha"
+        }
+      },
+      "sizes": {
+        "xs": 24,
+        "sm": 32,
+        "md": 40,
+        "lg": 48,
+        "xl": 64,
+        "2xl": 96
+      },
+      "styling": {
+        "bg": "brand.primary.100",
+        "fg": "brand.primary.700",
+        "fontWeight": "semibold",
+        "radius": {
+          "circle": "circle",
+          "square": "md"
+        },
+        "border": "border.subtle"
+      },
+      "fallback": {
+        "type": "initials",
+        "maxChars": 2,
+        "transform": "uppercase"
+      }
+    },
+    "Divider": {
+      "description": "Separador visual",
+      "props": {
+        "orientation": {
+          "type": "enum",
+          "values": ["horizontal", "vertical"],
+          "default": "horizontal"
+        },
+        "variant": {
+          "type": "enum",
+          "values": ["solid", "dashed", "dotted"],
+          "default": "solid"
+        },
+        "label": {
+          "type": "string",
+          "description": "Texto opcional en el centro"
+        }
+      },
+      "styling": {
+        "color": "border.default",
+        "thickness": 1,
+        "margin": {
+          "horizontal": { "y": 16 },
+          "vertical": { "x": 16 }
+        },
+        "label": {
+          "paddingX": 12,
+          "fontSize": "sm",
+          "fg": "text.tertiary"
+        }
+      }
+    },
+    "Accordion": {
+      "description": "Secciones colapsables",
+      "props": {
+        "items": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "id": "string",
+            "title": "string",
+            "content": "ReactNode",
+            "disabled": "boolean"
+          }
+        },
+        "allowMultiple": {
+          "type": "boolean",
+          "default": false,
+          "description": "Permite múltiples items abiertos"
+        },
+        "defaultOpen": {
+          "type": "string[]",
+          "description": "IDs de items abiertos por defecto"
+        },
+        "variant": {
+          "type": "enum",
+          "values": ["default", "bordered", "contained"],
+          "default": "default"
+        }
+      },
+      "styling": {
+        "trigger": {
+          "paddingX": 16,
+          "paddingY": 12,
+          "fontSize": "md",
+          "fontWeight": "medium",
+          "hover": { "bg": "interactive.hover" },
+          "disabled": { "opacity": 0.5, "cursor": "not-allowed" }
+        },
+        "content": {
+          "paddingX": 16,
+          "paddingY": 12,
+          "animation": "slideDown",
+          "duration": "moderate"
+        },
+        "icon": {
+          "size": "md",
+          "transition": "transform",
+          "open": { "transform": "rotate(180deg)" }
+        }
+      },
+      "variants": {
+        "default": {
+          "borderBottom": "border.subtle"
+        },
+        "bordered": {
+          "border": "border.default",
+          "radius": "md",
+          "gap": 8
+        },
+        "contained": {
+          "bg": "bg.subtle",
+          "radius": "md",
+          "gap": 4
+        }
+      }
+    },
+    "Alert": {
+      "description": "Mensaje de alerta o información importante",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "values": ["success", "warning", "danger", "info"],
+          "default": "info"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "ReactNode",
+          "description": "Sobrescribe icono por defecto"
+        },
+        "closable": {
+          "type": "boolean",
+          "default": false
+        },
+        "onClose": {
+          "type": "function"
+        }
+      },
+      "variants": {
+        "success": {
+          "bg": "status.success.bg",
+          "fg": "status.success.fg",
+          "border": "status.success.border",
+          "icon": "CheckCircle",
+          "iconColor": "status.success.icon"
+        },
+        "warning": {
+          "bg": "status.warning.bg",
+          "fg": "status.warning.fg",
+          "border": "status.warning.border",
+          "icon": "AlertTriangle",
+          "iconColor": "status.warning.icon"
+        },
+        "danger": {
+          "bg": "status.danger.bg",
+          "fg": "status.danger.fg",
+          "border": "status.danger.border",
+          "icon": "XCircle",
+          "iconColor": "status.danger.icon"
+        },
+        "info": {
+          "bg": "status.info.bg",
+          "fg": "status.info.fg",
+          "border": "status.info.border",
+          "icon": "Info",
+          "iconColor": "status.info.icon"
+        }
+      },
+      "styling": {
+        "padding": 16,
+        "radius": "md",
+        "borderWidth": 1,
+        "gap": 12,
+        "title": {
+          "fontSize": "md",
+          "fontWeight": "semibold"
+        },
+        "description": {
+          "fontSize": "sm"
+        }
+      }
+    },
+    "Tooltip": {
+      "description": "Información contextual al hacer hover",
+      "props": {
+        "content": {
+          "type": "string | ReactNode",
+          "required": true
+        },
+        "placement": {
+          "type": "enum",
+          "values": ["top", "bottom", "left", "right"],
+          "default": "top"
+        },
+        "delay": {
+          "type": "number",
+          "default": 200,
+          "description": "Delay antes de mostrar (ms)"
+        },
+        "arrow": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "styling": {
+        "bg": "neutral.900",
+        "fg": "text.inverse",
+        "padding": "8px 12px",
+        "radius": "md",
+        "fontSize": "sm",
+        "maxWidth": 240,
+        "shadow": "md",
+        "zIndex": "popover"
+      },
+      "animation": {
+        "enter": "fadeIn + scaleIn",
+        "exit": "fadeOut + scaleOut",
+        "duration": "fast"
+      },
+      "behavior": {
+        "showOn": "hover",
+        "hideOn": ["mouseLeave", "click"],
+        "offset": 8
+      }
+    },
+    "Progress": {
+      "description": "Barra de progreso",
+      "props": {
+        "value": {
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg"],
+          "default": "md"
+        },
+        "variant": {
+          "type": "enum",
+          "values": ["default", "success", "warning", "danger"],
+          "default": "default"
+        },
+        "showLabel": {
+          "type": "boolean",
+          "default": false
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "default": false,
+          "description": "Animación de carga sin progreso específico"
+        }
+      },
+      "sizes": {
+        "sm": { "height": 4 },
+        "md": { "height": 8 },
+        "lg": { "height": 12 }
+      },
+      "styling": {
+        "track": {
+          "bg": "neutral.200",
+          "radius": "pill"
+        },
+        "fill": {
+          "default": { "bg": "brand.primary.600" },
+          "success": { "bg": "status.success.icon" },
+          "warning": { "bg": "status.warning.icon" },
+          "danger": { "bg": "status.danger.icon" },
+          "transition": "width 300ms ease-out"
+        },
+        "label": {
+          "fontSize": "sm",
+          "fontWeight": "medium",
+          "marginTop": 4
+        }
+      },
+      "animation": {
+        "indeterminate": {
+          "keyframes": "slide-left-to-right",
+          "duration": 1500,
+          "easing": "linear",
+          "infinite": true
+        }
+      }
+    },
+    "Carousel": {
+      "description": "Carrusel de contenido deslizable",
+      "props": {
+        "items": {
+          "type": "array",
+          "required": true
+        },
+        "autoplay": {
+          "type": "boolean",
+          "default": false
+        },
+        "autoplayInterval": {
+          "type": "number",
+          "default": 5000
+        },
+        "loop": {
+          "type": "boolean",
+          "default": true
+        },
+        "showControls": {
+          "type": "boolean",
+          "default": true
+        },
+        "showIndicators": {
+          "type": "boolean",
+          "default": true
+        },
+        "slidesPerView": {
+          "type": "number | object",
+          "default": 1,
+          "description": "Puede ser objeto responsive: { mobile: 1, tablet: 2, desktop: 4 }"
+        },
+        "gap": {
+          "type": "number",
+          "default": 16
+        }
+      },
+      "styling": {
+        "controls": {
+          "size": 40,
+          "bg": "neutral.white",
+          "fg": "neutral.900",
+          "radius": "circle",
+          "shadow": "md",
+          "hover": { "bg": "neutral.50" },
+          "position": "absolute",
+          "inset": "auto 16px"
+        },
+        "indicators": {
+          "width": 8,
+          "height": 8,
+          "radius": "circle",
+          "gap": 8,
+          "inactive": { "bg": "neutral.300" },
+          "active": { "bg": "brand.primary.600" },
+          "position": "absolute",
+          "bottom": 16
+        }
+      },
+      "behavior": {
+        "swipeable": true,
+        "keyboardNav": true,
+        "pauseOnHover": true
+      }
+    },
+    "ImageGallery": {
+      "description": "Galería de imágenes con thumbnails",
+      "props": {
+        "images": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "src": "string",
+            "alt": "string",
+            "thumbnail": "string"
+          }
+        },
+        "aspectRatio": {
+          "type": "string",
+          "default": "1:1"
+        },
+        "thumbnailPosition": {
+          "type": "enum",
+          "values": ["bottom", "left", "right"],
+          "default": "bottom"
+        },
+        "showFullscreen": {
+          "type": "boolean",
+          "default": true
+        },
+        "showZoom": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "styling": {
+        "main": {
+          "bg": "bg.subtle",
+          "radius": "lg",
+          "objectFit": "contain"
+        },
+        "thumbnail": {
+          "size": 80,
+          "radius": "md",
+          "border": "border.default",
+          "gap": 8,
+          "opacity": 0.6,
+          "hover": { "opacity": 1 },
+          "active": { "border": "brand.primary.600", "opacity": 1 }
+        }
+      },
+      "behavior": {
+        "clickToZoom": true,
+        "swipeable": true,
+        "keyboardNav": true
+      }
+    },
+    "SearchBar": {
+      "description": "Barra de búsqueda con autocompletado",
+      "props": {
+        "placeholder": {
+          "type": "string",
+          "default": "Buscar..."
+        },
+        "value": {
+          "type": "string"
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(value: string) => void"
+        },
+        "onSearch": {
+          "type": "function",
+          "signature": "(query: string) => void"
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "id": "string",
+            "label": "string",
+            "category": "string",
+            "icon": "ReactNode"
+          }
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg"],
+          "default": "md"
+        }
+      },
+      "styling": {
+        "inheritsFrom": "Input",
+        "icon": "Search",
+        "iconPosition": "left",
+        "clearButton": true,
+        "suggestions": {
+          "bg": "bg.elevated",
+          "radius": "md",
+          "shadow": "md",
+          "maxHeight": 400,
+          "item": {
+            "height": 48,
+            "paddingX": 12,
+            "hover": { "bg": "interactive.hover" }
+          },
+          "category": {
+            "paddingX": 12,
+            "paddingY": 6,
+            "fontSize": "xs",
+            "fontWeight": "semibold",
+            "fg": "text.tertiary",
+            "textTransform": "uppercase"
+          }
+        }
+      },
+      "behavior": {
+        "showSuggestionsOn": "focus",
+        "closeOn": ["blur", "selectSuggestion", "escape"],
+        "debounce": 300,
+        "minChars": 2
+      }
+    },
+    "FilterGroup": {
+      "description": "Grupo de filtros para catálogos",
+      "props": {
+        "filters": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "id": "string",
+            "label": "string",
+            "type": "enum: checkbox | radio | range | select",
+            "options": "array",
+            "value": "any"
+          }
+        },
+        "onChange": {
+          "type": "function",
+          "signature": "(filters: object) => void"
+        },
+        "collapsible": {
+          "type": "boolean",
+          "default": true
+        },
+        "showClearAll": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "styling": {
+        "section": {
+          "paddingY": 16,
+          "borderBottom": "border.subtle"
+        },
+        "label": {
+          "fontSize": "sm",
+          "fontWeight": "semibold",
+          "marginBottom": 8
+        },
+        "option": {
+          "paddingY": 6,
+          "fontSize": "sm"
+        }
+      }
+    },
+    "ProductCard": {
+      "description": "Tarjeta de producto para e-commerce",
+      "extends": "Card",
+      "props": {
+        "product": {
+          "type": "object",
+          "required": true,
+          "properties": {
+            "id": "string",
+            "name": "string",
+            "image": "string",
+            "price": "number",
+            "originalPrice": "number",
+            "discount": "number",
+            "rating": "number",
+            "reviewCount": "number",
+            "inStock": "boolean",
+            "badge": "string"
+          }
+        },
+        "layout": {
+          "type": "enum",
+          "values": ["vertical", "horizontal"],
+          "default": "vertical"
+        },
+        "onAddToCart": {
+          "type": "function"
+        },
+        "onAddToWishlist": {
+          "type": "function"
+        },
+        "onQuickView": {
+          "type": "function"
+        }
+      },
+      "structure": {
+        "imageContainer": {
+          "aspectRatio": "1:1",
+          "bg": "bg.subtle",
+          "radius": "md",
+          "objectFit": "contain",
+          "position": "relative",
+          "badges": {
+            "position": "absolute",
+            "top": 8,
+            "left": 8
+          },
+          "actions": {
+            "position": "absolute",
+            "top": 8,
+            "right": 8,
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": 4,
+            "opacity": 0,
+            "hover": { "opacity": 1 }
+          }
+        },
+        "content": {
+          "padding": 12,
+          "gap": 8
+        },
+        "title": {
+          "fontSize": "sm",
+          "fontWeight": "semibold",
+          "lineClamp": 2,
+          "minHeight": 40
+        },
+        "rating": {
+          "display": "flex",
+          "alignItems": "center",
+          "gap": 4,
+          "fontSize": "xs",
+          "fg": "text.muted"
+        },
+        "priceContainer": {
+          "display": "flex",
+          "alignItems": "baseline",
+          "gap": 8
+        },
+        "currentPrice": {
+          "fontSize": "lg",
+          "fontWeight": "bold",
+          "fg": "brand.primary.600"
+        },
+        "originalPrice": {
+          "fontSize": "sm",
+          "fg": "text.muted",
+          "textDecoration": "line-through"
+        },
+        "discount": {
+          "variant": "promo",
+          "size": "xs"
+        },
+        "addToCartButton": {
+          "variant": "primary",
+          "size": "md",
+          "fullWidth": true,
+          "icon": "ShoppingCart"
+        }
+      },
+      "states": {
+        "hover": {
+          "shadow": "md",
+          "transform": "translateY(-2px)"
+        },
+        "outOfStock": {
+          "opacity": 0.6,
+          "overlay": {
+            "content": "Agotado",
+            "bg": "rgba(255, 255, 255, 0.9)",
+            "fg": "text.secondary"
+          }
+        }
+      }
+    },
+    "CartDrawer": {
+      "description": "Drawer lateral con carrito de compras",
+      "extends": "Drawer",
+      "props": {
+        "items": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "id": "string",
+            "name": "string",
+            "image": "string",
+            "price": "number",
+            "quantity": "number"
+          }
+        },
+        "onUpdateQuantity": {
+          "type": "function",
+          "signature": "(itemId: string, quantity: number) => void"
+        },
+        "onRemoveItem": {
+          "type": "function",
+          "signature": "(itemId: string) => void"
+        },
+        "onCheckout": {
+          "type": "function"
+        }
+      },
+      "structure": {
+        "header": {
+          "padding": 20,
+          "borderBottom": "border.default",
+          "display": "flex",
+          "justifyContent": "space-between",
+          "title": {
+            "fontSize": "lg",
+            "fontWeight": "bold"
+          },
+          "itemCount": {
+            "variant": "default",
+            "size": "sm"
+          }
+        },
+        "body": {
+          "padding": 20,
+          "flex": 1,
+          "overflow": "auto"
+        },
+        "cartItem": {
+          "display": "flex",
+          "gap": 12,
+          "paddingY": 12,
+          "borderBottom": "border.subtle",
+          "image": {
+            "size": 80,
+            "radius": "md",
+            "objectFit": "cover"
+          },
+          "info": {
+            "flex": 1
+          },
+          "name": {
+            "fontSize": "sm",
+            "fontWeight": "medium",
+            "lineClamp": 2
+          },
+          "price": {
+            "fontSize": "md",
+            "fontWeight": "bold",
+            "fg": "brand.primary.600"
+          },
+          "quantityControl": {
+            "display": "flex",
+            "alignItems": "center",
+            "gap": 8,
+            "button": {
+              "size": "sm",
+              "variant": "outline"
+            }
+          }
+        },
+        "footer": {
+          "padding": 20,
+          "borderTop": "border.default",
+          "summary": {
+            "marginBottom": 16,
+            "row": {
+              "display": "flex",
+              "justifyContent": "space-between",
+              "paddingY": 6,
+              "fontSize": "sm"
+            },
+            "total": {
+              "fontSize": "lg",
+              "fontWeight": "bold",
+              "borderTop": "border.default",
+              "paddingTop": 12,
+              "marginTop": 8
+            }
+          },
+          "checkoutButton": {
+            "variant": "primary",
+            "size": "lg",
+            "fullWidth": true
+          }
+        }
+      },
+      "emptyState": {
+        "icon": "ShoppingCart",
+        "iconSize": "2xl",
+        "title": "Tu carrito está vacío",
+        "description": "Agrega productos para comenzar tu compra",
+        "cta": {
+          "label": "Ver productos",
+          "variant": "primary"
+        }
+      }
+    },
+    "Navbar": {
+      "description": "Barra de navegación principal",
+      "structure": {
+        "container": {
+          "height": 72,
+          "bg": "bg.surface",
+          "borderBottom": "border.subtle",
+          "position": "sticky",
+          "top": 0,
+          "zIndex": "fixed",
+          "paddingX": { "mobile": 16, "desktop": 24 }
+        },
+        "logo": {
+          "maxHeight": 36,
+          "cursor": "pointer"
+        },
+        "nav": {
+          "display": { "mobile": "none", "desktop": "flex" },
+          "gap": 24,
+          "link": {
+            "fontSize": "md",
+            "fontWeight": "medium",
+            "fg": "text.secondary",
+            "hover": { "fg": "text.primary" },
+            "active": { "fg": "brand.primary.600" }
+          }
+        },
+        "search": {
+          "display": { "mobile": "none", "desktop": "block" },
+          "width": 400,
+          "size": "md"
+        },
+        "actions": {
+          "display": "flex",
+          "gap": 12,
+          "iconButton": {
+            "size": 40,
+            "variant": "ghost",
+            "radius": "circle"
+          },
+          "badge": {
+            "position": "absolute",
+            "top": -4,
+            "right": -4,
+            "size": "xs",
+            "variant": "promo"
+          }
+        },
+        "mobileMenu": {
+          "display": { "mobile": "block", "desktop": "none" },
+          "icon": "Menu"
+        }
+      },
+      "responsive": {
+        "mobile": {
+          "height": 64,
+          "showSearch": false,
+          "showNav": false,
+          "menuType": "drawer"
+        },
+        "desktop": {
+          "height": 72,
+          "showSearch": true,
+          "showNav": true
+        }
+      }
+    },
+    "Footer": {
+      "description": "Pie de página",
+      "structure": {
+        "container": {
+          "bg": "neutral.900",
+          "fg": "text.inverse",
+          "paddingY": 48,
+          "paddingX": { "mobile": 16, "desktop": 24 }
+        },
+        "grid": {
+          "columns": { "mobile": 1, "tablet": 2, "desktop": 4 },
+          "gap": 32
+        },
+        "section": {
+          "title": {
+            "fontSize": "sm",
+            "fontWeight": "semibold",
+            "marginBottom": 16,
+            "textTransform": "uppercase"
+          },
+          "links": {
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": 8,
+            "link": {
+              "fontSize": "sm",
+              "fg": "rgba(255,255,255,0.75)",
+              "hover": { "fg": "text.inverse" }
+            }
+          }
+        },
+        "social": {
+          "display": "flex",
+          "gap": 12,
+          "icon": {
+            "size": 24,
+            "fg": "rgba(255,255,255,0.75)",
+            "hover": { "fg": "text.inverse" }
+          }
+        },
+        "bottom": {
+          "bg": "rgba(255,255,255,0.04)",
+          "paddingY": 20,
+          "paddingX": { "mobile": 16, "desktop": 24 },
+          "borderTop": "rgba(255,255,255,0.1)",
+          "display": "flex",
+          "justifyContent": "space-between",
+          "flexWrap": "wrap",
+          "gap": 16,
+          "fontSize": "sm",
+          "fg": "rgba(255,255,255,0.6)"
+        }
+      }
+    },
+    "Hero": {
+      "description": "Sección hero principal",
+      "structure": {
+        "container": {
+          "minHeight": { "mobile": 320, "desktop": 480 },
+          "bg": "bg.subtle",
+          "paddingY": { "mobile": 40, "desktop": 80 },
+          "paddingX": { "mobile": 16, "desktop": 24 },
+          "display": "flex",
+          "alignItems": "center"
+        },
+        "content": {
+          "maxWidth": 720,
+          "textAlign": { "mobile": "center", "desktop": "left" }
+        },
+        "eyebrow": {
+          "fontSize": "sm",
+          "fontWeight": "semibold",
+          "fg": "brand.primary.600",
+          "textTransform": "uppercase",
+          "letterSpacing": "wide",
+          "marginBottom": 12
+        },
+        "headline": {
+          "fontFamily": "display",
+          "fontSize": { "mobile": "3xl", "desktop": "5xl" },
+          "fontWeight": "bold",
+          "lineHeight": "tight",
+          "marginBottom": 16
+        },
+        "subheadline": {
+          "fontSize": { "mobile": "md", "desktop": "lg" },
+          "fg": "text.secondary",
+          "marginBottom": 24
+        },
+        "ctas": {
+          "display": "flex",
+          "gap": 12,
+          "flexWrap": "wrap",
+          "justifyContent": { "mobile": "center", "desktop": "flex-start" }
+        }
+      }
+    },
+    "PromoStrip": {
+      "description": "Barra de promociones rotativas",
+      "structure": {
+        "container": {
+          "height": 40,
+          "bg": "brand.primary.600",
+          "fg": "text.inverse",
+          "display": "flex",
+          "alignItems": "center",
+          "justifyContent": "center",
+          "overflow": "hidden"
+        },
+        "content": {
+          "fontSize": "sm",
+          "fontWeight": "medium",
+          "textAlign": "center",
+          "paddingX": 16
+        }
+      },
+      "behavior": {
+        "rotateItems": true,
+        "intervalMs": 5000,
+        "animation": "fadeInOut"
+      }
+    }
+  },
+  "patterns": {
+    "forms": {
+      "spacing": {
+        "fieldGap": 16,
+        "sectionGap": 32,
+        "labelMargin": 8
+      },
+      "validation": {
+        "strategy": "onBlur",
+        "realTime": false,
+        "showErrorsOnSubmit": true
+      },
+      "layout": {
+        "maxWidth": 600,
+        "labelPosition": "top",
+        "requiredIndicator": "*",
+        "helperTextPosition": "below"
+      }
+    },
+    "lists": {
+      "virtualization": {
+        "enabled": true,
+        "threshold": 50,
+        "itemHeight": "auto"
+      },
+      "pagination": {
+        "type": "pages",
+        "itemsPerPage": [12, 24, 48],
+        "default": 24
+      },
+      "emptyState": {
+        "showIcon": true,
+        "showCTA": true
+      }
+    },
+    "modals": {
+      "backdrop": {
+        "blur": 4,
+        "clickToClose": true
+      },
+      "stack": {
+        "maxOpen": 3,
+        "zIndexIncrement": 1
+      }
+    }
+  },
+  "pageTemplates": {
+    "Home": {
+      "description": "Página principal del sitio",
+      "sections": [
+        { "id": "promo-strip", "component": "PromoStrip", "required": true },
+        { "id": "navbar", "component": "Navbar", "required": true },
+        { "id": "hero", "component": "Hero", "required": true },
+        { "id": "categories", "component": "CategoryGrid", "props": { "columns": { "mobile": 2, "tablet": 3, "desktop": 6 } } },
+        { "id": "featured-deals", "component": "Carousel", "props": { "slidesPerView": { "mobile": 1, "tablet": 2, "desktop": 4 } } },
+        { "id": "products-grid", "component": "ProductGrid" },
+        { "id": "newsletter", "component": "NewsletterSection" },
+        { "id": "footer", "component": "Footer", "required": true }
+      ]
+    },
+    "Catalog": {
+      "description": "Listado de productos con filtros",
+      "layout": "sidebar-content",
+      "sections": [
+        { "id": "promo-strip", "component": "PromoStrip" },
+        { "id": "navbar", "component": "Navbar", "required": true },
+        { "id": "breadcrumb", "component": "Breadcrumb" },
+        { "id": "page-header", "title": "dynamic", "subtitle": "dynamic", "productCount": true },
+        { "id": "filters-sidebar", "component": "FilterGroup", "position": "left", "collapsible": true },
+        { "id": "toolbar", "sorting": true, "viewMode": ["grid", "list"] },
+        { "id": "products-grid", "component": "ProductGrid", "columns": { "mobile": 1, "tablet": 2, "desktop": 3 } },
+        { "id": "pagination", "component": "Pagination" },
+        { "id": "footer", "component": "Footer", "required": true }
+      ],
+      "responsive": {
+        "mobile": {
+          "filterPosition": "drawer"
+        }
+      }
+    },
+    "ProductDetail": {
+      "description": "Página de detalle de producto",
+      "layout": "two-column",
+      "sections": [
+        { "id": "promo-strip", "component": "PromoStrip" },
+        { "id": "navbar", "component": "Navbar", "required": true },
+        { "id": "breadcrumb", "component": "Breadcrumb" },
+        { "id": "product-gallery", "component": "ImageGallery", "position": "left" },
+        { "id": "product-info", "component": "ProductInfo", "position": "right", "sections": [
+          "title",
+          "rating",
+          "price",
+          "description",
+          "variants",
+          "quantity",
+          "ctas",
+          "shipping",
+          "returns"
+        ]},
+        { "id": "tabs", "component": "Tabs", "items": [
+          { "id": "specs", "label": "Especificaciones" },
+          { "id": "reviews", "label": "Reseñas" },
+          { "id": "qa", "label": "Preguntas" }
+        ]},
+        { "id": "related-products", "component": "Carousel", "title": "Productos relacionados" },
+        { "id": "recently-viewed", "component": "Carousel", "title": "Vistos recientemente" },
+        { "id": "footer", "component": "Footer", "required": true }
+      ]
+    },
+    "Cart": {
+      "description": "Carrito de compras",
+      "sections": [
+        { "id": "navbar", "component": "Navbar", "required": true },
+        { "id": "breadcrumb", "component": "Breadcrumb" },
+        { "id": "page-header", "title": "Carrito de compras" },
+        { "id": "cart-items", "component": "CartItemsList" },
+        { "id": "order-summary", "component": "OrderSummary", "sticky": true },
+        { "id": "recommendations", "component": "ProductGrid", "title": "También te puede interesar" },
+        { "id": "footer", "component": "Footer", "required": true }
+      ],
+      "emptyState": {
+        "icon": "ShoppingCart",
+        "title": "Tu carrito está vacío",
+        "cta": { "label": "Explorar productos", "href": "/productos" }
+      }
+    },
+    "Checkout": {
+      "description": "Proceso de checkout",
+      "layout": "two-column",
+      "sections": [
+        { "id": "navbar-minimal", "component": "Navbar", "variant": "minimal" },
+        { "id": "steps", "component": "Stepper", "steps": [
+          { "id": "shipping", "label": "Envío" },
+          { "id": "payment", "label": "Pago" },
+          { "id": "confirmation", "label": "Confirmación" }
+        ]},
+        { "id": "forms", "position": "left" },
+        { "id": "order-summary-sticky", "component": "OrderSummary", "position": "right", "sticky": true },
+        { "id": "footer-minimal", "component": "Footer", "variant": "minimal" }
+      ],
+      "security": {
+        "ssl": true,
+        "pciCompliant": true
+      }
+    },
+    "Account": {
+      "description": "Dashboard de cuenta de usuario",
+      "layout": "sidebar-content",
+      "sections": [
+        { "id": "navbar", "component": "Navbar", "required": true },
+        { "id": "sidebar", "component": "AccountSidebar", "items": [
+          { "id": "dashboard", "label": "Panel", "icon": "LayoutDashboard" },
+          { "id": "orders", "label": "Pedidos", "icon": "Package" },
+          { "id": "wishlist", "label": "Favoritos", "icon": "Heart" },
+          { "id": "addresses", "label": "Direcciones", "icon": "MapPin" },
+          { "id": "settings", "label": "Configuración", "icon": "Settings" }
+        ]},
+        { "id": "content", "component": "dynamic" },
+        { "id": "footer", "component": "Footer", "required": true }
+      ]
+    }
+  },
+  "dataFormats": {
+    "product": {
+      "id": "string (UUID)",
+      "sku": "string",
+      "name": "string",
+      "slug": "string",
+      "description": "string (HTML)",
+      "shortDescription": "string",
+      "images": "array<string>",
+      "price": "number (cents)",
+      "compareAtPrice": "number (cents)",
+      "currency": "string (ISO 4217)",
+      "inStock": "boolean",
+      "stockCount": "number",
+      "categories": "array<string>",
+      "tags": "array<string>",
+      "rating": "number (0-5)",
+      "reviewCount": "number",
+      "specifications": "object",
+      "variants": "array<object>",
+      "seo": {
+        "title": "string",
+        "description": "string",
+        "keywords": "array<string>"
+      }
+    },
+    "order": {
+      "id": "string (UUID)",
+      "orderNumber": "string",
+      "status": "enum (pending|processing|shipped|delivered|cancelled)",
+      "createdAt": "ISO 8601",
+      "updatedAt": "ISO 8601",
+      "items": "array<object>",
+      "subtotal": "number (cents)",
+      "shipping": "number (cents)",
+      "tax": "number (cents)",
+      "total": "number (cents)",
+      "currency": "string (ISO 4217)",
+      "customer": "object",
+      "shippingAddress": "object",
+      "billingAddress": "object",
+      "payment": "object"
+    }
+  },
+  "apiIntegration": {
+    "endpoints": {
+      "products": {
+        "list": "GET /api/products",
+        "detail": "GET /api/products/:id",
+        "search": "GET /api/products/search?q={query}",
+        "related": "GET /api/products/:id/related"
+      },
+      "cart": {
+        "get": "GET /api/cart",
+        "add": "POST /api/cart/items",
+        "update": "PATCH /api/cart/items/:id",
+        "remove": "DELETE /api/cart/items/:id",
+        "clear": "DELETE /api/cart"
+      },
+      "checkout": {
+        "create": "POST /api/checkout",
+        "update": "PATCH /api/checkout/:id",
+        "complete": "POST /api/checkout/:id/complete"
+      }
+    },
+    "errorHandling": {
+      "strategy": "toast",
+      "retry": {
+        "enabled": true,
+        "maxAttempts": 3,
+        "backoff": "exponential"
+      }
+    }
+  },
+  "performance": {
+    "images": {
+      "lazy": true,
+      "formats": ["webp", "jpg"],
+      "sizes": {
+        "thumbnail": 80,
+        "small": 320,
+        "medium": 640,
+        "large": 1024,
+        "xlarge": 1920
+      },
+      "quality": 85
+    },
+    "caching": {
+      "strategy": "stale-while-revalidate",
+      "ttl": {
+        "products": 300,
+        "categories": 600,
+        "static": 3600
+      }
+    },
+    "bundling": {
+      "codeSplitting": true,
+      "lazyLoad": ["routes", "modals", "heavy-components"]
+    }
+  },
+  "seo": {
+    "siteName": "SJ Electronics",
+    "defaultTitle": "SJ Electronics - Tecnología y Electrónica",
+    "titleTemplate": "%s | SJ Electronics",
+    "defaultDescription": "Encuentra los mejores productos de tecnología y electrónica",
+    "openGraph": {
+      "type": "website",
+      "locale": "es_ES",
+      "images": {
+        "width": 1200,
+        "height": 630
+      }
+    },
+    "structuredData": {
+      "organization": true,
+      "breadcrumb": true,
+      "product": true
+    }
+  },
+  "analytics": {
+    "events": {
+      "pageView": true,
+      "productView": true,
+      "addToCart": true,
+      "removeFromCart": true,
+      "checkout": true,
+      "purchase": true,
+      "search": true
+    },
+    "providers": ["Google Analytics", "Facebook Pixel"]
+  }
+}

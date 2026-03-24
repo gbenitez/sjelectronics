@@ -1,0 +1,95 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="light" x1="260" y1="120" x2="260" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="760" x2="0" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#CBD5E1"/>
+      <stop offset="1" stop-color="#94A3B8"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0B1220" flood-opacity="0.12"/>
+    </filter>
+    <filter id="inner" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0B1220" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Background wall -->
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+
+  <!-- Floor -->
+  <rect y="760" width="1920" height="320" fill="url(#floor)"/>
+
+  <!-- Large window (natural light) -->
+  <g opacity="0.95">
+    <rect x="120" y="120" width="720" height="560" rx="0" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="4"/>
+    <rect x="140" y="140" width="680" height="520" rx="0" fill="url(#light)"/>
+    <path d="M480 120V680" stroke="#CBD5E1" stroke-width="4"/>
+    <path d="M120 400H840" stroke="#CBD5E1" stroke-width="4"/>
+  </g>
+
+  <!-- Minimal shelf with small appliances -->
+  <g filter="url(#inner)">
+    <rect x="1040" y="210" width="720" height="18" fill="#CBD5E1"/>
+    <rect x="1040" y="228" width="720" height="2" fill="#94A3B8" opacity="0.55"/>
+
+    <!-- Small appliance 1 -->
+    <rect x="1110" y="150" width="150" height="72" fill="#F1F5F9" stroke="#94A3B8" stroke-width="3"/>
+    <rect x="1126" y="166" width="118" height="12" fill="#CBD5E1"/>
+    <circle cx="1140" cy="198" r="6" fill="#94A3B8"/>
+    <circle cx="1162" cy="198" r="6" fill="#94A3B8"/>
+
+    <!-- Small appliance 2 -->
+    <rect x="1300" y="132" width="170" height="90" fill="#F1F5F9" stroke="#94A3B8" stroke-width="3"/>
+    <rect x="1320" y="154" width="130" height="46" fill="#E2E8F0"/>
+    <rect x="1320" y="206" width="64" height="10" fill="#CBD5E1"/>
+
+    <!-- Small appliance 3 -->
+    <rect x="1520" y="148" width="150" height="74" fill="#F1F5F9" stroke="#94A3B8" stroke-width="3"/>
+    <path d="M1540 196H1650" stroke="#CBD5E1" stroke-width="6" stroke-linecap="square"/>
+    <rect x="1540" y="166" width="88" height="10" fill="#CBD5E1"/>
+  </g>
+
+  <!-- Air conditioner (split) -->
+  <g filter="url(#softShadow)">
+    <rect x="1120" y="300" width="560" height="92" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+    <rect x="1140" y="332" width="520" height="8" fill="#CBD5E1"/>
+    <rect x="1140" y="350" width="180" height="10" fill="#CBD5E1" opacity="0.8"/>
+    <circle cx="1640" cy="344" r="8" fill="#94A3B8"/>
+  </g>
+
+  <!-- Fridge -->
+  <g filter="url(#softShadow)">
+    <rect x="1020" y="470" width="300" height="520" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+    <path d="M1020 710H1320" stroke="#E2E8F0" stroke-width="4"/>
+    <rect x="1290" y="545" width="10" height="90" fill="#94A3B8"/>
+    <rect x="1290" y="760" width="10" height="110" fill="#94A3B8"/>
+    <!-- subtle brand accent (very minimal) -->
+    <rect x="1040" y="495" width="44" height="6" fill="#B80F16" opacity="0.55"/>
+  </g>
+
+  <!-- Washer -->
+  <g filter="url(#softShadow)">
+    <rect x="1380" y="610" width="340" height="380" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+    <rect x="1406" y="635" width="120" height="10" fill="#CBD5E1"/>
+    <circle cx="1550" cy="805" r="115" fill="#F1F5F9" stroke="#94A3B8" stroke-width="4"/>
+    <circle cx="1550" cy="805" r="72" fill="#E2E8F0"/>
+    <circle cx="1686" cy="642" r="10" fill="#94A3B8"/>
+    <circle cx="1658" cy="642" r="10" fill="#94A3B8"/>
+  </g>
+
+  <!-- Minimal plant silhouette (warmth) -->
+  <g opacity="0.55">
+    <path d="M260 820c40-110 120-150 170-170-30 60-40 150-20 250-40-10-90-40-150-80Z" fill="#94A3B8"/>
+    <path d="M330 900c-10-120 30-210 80-270 10 80 0 190-20 290-20 0-40-5-60-20Z" fill="#64748B"/>
+    <rect x="210" y="920" width="220" height="120" fill="#CBD5E1"/>
+    <rect x="210" y="920" width="220" height="8" fill="#94A3B8" opacity="0.6"/>
+  </g>
+</svg>
+
