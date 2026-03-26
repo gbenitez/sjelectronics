@@ -76,14 +76,11 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import SJHeroSlideshow from '../components/SJHeroSlideshow.vue'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
+import fallbackPosts from '../data/fallback-posts.json'
 
-const srcFor = (filename) => `/${encodeURI(String(filename))}`
-const imgSrc = (value) => {
-  if (!value) return null
-  const s = String(value)
-  if (/^https?:\/\//i.test(s)) return s
-  return `/${encodeURI(s)}`
-}
+const srcFor = (filename) => publicAssetUrl(filename)
+const imgSrc = (value) => publicAssetUrl(value)
 
 const heroBackgrounds = computed(() => [
   srcFor('banner 2026-02-07 at 15.10.29.png'),
@@ -112,8 +109,11 @@ onMounted(async () => {
     if (!payload?.ok || !Array.isArray(payload.posts)) throw new Error('Payload inválido')
     posts.value = payload.posts
   } catch (e) {
-    error.value = `No pudimos cargar los posts. (${e?.message ?? 'Error desconocido'})`
-    posts.value = []
+    posts.value = fallbackPosts.posts || []
+    error.value =
+      posts.value.length > 0
+        ? 'Mostrando artículos locales (WordPress no disponible o error de red).'
+        : `No pudimos cargar los posts. (${e?.message ?? 'Error desconocido'})`
   }
 })
 </script>

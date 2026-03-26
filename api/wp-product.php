@@ -257,6 +257,15 @@ if ($endpoint === '') {
 }
 $validated = validate_endpoint($endpoint);
 if (!$validated['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $raw = sj_fallback_find_product($id, $slug);
+  if ($raw) {
+    respond(200, [
+      'ok' => true,
+      'product' => sj_fallback_product_to_payload($raw),
+      'meta' => ['fallback' => true, 'source' => 'local_catalog', 'reason' => 'endpoint_config'],
+    ]);
+  }
   respond(500, ['ok' => false, 'error' => ['message' => 'Configuración inválida del endpoint.', 'detail' => $validated['error']]]);
 }
 $endpoint = $validated['endpoint'];
@@ -287,6 +296,15 @@ header('X-Cache: MISS');
 
 $res = http_get($url, $timeout, $maxBytes);
 if (!$res['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $raw = sj_fallback_find_product($id, $slug);
+  if ($raw) {
+    respond(200, [
+      'ok' => true,
+      'product' => sj_fallback_product_to_payload($raw),
+      'meta' => ['fallback' => true, 'source' => 'local_catalog', 'reason' => 'upstream_unavailable', 'detail' => $res['error']],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener respuesta del API.', 'detail' => $res['error'], 'status' => $res['status']]]);
 }
 
@@ -302,8 +320,17 @@ if ($id <= 0 && is_array($decoded)) {
   $item = $decoded[0] ?? null;
 }
 
-if (!is_array($item)) {
-  respond(502, ['ok' => false, 'error' => ['message' => 'Respuesta inválida: JSON no decodificable.']]);
+if (!is_array($item) || !isset($item['id'])) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $raw = sj_fallback_find_product($id, $slug);
+  if ($raw) {
+    respond(200, [
+      'ok' => true,
+      'product' => sj_fallback_product_to_payload($raw),
+      'meta' => ['fallback' => true, 'source' => 'local_catalog', 'reason' => 'not_found_or_invalid'],
+    ]);
+  }
+  respond(502, ['ok' => false, 'error' => ['message' => 'Respuesta inválida: producto no encontrado o JSON inesperado.']]);
 }
 
 $itemId = (int)($item['id'] ?? $id);

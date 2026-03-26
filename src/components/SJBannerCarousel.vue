@@ -59,6 +59,7 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 const props = defineProps({
   images: { type: Array, required: true },
@@ -71,11 +72,7 @@ const current = ref(0)
 let timer = null
 let isStarting = false
 
-const srcFor = (filename) => {
-  // `publicDir` está apuntando a `imagen/`, así que quedan en la raíz.
-  // Ej: /banner%202026-...png
-  return `/${encodeURI(String(filename))}`
-}
+const srcFor = (filename) => publicAssetUrl(filename)
 
 const clampIndex = (n) => {
   const len = props.images.length || 1

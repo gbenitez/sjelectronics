@@ -189,12 +189,30 @@ if ($endpoint === '') {
 }
 $validated = validate_products_endpoint($endpoint);
 if (!$validated['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_categories_for_api();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'categories' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'endpoint_config'],
+    ]);
+  }
   respond(500, ['ok' => false, 'error' => ['message' => 'Configuración inválida del endpoint.', 'detail' => $validated['error']], 'categories' => []]);
 }
 $endpoint = $validated['endpoint'];
 
 $apiRoot = preg_replace('#/wp-json/wp/v2/product/?$#', '/wp-json/wp/v2', $endpoint);
 if (!is_string($apiRoot) || $apiRoot === '') {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_categories_for_api();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'categories' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'api_root'],
+    ]);
+  }
   respond(500, ['ok' => false, 'error' => ['message' => 'No se pudo resolver el apiRoot.'], 'categories' => []]);
 }
 
@@ -218,10 +236,28 @@ header('X-Cache: MISS');
 $taxUrl = rtrim($apiRoot, '/') . '/taxonomies';
 $taxRes = http_get($taxUrl, $timeout, $maxBytes);
 if (!$taxRes['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_categories_for_api();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'categories' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'taxonomies_http', 'detail' => $taxRes['error']],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener taxonomías.', 'detail' => $taxRes['error'], 'status' => $taxRes['status']], 'categories' => []]);
 }
 try { $tax = json_decode($taxRes['body'], true, 512, JSON_THROW_ON_ERROR); } catch (Throwable $e) { $tax = null; }
 if (!is_array($tax)) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_categories_for_api();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'categories' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'taxonomies_json'],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'Taxonomías inválidas (JSON no decodificable).'], 'categories' => []]);
 }
 
@@ -249,10 +285,28 @@ $termsUrl = rtrim($apiRoot, '/') . '/' . rawurlencode($restBase) . '?' . http_bu
 ]);
 $termsRes = http_get($termsUrl, $timeout, $maxBytes);
 if (!$termsRes['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_categories_for_api();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'categories' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'terms_http', 'detail' => $termsRes['error']],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener categorías.', 'detail' => $termsRes['error'], 'status' => $termsRes['status']], 'categories' => []]);
 }
 try { $terms = json_decode($termsRes['body'], true, 512, JSON_THROW_ON_ERROR); } catch (Throwable $e) { $terms = null; }
 if (!is_array($terms)) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_categories_for_api();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'categories' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'terms_json'],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'Categorías inválidas (JSON no decodificable).'], 'categories' => []]);
 }
 

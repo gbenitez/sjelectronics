@@ -1,0 +1,200 @@
+{
+  "categories": [
+    { "id": 1, "slug": "neveras", "name": "Neveras", "count": 2 },
+    { "id": 2, "slug": "batidoras", "name": "Batidoras", "count": 2 },
+    { "id": 3, "slug": "cafeteras", "name": "Cafeteras", "count": 2 },
+    { "id": 4, "slug": "planchas", "name": "Planchas", "count": 2 },
+    { "id": 5, "slug": "licuadoras", "name": "Licuadoras", "count": 2 },
+    { "id": 6, "slug": "exprimidor", "name": "Exprimidor", "count": 2 }
+  ],
+  "products": [
+    {
+      "id": 9001,
+      "slug": "sj-nevera-elegance-200",
+      "name": "Nevera SJ Elegance 200",
+      "category": "neveras",
+      "categoryName": "Neveras",
+      "image": "placeholders/Capa-34.png",
+      "images": [
+        "placeholders/Capa-34.png",
+        "placeholders/Carrete-Cafetera-porsiaca-4_031_01.png"
+      ],
+      "excerpt": "200 L, clase A, bandejas cristal, iluminación LED interior.",
+      "descriptionHtml": "<p>Línea residencial compacta. Ideal para cocinas urbanas: acabado inox, control mecánico preciso y cajones de alto deslizamiento.</p>",
+      "attributes": [
+        { "label": "Capacidad neta", "value": "200 L" },
+        { "label": "Clase energética", "value": "A" },
+        { "label": "Color", "value": "Acero inoxidable" }
+      ]
+    },
+    {
+      "id": 9002,
+      "slug": "sj-nevera-comercial-ex450",
+      "name": "Nevera Comercial EX-450",
+      "category": "neveras",
+      "categoryName": "Neveras",
+      "image": "placeholders/Capa-34.png",
+      "images": [
+        "placeholders/Capa-34.png",
+        "placeholders/Carrete-Cafetera-porsiaca-4_031_02.png"
+      ],
+      "excerpt": "450 L, uso intensivo, ventilación forzada y cerradura.",
+      "descriptionHtml": "<p>Diseñada para comercio y gastronomía. Soporta ciclos de apertura frecuentes y mantiene temperatura estable en climas cálidos.</p>",
+      "attributes": [
+        { "label": "Capacidad", "value": "450 L" },
+        { "label": "Tipo", "value": "Vertical comercial" }
+      ]
+    },
+    {
+      "id": 9003,
+      "slug": "sj-batidora-pro-5q",
+      "name": "Batidora SJ Pro 5Q",
+      "category": "batidoras",
+      "categoryName": "Batidoras",
+      "image": "placeholders/Carrete-Batidora-2_01.png",
+      "images": [
+        "placeholders/Carrete-Batidora-2_01.png",
+        "placeholders/Carrete-Batidora-2_02.png"
+      ],
+      "excerpt": "5 velocidades, bowl 4,5 L acero, accesorios aptos lavavajillas.",
+      "descriptionHtml": "<p>Motor silencioso con protección anti-sobrecalentamiento. Perfecta para masas pesadas y merengues.</p>",
+      "attributes": [{ "label": "Potencia", "value": "800 W" }]
+    },
+    {
+      "id": 9004,
+      "slug": "sj-batidora-compact-mix",
+      "name": "Batidora Compact Mix",
+      "category": "batidoras",
+      "categoryName": "Batidoras",
+      "image": "placeholders/Carrete-Batidora-2_02.png",
+      "images": [
+        "placeholders/Carrete-Batidora-2_02.png",
+        "placeholders/Carrete-Batidora-2_01.png"
+      ],
+      "excerpt": "Formato compacto, 3 accesorios, ideal para repostería diaria.",
+      "descriptionHtml": "<p>Ligera y estable. Incluye varillas y ganchos de amasado intercambiables.</p>",
+      "attributes": [{ "label": "Velocidades", "value": "6 + pulso" }]
+    },
+    {
+      "id": 9005,
+      "slug": "sj-cafetera-barista-touch",
+      "name": "Cafetera Barista Touch",
+      "category": "cafeteras",
+      "categoryName": "Cafeteras",
+      "image": "placeholders/Carrete-Cafetera-porsiaca-4_031_01.png",
+      "images": [
+        "placeholders/Carrete-Cafetera-porsiaca-4_031_01.png",
+        "placeholders/Carrete-Cafetera-porsiaca-4_031_02.png"
+      ],
+      "excerpt": "Presión 15 bar, caldera rápida, vaporizador orientable.",
+      "descriptionHtml": "<p>Extrae espresso con ángulos de filtrado uniforme. Panel frontal con indicadores de temperatura listos.</p>",
+      "attributes": [{ "label": "Presión", "value": "15 bar" }]
+    },
+    {
+      "id": 9006,
+      "slug": "sj-cafetera-drip-thermal",
+      "name": "Cafetera Drip Térmica 1,2 L",
+      "category": "cafeteras",
+      "categoryName": "Cafeteras",
+      "image": "placeholders/Carrete-Cafetera-porsiaca-4_031_03.png",
+      "images": [
+        "placeholders/Carrete-Cafetera-porsiaca-4_031_03.png",
+        "placeholders/Carrete-Cafetera-porsiaca-4_031_04.png"
+      ],
+      "excerpt": "Jarra térmica, filtro permanente, temporizador 24 h.",
+      "descriptionHtml": "<p>Café americano por goteo con conservación de aroma gracias a la jarra aislada.</p>",
+      "attributes": [{ "label": "Capacidad", "value": "1,2 L" }]
+    },
+    {
+      "id": 9007,
+      "slug": "sj-plancha-vapor-steam80",
+      "name": "Plancha vapor Steam 80",
+      "category": "planchas",
+      "categoryName": "Planchas",
+      "image": "placeholders/Carrete-Planchas_01.png",
+      "images": [
+        "placeholders/Carrete-Planchas_01.png",
+        "placeholders/Carrete-Planchas_02.png"
+      ],
+      "excerpt": "Suela cerámica, vapor vertical, anti-goteo.",
+      "descriptionHtml": "<p>Listo en segundos. Golpe de vapor para tejidos gruesos y delicados sin quemar.</p>",
+      "attributes": [{ "label": "Potencia", "value": "2400 W" }]
+    },
+    {
+      "id": 9008,
+      "slug": "sj-plancha-viaje-tiny",
+      "name": "Plancha de viaje Tiny",
+      "category": "planchas",
+      "categoryName": "Planchas",
+      "image": "placeholders/Carrete-Planchas_03.png",
+      "images": [
+        "placeholders/Carrete-Planchas_03.png",
+        "placeholders/Carrete-Planchas_01.png"
+      ],
+      "excerpt": "Peso mínimo, mango plegable, dual voltaje.",
+      "descriptionHtml": "<p>Cabe en cualquier maleta. No sacrifica calidad de planchado.</p>",
+      "attributes": [{ "label": "Peso", "value": "0,85 kg" }]
+    },
+    {
+      "id": 9009,
+      "slug": "sj-licuadora-titan-1200",
+      "name": "Licuadora Titan 1200",
+      "category": "licuadoras",
+      "categoryName": "Licuadoras",
+      "image": "placeholders/Carrusel-Licuadoras_01.png",
+      "images": [
+        "placeholders/Carrusel-Licuadoras_01.png",
+        "placeholders/Carrusel-Licuadoras_02.png"
+      ],
+      "excerpt": "1200 W, vaso Tritan 1,8 L, cuchillas 6 filos.",
+      "descriptionHtml": "<p>Rompe hielo y frutos secos. Base antideslizante con ventosas de succión.</p>",
+      "attributes": [{ "label": "Programas", "value": "3 + manual" }]
+    },
+    {
+      "id": 9010,
+      "slug": "sj-licuadora-personal-fit",
+      "name": "Licuadora personal Fit",
+      "category": "licuadoras",
+      "categoryName": "Licuadoras",
+      "image": "placeholders/Carrusel-Licuad2oras_01.png",
+      "images": [
+        "placeholders/Carrusel-Licuad2oras_01.png",
+        "placeholders/Carrusel-Licuadoras3_01.png",
+        "placeholders/Carrusel-Licuadoras4_01.png"
+      ],
+      "excerpt": "Botella deportiva incluida, tapa anti-fuga.",
+      "descriptionHtml": "<p>Smoothies en segundos. Llévala al gym con motor compacto pero potente.</p>",
+      "attributes": [{ "label": "Capacidad vaso", "value": "600 ml" }]
+    },
+    {
+      "id": 9011,
+      "slug": "sj-exprimidor-citrus-pro",
+      "name": "Exprimidor Cítricos Pro",
+      "category": "exprimidor",
+      "categoryName": "Exprimidor",
+      "image": "placeholders/Exprimidor-de-jugo_02.png",
+      "images": [
+        "placeholders/Exprimidor-de-jugo_02.png",
+        "placeholders/Exprimidor-de-jugo_03.png"
+      ],
+      "excerpt": "Cono universal, palanca profesional, filtro pulpa ajustable.",
+      "descriptionHtml": "<p>Jugo fresco sin esfuerzo. Base con depósito graduado de 1 L.</p>",
+      "attributes": [{ "label": "Potencia", "value": "160 W" }]
+    },
+    {
+      "id": 9012,
+      "slug": "sj-exprimidor-compact-juice",
+      "name": "Exprimidor Compact Juice",
+      "category": "exprimidor",
+      "categoryName": "Exprimidor",
+      "image": "placeholders/Exprimidor-de-jugo_03.png",
+      "images": [
+        "placeholders/Exprimidor-de-jugo_03.png",
+        "placeholders/Exprimidor-de-jugo_02.png"
+      ],
+      "excerpt": "Guardado vertical, pie antideslizante, desmontable al lavavajillas.",
+      "descriptionHtml": "<p>Para cocinas pequeñas. Misma eficiencia que modelos grandes.</p>",
+      "attributes": [{ "label": "Garantía", "value": "2 años" }]
+    }
+  ]
+}

@@ -247,6 +247,20 @@ if (!$endpoint) {
 
 $validated = validate_endpoint($endpoint);
 if (!$validated['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_products_for_list();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'products' => $fb,
+      'meta' => [
+        'count' => count($fb),
+        'fallback' => true,
+        'source' => 'local_catalog',
+        'reason' => 'endpoint_config',
+      ],
+    ]);
+  }
   respond(500, [
     'ok' => false,
     'error' => [
@@ -289,6 +303,21 @@ header('X-Cache: MISS');
 $res = http_get($url, $timeout, $maxBytes);
 
 if (!$res['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_products_for_list();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'products' => $fb,
+      'meta' => [
+        'count' => count($fb),
+        'fallback' => true,
+        'source' => 'local_catalog',
+        'reason' => 'upstream_unavailable',
+        'detail' => $res['error'],
+      ],
+    ]);
+  }
   respond(502, [
     'ok' => false,
     'error' => [
@@ -307,6 +336,20 @@ try {
   $data = null;
 }
 if (!is_array($data)) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_products_for_list();
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'products' => $fb,
+      'meta' => [
+        'count' => count($fb),
+        'fallback' => true,
+        'source' => 'local_catalog',
+        'reason' => 'invalid_json',
+      ],
+    ]);
+  }
   respond(502, [
     'ok' => false,
     'error' => [

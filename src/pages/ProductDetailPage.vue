@@ -325,15 +325,12 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
+import fallbackCatalog from '../data/fallback-catalog.json'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 const { fullPath } = useHashRoute()
 
-const imgSrc = (value) => {
-  if (!value) return null
-  const s = String(value)
-  if (/^https?:\/\//i.test(s)) return s
-  return `/${encodeURI(s)}`
-}
+const imgSrc = (value) => publicAssetUrl(value)
 
 const productId = computed(() => {
   try {
@@ -368,8 +365,56 @@ const error = ref('')
 const categoryLabel = (slug) => {
   // Mínimo: evita undefined. Si quieres, podemos reutilizar el listado de categorías del grid.
   if (!slug) return '—'
+  const fromCat = (fallbackCatalog.categories || []).find((c) => c.slug === slug)
+  if (fromCat?.name) return fromCat.name
   const s = String(slug).replaceAll('-', ' ').trim()
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : '—'
+}
+
+const findFallbackProductRaw = (id, slug) => {
+  const list = fallbackCatalog.products || []
+  if (id != null) {
+    const n = Number(id)
+    if (Number.isFinite(n) && n > 0) {
+      const f = list.find((p) => Number(p.id) === n)
+      if (f) return f
+    }
+  }
+  if (slug) {
+    const f = list.find((p) => p.slug === slug)
+    if (f) return f
+  }
+  return null
+}
+
+const fallbackRawToProduct = (raw) => {
+  const cat = raw.category || null
+  const images = Array.isArray(raw.images) ? raw.images.filter(Boolean) : []
+  const image = raw.image || images[0] || null
+  const attrs = Array.isArray(raw.attributes)
+    ? raw.attributes
+        .filter((a) => a && typeof a.label === 'string' && typeof a.value === 'string')
+        .map((a) => ({
+          key: a.key ?? null,
+          label: a.label.trim(),
+          value: a.value.trim(),
+        }))
+    : []
+  return {
+    id: raw.id,
+    slug: raw.slug ?? null,
+    name: raw.name ?? 'Producto',
+    category: cat,
+    categoryName: raw.categoryName ?? null,
+    categoryLabel: raw.categoryName || categoryLabel(cat),
+    image,
+    images: images.length ? images : image ? [image] : [],
+    excerpt: raw.excerpt ?? null,
+    descriptionHtml: raw.descriptionHtml ?? null,
+    attributes: attrs,
+    link: null,
+    documents: { specSheet: null, manual: null, all: [] },
+  }
 }
 
 const selectedIdx = ref(0)
@@ -511,6 +556,12 @@ async function loadProduct(id) {
       ...payload.product,
       categoryLabel: payload.product.categoryName || categoryLabel(payload.product.category),
     }
+    if (payload.meta?.fallback) {
+      error.value =
+        'Mostrando ficha local (WordPress no disponible o producto no encontrado en el servidor remoto).'
+    } else {
+      error.value = ''
+    }
 
     // Related products (misma categoría, excluyendo el actual)
     try {
@@ -537,7 +588,29 @@ async function loadProduct(id) {
       related.value = []
     }
   } catch (e) {
-    error.value = `No pudimos cargar el producto. (${e?.message ?? 'Error desconocido'})`
+    const raw = findFallbackProductRaw(productId.value, productSlug.value)
+    if (raw) {
+      product.value = fallbackRawToProduct(raw)
+      const list = fallbackCatalog.products || []
+      const pid = raw.id
+      const cat = raw.category
+      related.value = list
+        .filter((x) => x && x.id !== pid && (!cat || x.category === cat))
+        .map((x) => ({
+          id: x.id,
+          slug: x.slug ?? null,
+          name: x.name,
+          category: x.category ?? null,
+          categoryLabel: categoryLabel(x.category),
+          categoryName: x.categoryName ?? null,
+          image: x.image ?? null,
+        }))
+        .slice(0, 8)
+      error.value =
+        'Mostrando ficha del catálogo local (sin conexión al API o error de red).'
+    } else {
+      error.value = `No pudimos cargar el producto. (${e?.message ?? 'Error desconocido'})`
+    }
   } finally {
     isLoading.value = false
   }

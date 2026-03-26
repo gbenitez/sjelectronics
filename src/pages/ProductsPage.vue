@@ -214,15 +214,12 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
+import fallbackCatalog from '../data/fallback-catalog.json'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 const { path, fullPath, setPath } = useHashRoute()
 
-const imgSrc = (value) => {
-  if (!value) return null
-  const s = String(value)
-  if (/^https?:\/\//i.test(s)) return s
-  return `/${encodeURI(s)}`
-}
+const imgSrc = (value) => publicAssetUrl(value)
 
 const productHref = (p) => {
   const slug = p?.slug
@@ -245,14 +242,16 @@ const normalizeCategory = (v) => {
   return categoryAliases[s] ?? s
 }
 
-const placeholderProducts = [
-  { id: 1, name: 'Nevera Modelo SJ-200SD (demo)', category: 'neveras', currentPrice: 299.99, originalPrice: null, discount: null, isNew: true, image: null },
-  { id: 2, name: 'Batidora SJ (demo)', category: 'batidoras', currentPrice: 79.99, originalPrice: null, discount: null, isNew: false, image: null },
-  { id: 3, name: 'Cafetera Express (demo)', category: 'cafeteras', currentPrice: 159.99, originalPrice: null, discount: null, isNew: false, image: null },
-  { id: 4, name: 'Plancha a vapor (demo)', category: 'planchas', currentPrice: 39.99, originalPrice: null, discount: null, isNew: false, image: null },
-  { id: 5, name: 'Licuadora (demo)', category: 'licuadoras', currentPrice: 49.99, originalPrice: null, discount: null, isNew: false, image: null },
-  { id: 6, name: 'Exprimidor (demo)', category: 'exprimidor', currentPrice: 29.99, originalPrice: null, discount: null, isNew: false, image: null }
-]
+const mapCatalogToProducts = (list) =>
+  list.map((p, idx) => ({
+    id: p?.id ?? `fb-${idx}`,
+    slug: p?.slug ?? null,
+    name: p?.name ?? 'Producto',
+    category: normalizeCategory(p?.category ?? null),
+    image: p?.image ?? null,
+  }))
+
+const placeholderProducts = mapCatalogToProducts(fallbackCatalog.products || [])
 
 const products = ref(placeholderProducts)
 const isLoading = ref(true)
@@ -394,8 +393,12 @@ onMounted(async () => {
       category: normalizeCategory(p?.category ?? null),
       image: p?.image ?? null
     }))
+    if (payload.meta?.fallback) {
+      apiError.value =
+        'Mostrando catálogo local (WordPress no disponible o respuesta no válida). Los datos son de demostración.'
+    }
   } catch (e) {
-    apiError.value = `No pudimos cargar productos. Mostrando datos de ejemplo. (${e?.message ?? 'Error desconocido'})`
+    apiError.value = `No pudimos cargar productos. Mostrando catálogo local. (${e?.message ?? 'Error desconocido'})`
     products.value = placeholderProducts
   } finally {
     isLoading.value = false

@@ -200,6 +200,15 @@ if ($endpoint === '') {
 }
 $validated = validate_endpoint($endpoint);
 if (!$validated['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_posts_for_list($perPage);
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'posts' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_posts', 'reason' => 'endpoint_config'],
+    ]);
+  }
   respond(500, ['ok' => false, 'error' => ['message' => 'Configuración inválida del endpoint.', 'detail' => $validated['error']], 'posts' => []]);
 }
 $endpoint = $validated['endpoint'];
@@ -229,11 +238,29 @@ header('X-Cache: MISS');
 
 $res = http_get($url, $timeout, $maxBytes);
 if (!$res['ok']) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_posts_for_list($perPage);
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'posts' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_posts', 'reason' => 'upstream_unavailable', 'detail' => $res['error']],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener respuesta del API.', 'detail' => $res['error'], 'status' => $res['status']], 'posts' => []]);
 }
 
 try { $data = json_decode($res['body'], true, 512, JSON_THROW_ON_ERROR); } catch (Throwable $e) { $data = null; }
 if (!is_array($data)) {
+  require_once __DIR__ . '/fallback_lib.php';
+  $fb = sj_fallback_posts_for_list($perPage);
+  if ($fb !== []) {
+    respond(200, [
+      'ok' => true,
+      'posts' => $fb,
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_posts', 'reason' => 'invalid_json'],
+    ]);
+  }
   respond(502, ['ok' => false, 'error' => ['message' => 'Respuesta inválida: JSON no decodificable.'], 'posts' => []]);
 }
 
