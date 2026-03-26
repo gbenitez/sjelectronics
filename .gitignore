@@ -26,6 +26,9 @@ dist-ssr
 # WordPress local (no versionar instalación completa en este repo)
 wordpress
 
+# Export de Pencil (tokens / kit; regenerable localmente)
+pencil-export/
+
 # Environment variables
 .env
 .env.local
