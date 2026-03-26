@@ -1,0 +1,30 @@
+# Producción local / servidor: API PHP + estáticos en un solo origen (fetch /api/...).
+#
+# 1. Copia .env.example → .env.production y rellena WP_API_BASE, hosts permitidos y CORS.
+# 2. npm run build:deploy
+# 3. docker compose --env-file .env.production up -d
+#
+# Las variables WP_* deben existir en el entorno del contenedor php (env_file abajo).
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    restart: unless-stopped
+    volumes:
+      - ./dist:/var/www/html:ro
+    env_file:
+      - .env.production
+    # php:8.2-fpm incluye ext-curl en la imagen oficial
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./dist:/var/www/html:ro
+      - ./deploy/nginx.docker.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php

@@ -1,0 +1,24 @@
+{
+  "posts": [
+    {
+      "id": 9201,
+      "slug": "sj-novedades-y-soporte-2026",
+      "title": "Novedades SJ y soporte cercano en 2026",
+      "excerpt": "Electrodomésticos, asesoría clara y entregas seguras para tu hogar.",
+      "date": "2026-03-25T12:00:00",
+      "image": "placeholders/post/Screenshot 2026-03-25 at 23.39.21.png",
+      "link": null,
+      "contentHtml": "<p>Este es un <strong>artículo de demostración</strong> que se muestra cuando no hay conexión con WordPress.</p><p>En producción, aquí verías el contenido completo del blog.</p><ul><li>Asesoría en tienda y online</li><li>Garantía y repuestos</li><li>Entregas coordinadas</li></ul>"
+    },
+    {
+      "id": 9202,
+      "slug": "sj-guia-rapida-electrodomesticos",
+      "title": "Guía rápida para elegir electrodomésticos",
+      "excerpt": "Consejos prácticos antes de comprar: espacio, consumo y uso real.",
+      "date": "2026-03-25T15:30:00",
+      "image": "placeholders/post/Screenshot 2026-03-25 at 23.40.50.png",
+      "link": null,
+      "contentHtml": "<p>Contenido local de respaldo. <em>SJ Electronics</em> te acompaña en la elección según tu cocina y tu presupuesto.</p><blockquote><p>La mejor compra es la que encaja en tu rutina diaria.</p></blockquote><p>Cuando WordPress vuelva a estar disponible, este texto se sustituirá por tus publicaciones reales.</p>"
+    }
+  ]
+}

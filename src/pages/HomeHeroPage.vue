@@ -185,14 +185,11 @@
 import { computed, onMounted, ref } from 'vue'
 import SJCard from '../components/SJCard.vue'
 import SJHeroSlideshow from '../components/SJHeroSlideshow.vue'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
+import fallbackPosts from '../data/fallback-posts.json'
 
-const srcFor = (filename) => `/${encodeURI(String(filename))}`
-const imgSrc = (value) => {
-  if (!value) return null
-  const s = String(value)
-  if (/^https?:\/\//i.test(s)) return s
-  return `/${encodeURI(s)}`
-}
+const srcFor = (filename) => publicAssetUrl(filename)
+const imgSrc = (value) => publicAssetUrl(value)
 
 // Fondos: usamos banners existentes (publicDir = imagen/), ya con producto + “ambiente”.
 // Puedes cambiar el orden/selección cuando quieras.
@@ -304,7 +301,7 @@ onMounted(async () => {
     if (!payload?.ok || !Array.isArray(payload.posts)) throw new Error('Payload inválido')
     latestPosts.value = payload.posts
   } catch {
-    latestPosts.value = []
+    latestPosts.value = (fallbackPosts.posts || []).slice(0, 3)
   }
 })
 </script>

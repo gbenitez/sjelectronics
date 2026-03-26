@@ -30,9 +30,9 @@
           </p>
         </header>
 
-        <div v-if="post?.image" class="mt-8 border border-neutral-900/10 dark:border-white/10 bg-white dark:bg-neutral-950/30 overflow-hidden">
+        <div v-if="coverImage" class="mt-8 border border-neutral-900/10 dark:border-white/10 bg-white dark:bg-neutral-950/30 overflow-hidden">
           <div class="aspect-[16/9]">
-            <img :src="post.image" :alt="post.title" class="w-full h-full object-cover" loading="lazy" decoding="async" />
+            <img :src="coverImage" :alt="post.title" class="w-full h-full object-cover" loading="lazy" decoding="async" />
           </div>
         </div>
 
@@ -53,6 +53,8 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
+import fallbackPosts from '../data/fallback-posts.json'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 const { fullPath } = useHashRoute()
 
@@ -107,6 +109,35 @@ const sanitizeHtml = (html) => {
 
 const safeHtml = computed(() => sanitizeHtml(post.value?.contentHtml || ''))
 
+const coverImage = computed(() => publicAssetUrl(post.value?.image))
+
+const findLocalPost = (id, slug) => {
+  const list = fallbackPosts.posts || []
+  if (id != null) {
+    const n = Number(id)
+    if (Number.isFinite(n) && n > 0) {
+      const f = list.find((p) => Number(p.id) === n)
+      if (f) return f
+    }
+  }
+  if (slug) {
+    const f = list.find((p) => p.slug === slug)
+    if (f) return f
+  }
+  return null
+}
+
+const localPostToView = (raw) => ({
+  id: raw.id,
+  slug: raw.slug ?? null,
+  title: raw.title ?? 'Post',
+  excerpt: raw.excerpt ?? null,
+  date: raw.date ?? null,
+  image: raw.image ?? null,
+  link: null,
+  contentHtml: raw.contentHtml ?? null,
+})
+
 async function load() {
   isLoading.value = true
   error.value = ''
@@ -125,8 +156,21 @@ async function load() {
     const payload = await r.json()
     if (!payload?.ok || !payload.post) throw new Error('Payload inválido')
     post.value = payload.post
+    if (payload.meta?.fallback) {
+      error.value =
+        'Mostrando artículo local (WordPress no disponible o error de red).'
+    } else {
+      error.value = ''
+    }
   } catch (e) {
-    error.value = `No pudimos cargar el post. (${e?.message ?? 'Error desconocido'})`
+    const raw = findLocalPost(postId.value, postSlug.value)
+    if (raw) {
+      post.value = localPostToView(raw)
+      error.value =
+        'Mostrando artículo del catálogo local (sin conexión al API).'
+    } else {
+      error.value = `No pudimos cargar el post. (${e?.message ?? 'Error desconocido'})`
+    }
   } finally {
     isLoading.value = false
   }

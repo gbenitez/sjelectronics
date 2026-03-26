@@ -5,8 +5,8 @@
     <!-- Imagen del producto -->
     <div class="relative aspect-square bg-neutral-50 dark:bg-white/5 rounded-md mb-3 overflow-hidden border border-transparent dark:border-white/10">
       <img 
-        v-if="product.image"
-        :src="product.image" 
+        v-if="resolvedImage"
+        :src="resolvedImage" 
         :alt="product.name"
         class="w-full h-full object-contain sj-img-grayscale-hover-group"
       />
@@ -59,10 +59,12 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import SJButton from './SJButton.vue'
 import SJBadge from './SJBadge.vue'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
-defineProps({
+const props = defineProps({
   product: {
     type: Object,
     required: true
@@ -75,4 +77,6 @@ defineProps({
 })
 
 defineEmits(['add-to-cart', 'view-details'])
+
+const resolvedImage = computed(() => publicAssetUrl(props.product?.image))
 </script>

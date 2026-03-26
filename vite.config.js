@@ -3,6 +3,15 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+  test: {
+    environment: 'jsdom',
+    include: ['src/**/*.{test,spec}.{js,ts}'],
+    server: {
+      deps: {
+        inline: ['@vue', '@vue/test-utils']
+      }
+    }
+  },
   // Usamos la carpeta /imagen como assets públicos para banners (con espacios en el nombre).
   // Vite los servirá en dev y los copiará al build.
   publicDir: 'imagen',
