@@ -6,9 +6,12 @@
  *
  * - Fetch a: /wp-json/wp/v2/product/{id}?_embed=1
  * - Hardening: anti-SSRF, límites, cache+ETag, headers.
+ * - Env: WP_PRODUCTS_ENDPOINT, WP_API_BASE o WP_API_DEFAULT_BASE (ver wp_env_defaults.php).
  */
 
 declare(strict_types=1);
+
+require_once __DIR__ . '/wp_env_defaults.php';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
@@ -168,7 +171,7 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
   if (function_exists('curl_init')) {
     $ch = curl_init($url);
     $buf = '';
-    curl_setopt_array($ch, [
+    curl_setopt_array($ch, array_replace([
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_CONNECTTIMEOUT => $timeoutSeconds,
@@ -183,7 +186,7 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
         if (strlen($buf) > $maxBytes) return 0;
         return strlen($chunk);
       },
-    ]);
+    ], sj_curl_insecure_tls_opts()));
     $okExec = curl_exec($ch);
     $curlErr = curl_error($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -235,7 +238,7 @@ if ($method !== 'GET' && !$isHead) {
   respond(405, ['ok' => false, 'error' => ['message' => 'Método no permitido.']]);
 }
 
-$debug = (($_GET['debug'] ?? '') === '1');
+$debug = sj_api_debug_request();
 
 $idRaw = $_GET['id'] ?? '';
 $id = (int) $idRaw;
@@ -248,13 +251,7 @@ if ($slug !== '' && !preg_match('/^[a-z0-9-]{1,200}$/i', $slug)) {
   respond(400, ['ok' => false, 'error' => ['message' => 'Slug inválido.']]);
 }
 
-$endpoint = getenv('WP_PRODUCTS_ENDPOINT') ?: '';
-if ($endpoint === '') {
-  $apiBase = trim((string)(getenv('WP_API_BASE') ?: ''));
-  $endpoint = $apiBase !== ''
-    ? (rtrim($apiBase, '/') . '/product/')
-    : 'http://localhost/wordpress/wp-json/wp/v2/product/';
-}
+$endpoint = sj_resolve_products_endpoint();
 $validated = validate_endpoint($endpoint);
 if (!$validated['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
@@ -278,6 +275,7 @@ $effectiveTtl = $debug ? 0 : $ttl;
 $url = $id > 0
   ? (rtrim($endpoint, '/') . '/' . $id . '/?_embed=1')
   : (rtrim($endpoint, '/') . '/?' . http_build_query(['slug' => $slug, '_embed' => '1']));
+sj_api_debug_headers($endpoint, $url);
 
 $cached = cache_read($url, $effectiveTtl);
 if ($cached) {
@@ -295,6 +293,7 @@ if ($cached) {
 header('X-Cache: MISS');
 
 $res = http_get($url, $timeout, $maxBytes);
+sj_api_debug_headers($endpoint, $url, $res);
 if (!$res['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
   $raw = sj_fallback_find_product($id, $slug);
@@ -472,15 +471,18 @@ $payload = [
     'link' => $link,
     'documents' => $documents ?? ['specSheet' => null, 'manual' => null, 'all' => []],
   ],
-  'meta' => $debug ? [
-    'debug' => [
-      'requested' => ['id' => $id > 0 ? $id : null, 'slug' => $slug ?: null],
-      'itemId' => $itemId ?: null,
-      'mediaUrl' => $mediaUrl,
-      'mediaFoundCount' => $mediaFoundCount,
-      'imagesCount' => is_array($images) ? count($images) : 0,
-    ],
-  ] : [],
+  'meta' => array_merge(
+    $debug ? [
+      'debug' => [
+        'requested' => ['id' => $id > 0 ? $id : null, 'slug' => $slug ?: null],
+        'itemId' => $itemId ?: null,
+        'mediaUrl' => $mediaUrl,
+        'mediaFoundCount' => $mediaFoundCount,
+        'imagesCount' => is_array($images) ? count($images) : 0,
+      ],
+    ] : [],
+    sj_api_debug_meta($endpoint, $url, $res)
+  ),
 ];
 
 $body = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

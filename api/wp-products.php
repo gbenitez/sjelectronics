@@ -13,16 +13,20 @@
  *   WP_PRODUCTS_ENDPOINT="http://..." (incluye /wp-json/.../product/)
  * O definir una sola base:
  *   WP_API_BASE="http(s)://.../wp-json/wp/v2"
+ *   WP_API_DEFAULT_BASE="..." (solo si no hay WP_API_BASE ni endpoint específico)
  *
  * Variables opcionales:
  * - WP_PRODUCTS_ALLOWED_HOSTS="localhost,127.0.0.1,miwp.com" (whitelist anti-SSRF)
  * - WP_PRODUCTS_TIMEOUT=5 (segundos)
- * - WP_PRODUCTS_MAX_BYTES=2000000 (límite de bytes de respuesta)
+ * - WP_PRODUCTS_MAX_BYTES=8000000 (límite de bytes; subilo si el catálogo es muy grande)
+ * - WP_PRODUCTS_PER_PAGE=50 (1–100; menos ítems = JSON más chico con _embed)
  * - WP_PRODUCTS_CACHE_TTL=30 (segundos; 0 desactiva cache)
  * - WP_API_CORS_ORIGINS="https://miweb.com,http://localhost:3000" (CORS allowlist)
  */
 
 declare(strict_types=1);
+
+require_once __DIR__ . '/wp_env_defaults.php';
 
 // No exponer warnings/notices en respuestas JSON.
 ini_set('display_errors', '0');
@@ -55,10 +59,12 @@ function normalize_text(?string $html): string {
 
 function build_url(string $base): string {
   $base = rtrim($base, '/');
-  // Pedimos _embed para featured image y términos si están expuestos.
+  // _embed infla mucho el JSON; per_page alto + catálogo grande supera WP_PRODUCTS_MAX_BYTES.
+  $perPage = (int) (getenv('WP_PRODUCTS_PER_PAGE') ?: 50);
+  $perPage = max(1, min(100, $perPage));
   $qs = http_build_query([
     '_embed' => '1',
-    'per_page' => '100',
+    'per_page' => (string)$perPage,
   ]);
   return $base . '/?' . $qs;
 }
@@ -159,7 +165,7 @@ function http_get(string $url, int $timeoutSeconds = 4, int $maxBytes = 2000000)
   if (function_exists('curl_init')) {
     $ch = curl_init($url);
     $buf = '';
-    curl_setopt_array($ch, [
+    curl_setopt_array($ch, array_replace([
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_CONNECTTIMEOUT => $timeoutSeconds,
@@ -177,7 +183,7 @@ function http_get(string $url, int $timeoutSeconds = 4, int $maxBytes = 2000000)
         if (strlen($buf) > $maxBytes) return 0; // aborta
         return strlen($chunk);
       },
-    ]);
+    ], sj_curl_insecure_tls_opts()));
     $okExec = curl_exec($ch);
     $curlErr = curl_error($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -237,13 +243,7 @@ if ($method !== 'GET' && !$isHead) {
   ]);
 }
 
-$endpoint = getenv('WP_PRODUCTS_ENDPOINT');
-if (!$endpoint) {
-  $apiBase = trim((string)(getenv('WP_API_BASE') ?: ''));
-  $endpoint = $apiBase !== ''
-    ? (rtrim($apiBase, '/') . '/product/')
-    : 'http://localhost/wordpress/wp-json/wp/v2/product/';
-}
+$endpoint = sj_resolve_products_endpoint();
 
 $validated = validate_endpoint($endpoint);
 if (!$validated['ok']) {
@@ -273,11 +273,12 @@ if (!$validated['ok']) {
 
 $endpoint = $validated['endpoint'];
 $url = build_url($endpoint);
+sj_api_debug_headers($endpoint, $url);
 
 $timeout = (int) (getenv('WP_PRODUCTS_TIMEOUT') ?: 5);
 $timeout = max(1, min(30, $timeout));
-$maxBytes = (int) (getenv('WP_PRODUCTS_MAX_BYTES') ?: 2000000);
-$maxBytes = max(250000, min(10000000, $maxBytes));
+$maxBytes = (int) (getenv('WP_PRODUCTS_MAX_BYTES') ?: 8000000);
+$maxBytes = max(250000, min(15728640, $maxBytes));
 $ttl = (int) (getenv('WP_PRODUCTS_CACHE_TTL') ?: 30);
 $ttl = max(0, min(3600, $ttl));
 
@@ -301,6 +302,7 @@ if ($cached) {
 
 header('X-Cache: MISS');
 $res = http_get($url, $timeout, $maxBytes);
+sj_api_debug_headers($endpoint, $url, $res);
 
 if (!$res['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
@@ -404,9 +406,12 @@ foreach ($data as $item) {
 $payload = [
   'ok' => true,
   'products' => $products,
-  'meta' => [
-    'count' => count($products),
-  ],
+  'meta' => sj_api_debug_merge_meta(
+    ['count' => count($products)],
+    $endpoint,
+    $url,
+    $res
+  ),
 ];
 
 // Cachear payload final (ya normalizado).

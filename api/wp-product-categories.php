@@ -18,6 +18,8 @@
  */
 declare(strict_types=1);
 
+require_once __DIR__ . '/wp_env_defaults.php';
+
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
@@ -116,7 +118,7 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
   if (function_exists('curl_init')) {
     $ch = curl_init($url);
     $buf = '';
-    curl_setopt_array($ch, [
+    curl_setopt_array($ch, array_replace([
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_CONNECTTIMEOUT => $timeoutSeconds,
@@ -131,7 +133,7 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
         if (strlen($buf) > $maxBytes) return 0;
         return strlen($chunk);
       },
-    ]);
+    ], sj_curl_insecure_tls_opts()));
     $okExec = curl_exec($ch);
     $curlErr = curl_error($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -180,13 +182,7 @@ if ($method !== 'GET' && !$isHead) {
   respond(405, ['ok' => false, 'error' => ['message' => 'Método no permitido.'], 'categories' => []]);
 }
 
-$endpoint = getenv('WP_PRODUCTS_ENDPOINT') ?: '';
-if ($endpoint === '') {
-  $apiBase = trim((string)(getenv('WP_API_BASE') ?: ''));
-  $endpoint = $apiBase !== ''
-    ? (rtrim($apiBase, '/') . '/product/')
-    : 'http://localhost/wordpress/wp-json/wp/v2/product/';
-}
+$endpoint = sj_resolve_products_endpoint();
 $validated = validate_products_endpoint($endpoint);
 if (!$validated['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
@@ -220,6 +216,9 @@ $timeout = max(1, min(30, (int) (getenv('WP_PRODUCTS_TIMEOUT') ?: 5)));
 $maxBytes = max(250000, min(10000000, (int) (getenv('WP_PRODUCTS_MAX_BYTES') ?: 2000000)));
 $ttl = max(0, min(3600, (int) (getenv('WP_PRODUCTS_CACHE_TTL') ?: 60)));
 
+$taxUrl = rtrim($apiRoot, '/') . '/taxonomies';
+sj_api_debug_headers($endpoint, $taxUrl);
+
 $cacheKey = 'apiRoot:' . $apiRoot;
 $cached = cache_read($cacheKey, $ttl);
 if ($cached) {
@@ -233,8 +232,8 @@ if ($cached) {
 }
 header('X-Cache: MISS');
 
-$taxUrl = rtrim($apiRoot, '/') . '/taxonomies';
 $taxRes = http_get($taxUrl, $timeout, $maxBytes);
+sj_api_debug_headers($endpoint, $taxUrl, $taxRes);
 if (!$taxRes['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
   $fb = sj_fallback_categories_for_api();
@@ -284,6 +283,7 @@ $termsUrl = rtrim($apiRoot, '/') . '/' . rawurlencode($restBase) . '?' . http_bu
   'order' => 'desc',
 ]);
 $termsRes = http_get($termsUrl, $timeout, $maxBytes);
+sj_api_debug_headers($endpoint, $termsUrl, $termsRes);
 if (!$termsRes['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
   $fb = sj_fallback_categories_for_api();
@@ -321,13 +321,20 @@ foreach ($terms as $t) {
   $out[] = ['id' => $id, 'slug' => $slug, 'name' => $name, 'count' => $count];
 }
 
+$meta = [
+  'restBase' => $restBase,
+  'count' => count($out),
+];
+$meta = sj_api_debug_merge_meta($meta, $endpoint, $termsUrl, $termsRes);
+if (sj_api_debug_request() && isset($meta['debugUpstream'])) {
+  $meta['debugUpstream']['taxonomiesUrl'] = $taxUrl;
+  $meta['debugUpstream']['taxonomiesHttpStatus'] = (int)$taxRes['status'];
+}
+
 $payload = [
   'ok' => true,
   'categories' => $out,
-  'meta' => [
-    'restBase' => $restBase,
-    'count' => count($out),
-  ],
+  'meta' => $meta,
 ];
 
 $body = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

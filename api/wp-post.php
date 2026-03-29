@@ -13,6 +13,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/wp_env_defaults.php';
+
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
@@ -119,7 +121,7 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
   if (function_exists('curl_init')) {
     $ch = curl_init($url);
     $buf = '';
-    curl_setopt_array($ch, [
+    curl_setopt_array($ch, array_replace([
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_CONNECTTIMEOUT => $timeoutSeconds,
@@ -134,7 +136,7 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
         if (strlen($buf) > $maxBytes) return 0;
         return strlen($chunk);
       },
-    ]);
+    ], sj_curl_insecure_tls_opts()));
     $okExec = curl_exec($ch);
     $curlErr = curl_error($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -197,13 +199,7 @@ if ($slug !== '') {
   }
 }
 
-$endpoint = getenv('WP_POSTS_ENDPOINT') ?: '';
-if ($endpoint === '') {
-  $apiBase = trim((string)(getenv('WP_API_BASE') ?: ''));
-  $endpoint = $apiBase !== ''
-    ? (rtrim($apiBase, '/') . '/posts/')
-    : 'http://localhost/wordpress/wp-json/wp/v2/posts/';
-}
+$endpoint = sj_resolve_posts_endpoint();
 $validated = validate_endpoint($endpoint);
 if (!$validated['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
@@ -226,6 +222,7 @@ $ttl = max(0, min(3600, (int) (getenv('WP_PRODUCTS_CACHE_TTL') ?: 30)));
 $url = $id > 0
   ? (rtrim($endpoint, '/') . '/' . $id . '/?_embed=1')
   : (rtrim($endpoint, '/') . '/?' . http_build_query(['slug' => $slug, '_embed' => '1']));
+sj_api_debug_headers($endpoint, $url);
 
 $cached = cache_read($url, $ttl);
 if ($cached) {
@@ -240,6 +237,7 @@ if ($cached) {
 header('X-Cache: MISS');
 
 $res = http_get($url, $timeout, $maxBytes);
+sj_api_debug_headers($endpoint, $url, $res);
 if (!$res['ok']) {
   require_once __DIR__ . '/fallback_lib.php';
   $raw = sj_fallback_find_post($id, $slug);
@@ -296,8 +294,7 @@ $payload = [
     // HTML del WP (para render en detalle). Si prefieres texto plano, lo cambiamos.
     'contentHtml' => is_string($contentHtml) ? $contentHtml : null,
   ],
-  'meta' => [
-  ],
+  'meta' => sj_api_debug_merge_meta([], $endpoint, $url, $res),
 ];
 
 $body = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
