@@ -36,3 +36,7 @@ pencil-export/
 .env.production
 .vercel
 .env*.local
+skills-lock.json
+.agents
+.claude
+.kiro
