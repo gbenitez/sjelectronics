@@ -14,10 +14,10 @@
       "name": "Nevera SJ Elegance 200",
       "category": "neveras",
       "categoryName": "Neveras",
-      "image": "placeholders/Capa-34.png",
+      "image": "placeholders/sj-nevera.jpg",
       "images": [
-        "placeholders/Capa-34.png",
-        "placeholders/Carrete-Cafetera-porsiaca-4_031_01.png"
+        "placeholders/sj-nevera.jpg",
+        "placeholders/nevera2.jpg"
       ],
       "excerpt": "200 L, clase A, bandejas cristal, iluminación LED interior.",
       "descriptionHtml": "<p>Línea residencial compacta. Ideal para cocinas urbanas: acabado inox, control mecánico preciso y cajones de alto deslizamiento.</p>",
@@ -33,10 +33,10 @@
       "name": "Nevera Comercial EX-450",
       "category": "neveras",
       "categoryName": "Neveras",
-      "image": "placeholders/Capa-34.png",
+      "image": "placeholders/nevera2.jpg",
       "images": [
-        "placeholders/Capa-34.png",
-        "placeholders/Carrete-Cafetera-porsiaca-4_031_02.png"
+        "placeholders/nevera2.jpg",
+        "placeholders/sj-nevera.jpg"
       ],
       "excerpt": "450 L, uso intensivo, ventilación forzada y cerradura.",
       "descriptionHtml": "<p>Diseñada para comercio y gastronomía. Soporta ciclos de apertura frecuentes y mantiene temperatura estable en climas cálidos.</p>",
