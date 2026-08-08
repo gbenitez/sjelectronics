@@ -236,16 +236,17 @@ header('X-Cache: MISS');
 $res = http_get($url, $timeout, $maxBytes);
 sj_api_debug_headers($endpoint, $url, $res);
 if (!$res['ok']) {
+  sj_log_upstream_error('wp-posts upstream_unavailable', $res['error'], $endpoint);
   require_once __DIR__ . '/fallback_lib.php';
   $fb = sj_fallback_posts_for_list($perPage);
   if ($fb !== []) {
     respond(200, [
       'ok' => true,
       'posts' => $fb,
-      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_posts', 'reason' => 'upstream_unavailable', 'detail' => $res['error']],
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_posts', 'reason' => 'upstream_unavailable'],
     ]);
   }
-  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener respuesta del API.', 'detail' => $res['error'], 'status' => $res['status']], 'posts' => []]);
+  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener respuesta del API.', 'status' => $res['status']], 'posts' => []]);
 }
 
 try { $data = json_decode($res['body'], true, 512, JSON_THROW_ON_ERROR); } catch (Throwable $e) { $data = null; }

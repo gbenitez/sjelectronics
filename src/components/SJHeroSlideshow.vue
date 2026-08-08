@@ -108,10 +108,12 @@
 
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { safeHref } from '../utils/publicAssetUrl'
 
 const props = defineProps({
   backgrounds: { type: Array, required: true },
-  title: { type: String, required: true },
+  // Solo obligatorio si no se usa `slides` con título propio por slide (ver HomeHeroPage).
+  title: { type: String, default: '' },
   subtitle: { type: String, default: '' },
   eyebrow: { type: String, default: '' },
   slides: { type: Array, default: null },
@@ -151,7 +153,7 @@ const activeSlide = computed(() => {
   return {
     eyebrow: (s && typeof s.eyebrow === 'string' ? s.eyebrow : props.eyebrow) || '',
     dateLabel: (s && typeof s.dateLabel === 'string' ? s.dateLabel : '') || '',
-    href: (s && typeof s.href === 'string' ? s.href : '') || '',
+    href: safeHref(s && typeof s.href === 'string' ? s.href : '') || '',
     title: (s && typeof s.title === 'string' ? s.title : props.title) || props.title,
     subtitle: (s && typeof s.subtitle === 'string' ? s.subtitle : props.subtitle) || '',
   }

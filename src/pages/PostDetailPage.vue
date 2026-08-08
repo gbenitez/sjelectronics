@@ -60,6 +60,7 @@ import { computed } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
 import { usePost, imgSrc } from '../composables/useCatalogSource'
 import { usePageMeta, useJsonLd } from '../composables/usePageMeta'
+import { useSanitizedHtml } from '../composables/useSanitizedHtml'
 
 const { fullPath } = useHashRoute()
 
@@ -121,16 +122,7 @@ const prettyDate = (iso) => {
   }
 }
 
-const sanitizeHtml = (html) => {
-  let s = String(html || '')
-  s = s.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
-  s = s.replace(/\son\w+="[^"]*"/gi, '')
-  s = s.replace(/\son\w+='[^']*'/gi, '')
-  s = s.replace(/javascript:/gi, '')
-  return s
-}
-
-const safeHtml = computed(() => sanitizeHtml(post.value?.contentHtml || ''))
+const safeHtml = useSanitizedHtml(computed(() => post.value?.contentHtml || ''))
 const coverImage = computed(() => imgSrc(post.value?.image))
 </script>
 

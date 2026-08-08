@@ -62,7 +62,15 @@ async function fetchJson(url, { timeoutMs = TIMEOUT_MS, retries = RETRIES } = {}
     try {
       const res = await fetch(url, { headers: { Accept: 'application/json' }, signal: controller.signal })
       clearTimeout(timer)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      if (!res.ok) {
+        // 401/403 no es "API caída": es un problema de permisos/config que el fallback
+        // silencioso puede esconder indefinidamente. Se distingue para poder monitorearlo
+        // (p.ej. alguien restringió la REST API de WordPress o un WAF empezó a bloquear al proxy).
+        if (res.status === 401 || res.status === 403) {
+          console.warn(`[useCatalogSource] ${url} respondió ${res.status} (auth/permisos). Mostrando fallback local.`)
+        }
+        throw new Error(`HTTP ${res.status}`)
+      }
       const contentType = res.headers.get('content-type') || ''
       if (!contentType.includes('application/json')) throw new Error('Respuesta no JSON')
       return await res.json()

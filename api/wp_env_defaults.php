@@ -1,10 +1,7 @@
 <?php
 declare(strict_types=1);
 
-/** Query en la URL del proxy PHP: `?debug=1` → `SJ_API_DEBUG_QUERY` + `SJ_API_DEBUG_VALUE`. */
-const SJ_API_DEBUG_QUERY = 'debug';
-const SJ_API_DEBUG_VALUE = '1';
-/** Variable de entorno alternativa (mismo efecto que el query). */
+/** Activa el modo debug del proxy. Solo por variable de entorno (ver sj_api_debug_request). */
 const SJ_API_DEBUG_ENV = 'WP_API_DEBUG';
 
 /**
@@ -107,14 +104,14 @@ function sj_resolve_posts_endpoint(): string
 }
 
 /**
- * Debug de conexión a WordPress: query `?debug=1` (ver SJ_API_DEBUG_*) o env WP_API_DEBUG.
- * Cabeceras X-SJ-* en la respuesta (Network en DevTools) y meta.debugUpstream en JSON.
+ * Debug de conexión a WordPress: SOLO variable de entorno WP_API_DEBUG, controlada por
+ * quien administra el servidor. Antes también se podía activar con `?debug=1` en la URL,
+ * pero eso permitía a cualquier visitante no autenticado pedir la URL/host exactos del
+ * WordPress origen (y su IP real, saltándose un WAF/CDN delante) — se quitó ese disparador
+ * público. Cabeceras X-SJ-* en la respuesta (Network en DevTools) y meta.debugUpstream en JSON.
  */
 function sj_api_debug_request(): bool
 {
-    if ((string)($_GET[SJ_API_DEBUG_QUERY] ?? '') === SJ_API_DEBUG_VALUE) {
-        return true;
-    }
     $v = strtolower(trim((string)(getenv(SJ_API_DEBUG_ENV) ?: '')));
 
     return $v === '1' || $v === 'true' || $v === 'yes';
@@ -182,6 +179,20 @@ function sj_api_debug_merge_meta(array $meta, string $wpEndpoint, string $upstre
     $d = sj_api_debug_meta($wpEndpoint, $upstreamUrl, $httpGetResult);
 
     return $d === [] ? $meta : array_merge($meta, $d);
+}
+
+/**
+ * Registra el detalle de un error de conexión upstream en el log del servidor (nunca en la
+ * respuesta pública: mensajes de cURL/file_get_contents pueden incluir host/IP internos).
+ * El detalle sigue disponible para debug real vía sj_api_debug_headers()/meta cuando
+ * WP_API_DEBUG está activo en el servidor.
+ */
+function sj_log_upstream_error(string $context, ?string $detail, string $endpoint): void
+{
+    if ($detail === null || $detail === '') {
+        return;
+    }
+    error_log(sprintf('[sj-api] %s: %s (endpoint host=%s)', $context, $detail, sj_api_debug_parse_host($endpoint)));
 }
 
 /**

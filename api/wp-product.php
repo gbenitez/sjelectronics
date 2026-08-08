@@ -295,16 +295,17 @@ header('X-Cache: MISS');
 $res = http_get($url, $timeout, $maxBytes);
 sj_api_debug_headers($endpoint, $url, $res);
 if (!$res['ok']) {
+  sj_log_upstream_error('wp-product upstream_unavailable', $res['error'], $endpoint);
   require_once __DIR__ . '/fallback_lib.php';
   $raw = sj_fallback_find_product($id, $slug);
   if ($raw) {
     respond(200, [
       'ok' => true,
       'product' => sj_fallback_product_to_payload($raw),
-      'meta' => ['fallback' => true, 'source' => 'local_catalog', 'reason' => 'upstream_unavailable', 'detail' => $res['error']],
+      'meta' => ['fallback' => true, 'source' => 'local_catalog', 'reason' => 'upstream_unavailable'],
     ]);
   }
-  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener respuesta del API.', 'detail' => $res['error'], 'status' => $res['status']]]);
+  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener respuesta del API.', 'status' => $res['status']]]);
 }
 
 try {

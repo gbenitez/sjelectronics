@@ -235,16 +235,17 @@ header('X-Cache: MISS');
 $taxRes = http_get($taxUrl, $timeout, $maxBytes);
 sj_api_debug_headers($endpoint, $taxUrl, $taxRes);
 if (!$taxRes['ok']) {
+  sj_log_upstream_error('wp-product-categories taxonomies_http', $taxRes['error'], $endpoint);
   require_once __DIR__ . '/fallback_lib.php';
   $fb = sj_fallback_categories_for_api();
   if ($fb !== []) {
     respond(200, [
       'ok' => true,
       'categories' => $fb,
-      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'taxonomies_http', 'detail' => $taxRes['error']],
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'taxonomies_http'],
     ]);
   }
-  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener taxonomías.', 'detail' => $taxRes['error'], 'status' => $taxRes['status']], 'categories' => []]);
+  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener taxonomías.', 'status' => $taxRes['status']], 'categories' => []]);
 }
 try { $tax = json_decode($taxRes['body'], true, 512, JSON_THROW_ON_ERROR); } catch (Throwable $e) { $tax = null; }
 if (!is_array($tax)) {
@@ -285,16 +286,17 @@ $termsUrl = rtrim($apiRoot, '/') . '/' . rawurlencode($restBase) . '?' . http_bu
 $termsRes = http_get($termsUrl, $timeout, $maxBytes);
 sj_api_debug_headers($endpoint, $termsUrl, $termsRes);
 if (!$termsRes['ok']) {
+  sj_log_upstream_error('wp-product-categories terms_http', $termsRes['error'], $endpoint);
   require_once __DIR__ . '/fallback_lib.php';
   $fb = sj_fallback_categories_for_api();
   if ($fb !== []) {
     respond(200, [
       'ok' => true,
       'categories' => $fb,
-      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'terms_http', 'detail' => $termsRes['error']],
+      'meta' => ['count' => count($fb), 'fallback' => true, 'source' => 'local_catalog', 'reason' => 'terms_http'],
     ]);
   }
-  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener categorías.', 'detail' => $termsRes['error'], 'status' => $termsRes['status']], 'categories' => []]);
+  respond(502, ['ok' => false, 'error' => ['message' => 'No se pudo obtener categorías.', 'status' => $termsRes['status']], 'categories' => []]);
 }
 try { $terms = json_decode($termsRes['body'], true, 512, JSON_THROW_ON_ERROR); } catch (Throwable $e) { $terms = null; }
 if (!is_array($terms)) {

@@ -305,6 +305,7 @@ $res = http_get($url, $timeout, $maxBytes);
 sj_api_debug_headers($endpoint, $url, $res);
 
 if (!$res['ok']) {
+  sj_log_upstream_error('wp-products upstream_unavailable', $res['error'], $endpoint);
   require_once __DIR__ . '/fallback_lib.php';
   $fb = sj_fallback_products_for_list();
   if ($fb !== []) {
@@ -316,7 +317,6 @@ if (!$res['ok']) {
         'fallback' => true,
         'source' => 'local_catalog',
         'reason' => 'upstream_unavailable',
-        'detail' => $res['error'],
       ],
     ]);
   }
@@ -324,7 +324,6 @@ if (!$res['ok']) {
     'ok' => false,
     'error' => [
       'message' => 'No se pudo obtener respuesta del API.',
-      'detail' => $res['error'],
       'status' => $res['status'],
     ],
     'products' => [],
@@ -352,13 +351,12 @@ if (!is_array($data)) {
       ],
     ]);
   }
+  sj_log_upstream_error('wp-products invalid_json', 'JSON inválido en ' . $url, $endpoint);
   respond(502, [
     'ok' => false,
     'error' => [
       'message' => 'Respuesta inválida: JSON no decodificable.',
-      'detail' => 'JSON inválido',
       'status' => $res['status'],
-      'url' => $url,
     ],
     'products' => [],
   ]);

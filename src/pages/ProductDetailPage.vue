@@ -129,11 +129,11 @@
                   Consultar por WhatsApp
                 </a>
                 <a
-                  :href="product?.documents?.specSheet?.url || '#'"
+                  :href="specSheetHref || '#'"
                   target="_blank"
                   rel="noreferrer"
                   class="inline-flex items-center justify-center min-h-[44px] px-5 border-2 border-neutral-300 dark:border-white/20 text-neutral-800 dark:text-white/85 font-semibold hover:bg-neutral-50 dark:hover:bg-white/5 transition focus-ring"
-                  :class="!product?.documents?.specSheet?.url ? 'opacity-40 pointer-events-none' : ''"
+                  :class="!specSheetHref ? 'opacity-40 pointer-events-none' : ''"
                 >
                   Ficha técnica
                 </a>
@@ -299,7 +299,9 @@
 import { computed, ref } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
 import { useProduct, imgSrc, defaultCategoryLabel } from '../composables/useCatalogSource'
+import { safeHref } from '../utils/publicAssetUrl'
 import { usePageMeta, useJsonLd } from '../composables/usePageMeta'
+import { useSanitizedHtml } from '../composables/useSanitizedHtml'
 
 const { fullPath } = useHashRoute()
 
@@ -372,21 +374,11 @@ const whatsappHref = computed(() => {
   return `https://wa.me/?text=${text}`
 })
 
+const specSheetHref = computed(() => safeHref(product.value?.documents?.specSheet?.url))
+
 const activeTab = ref('description')
 
-const sanitizeHtml = (html) => {
-  let s = String(html || '')
-  s = s.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
-  s = s.replace(/\son\w+="[^"]*"/gi, '')
-  s = s.replace(/\son\w+='[^']*'/gi, '')
-  s = s.replace(/javascript:/gi, '')
-  return s
-}
-
-const safeDescriptionHtml = computed(() => {
-  const html = product.value?.descriptionHtml
-  return html ? sanitizeHtml(html) : ''
-})
+const safeDescriptionHtml = useSanitizedHtml(computed(() => product.value?.descriptionHtml || ''))
 
 const additionalRows = computed(() => {
   const rows = []
