@@ -51,7 +51,10 @@
 
     <!-- Content -->
     <div class="relative w-full">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
+      <div
+        class="max-w-7xl mx-auto py-10 sm:py-12 lg:py-14"
+        :class="showControls && slideCount > 1 ? 'px-16 sm:px-16 lg:px-8' : 'px-4 sm:px-6 lg:px-8'"
+      >
         <div class="max-w-3xl drop-shadow-[0_14px_28px_rgba(0,0,0,0.55)]">
           <p v-if="activeSlide.eyebrow" class="text-xs font-semibold uppercase tracking-wide text-white/80">
             {{ activeSlide.eyebrow }}

@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import SiteHeader from './layouts/SiteHeader.vue'
 import SiteFooter from './layouts/SiteFooter.vue'
 
@@ -44,6 +44,10 @@ const routeKey = computed(() => {
 })
 
 const CurrentPage = computed(() => pages[routeKey.value] ?? HomeHeroPage)
+
+watch(routeKey, () => {
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+})
 </script>
 
 <style scoped></style>
