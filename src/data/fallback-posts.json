@@ -1,24 +1,59 @@
 {
   "posts": [
     {
-      "id": 9201,
-      "slug": "sj-novedades-y-soporte-2026",
-      "title": "Novedades SJ y soporte cercano en 2026",
-      "excerpt": "Electrodomésticos, asesoría clara y entregas seguras para tu hogar.",
-      "date": "2026-03-25T12:00:00",
-      "image": "placeholders/post/Screenshot 2026-03-25 at 23.39.21.png",
+      "id": 9101,
+      "slug": "5-recetas-air-fryer-sj",
+      "title": "5 recetas rápidas para tu Air Fryer SJ",
+      "category": "Recetas",
+      "excerpt": "Del desayuno a la cena: cinco ideas fáciles para sacarle provecho a tu air fryer toda la semana.",
+      "date": "2026-04-02T09:00:00",
+      "image": "placeholders/demo-air-fryer.svg",
       "link": null,
-      "contentHtml": "<p>Este es un <strong>artículo de demostración</strong> que se muestra cuando no hay conexión con WordPress.</p><p>En producción, aquí verías el contenido completo del blog.</p><ul><li>Asesoría en tienda y online</li><li>Garantía y repuestos</li><li>Entregas coordinadas</li></ul>"
+      "contentHtml": "<p>La air fryer se volvió el electrodoméstico más usado de la cocina, y con razón: cocina rápido, ensucia poco y necesita muy poco o nada de aceite. Aquí van cinco recetas simples para aprovechar tu <strong>Air Fryer SJ</strong> toda la semana.</p><h3>1. Papas rústicas crujientes</h3><p>Corta las papas en gajos, sazona con sal, pimienta y un chorrito de aceite. 18 minutos a 200°C, sacudiendo la cesta a la mitad, y quedan doradas por fuera y suaves por dentro.</p><h3>2. Alitas de pollo</h3><p>Marina las alitas al menos 30 minutos antes de cocinar. 20-22 minutos a 190°C, volteando a la mitad del tiempo, para una piel crocante sin freír.</p><h3>3. Vegetales asados</h3><p>Brócoli, zanahoria o calabacín en trozos parejos, con aceite y especias al gusto. 12-15 minutos a 200°C son suficientes para un acompañante saludable y rápido.</p><h3>4. Pan de ajo casero</h3><p>Unta rebanadas de pan con mantequilla, ajo picado y perejil. 5-6 minutos a 180°C y tienes un pan de ajo crocante sin encender el horno.</p><h3>5. Frutas para el postre</h3><p>Rodajas de manzana o plátano con un poco de canela, 8-10 minutos a 180°C, son un postre ligero y rápido para cerrar la comida.</p><p>Recuerda no sobrecargar la cesta: cocinar en tandas más pequeñas da mejores resultados y una cocción más pareja.</p>"
     },
     {
-      "id": 9202,
-      "slug": "sj-guia-rapida-electrodomesticos",
-      "title": "Guía rápida para elegir electrodomésticos",
-      "excerpt": "Consejos prácticos antes de comprar: espacio, consumo y uso real.",
-      "date": "2026-03-25T15:30:00",
-      "image": "placeholders/post/Screenshot 2026-03-25 at 23.40.50.png",
+      "id": 9102,
+      "slug": "cuidar-sandwichera-sj",
+      "title": "Cómo cuidar tu sandwichera para que dure más",
+      "category": "Cuidado",
+      "excerpt": "Limpieza, almacenamiento y errores comunes que acortan la vida útil de tu sandwichera.",
+      "date": "2026-03-28T09:00:00",
+      "image": "placeholders/demo-sandwichera.svg",
       "link": null,
-      "contentHtml": "<p>Contenido local de respaldo. <em>SJ Electronics</em> te acompaña en la elección según tu cocina y tu presupuesto.</p><blockquote><p>La mejor compra es la que encaja en tu rutina diaria.</p></blockquote><p>Cuando WordPress vuelva a estar disponible, este texto se sustituirá por tus publicaciones reales.</p>"
+      "contentHtml": "<p>Una sandwichera bien cuidada puede acompañarte por años. Estos hábitos simples ayudan a mantenerla en buen estado.</p><h3>Deja que enfríe antes de limpiar</h3><p>Limpiar las placas calientes puede dañar el recubrimiento antiadherente. Espera a que el equipo esté completamente frío antes de pasar un paño húmedo.</p><h3>Evita utensilios metálicos</h3><p>Rasquetas o tenedores metálicos rayan la superficie antiadherente. Usa espátulas de silicona o madera para retirar los restos de comida.</p><h3>No la sumerjas en agua</h3><p>La base con los componentes eléctricos nunca debe mojarse. Limpia solo las placas con un paño ligeramente húmedo y sécalas bien antes de guardar.</p><h3>Guárdala en un lugar seco</h3><p>Evita guardarla con las placas cerradas si están húmedas: puede generar malos olores. Verifica que esté totalmente seca antes de almacenarla.</p><p>Con estos cuidados básicos, tu sandwichera SJ mantiene un rendimiento parejo preparación tras preparación.</p>"
+    },
+    {
+      "id": 9103,
+      "slug": "guia-elegir-parrilla-electrica",
+      "title": "Guía rápida: cómo elegir tu parrilla eléctrica",
+      "category": "Guías",
+      "excerpt": "Tamaño, potencia y superficie: lo que debes considerar antes de comprar una parrilla eléctrica.",
+      "date": "2026-03-20T09:00:00",
+      "image": "placeholders/demo-parrilla.svg",
+      "link": null,
+      "contentHtml": "<p>No todas las parrillas eléctricas son iguales, y elegir la correcta depende de cómo y para cuántas personas cocinas habitualmente.</p><h3>Tamaño de la superficie</h3><p>Para uso diario en pareja o solo, una parrilla compacta es suficiente. Si sueles recibir invitados, una superficie XL evita tener que cocinar en varias tandas.</p><h3>Control de temperatura</h3><p>Un control independiente te permite ajustar el calor según lo que estés preparando: no es lo mismo sellar una carne que calentar vegetales.</p><h3>Bandeja de grasa</h3><p>Una bandeja recolectora desmontable facilita mucho la limpieza y hace que las comidas sean más ligeras al escurrir el exceso de grasa.</p><h3>Facilidad de guardado</h3><p>Si tu cocina tiene poco espacio, revisa si el modelo permite guardado vertical: ocupa menos espacio en la alacena.</p><p>Con estos cuatro puntos claros, elegir tu próxima parrilla eléctrica SJ es mucho más simple.</p>"
+    },
+    {
+      "id": 9104,
+      "slug": "smoothies-licuadora-sj",
+      "title": "3 smoothies para empezar el día con tu licuadora SJ",
+      "category": "Recetas",
+      "excerpt": "Combinaciones simples y nutritivas para las mañanas ocupadas.",
+      "date": "2026-03-12T09:00:00",
+      "image": "placeholders/Carrusel-Licuadoras_02.png",
+      "link": null,
+      "contentHtml": "<p>Un buen smoothie es de las formas más rápidas de empezar el día con energía. Estas tres combinaciones funcionan muy bien en tu <strong>Licuadora SJ</strong>.</p><h3>Verde energizante</h3><p>Espinaca, plátano, manzana verde y agua fría. Licúa 30-40 segundos hasta lograr una textura uniforme.</p><h3>Tropical</h3><p>Piña, mango, un poco de jugo de naranja y hielo. Ideal para las mañanas más calurosas.</p><h3>Proteico de avena</h3><p>Avena en hojuelas, leche, plátano y una cucharada de mantequilla de maní. Perfecto antes de entrenar o como desayuno completo.</p><p>Para una textura más pareja, agrega primero los líquidos y luego los ingredientes sólidos antes de licuar.</p>"
+    },
+    {
+      "id": 9105,
+      "slug": "arroz-perfecto-olla-arrocera",
+      "title": "Arroz perfecto: tips para tu olla arrocera SJ",
+      "category": "Tips",
+      "excerpt": "La proporción correcta de agua, el reposo y otros trucos para un arroz siempre en su punto.",
+      "date": "2026-03-05T09:00:00",
+      "image": "placeholders/demo-olla.svg",
+      "link": null,
+      "contentHtml": "<p>Lograr un arroz suelto y parejo es más sencillo de lo que parece cuando conoces algunos trucos básicos.</p><h3>Lava el arroz antes de cocinar</h3><p>Enjuagar el arroz hasta que el agua salga clara elimina el exceso de almidón y evita que quede pegajoso.</p><h3>Respeta la proporción de agua</h3><p>La medida clásica es 1:1 (una taza de agua por cada taza de arroz), pero puede variar según el tipo de grano. Revisa las marcas internas de tu olla arrocera SJ como referencia.</p><h3>Deja reposar antes de servir</h3><p>Cuando la olla cambie a modo \"mantener caliente\", espera 5-10 minutos antes de abrir la tapa. Este reposo termina de asentar el vapor y el arroz queda más suelto.</p><h3>No lo revuelvas mientras cocina</h3><p>Abrir la tapa constantemente deja escapar el vapor y puede afectar la cocción pareja. Confía en el ciclo automático de tu olla.</p><p>Con estos pasos, cada preparación sale consistente sin necesidad de estar pendiente todo el tiempo.</p>"
     }
   ]
 }

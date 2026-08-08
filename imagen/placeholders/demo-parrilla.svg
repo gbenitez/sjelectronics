@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Parrilla eléctrica SJ">
+  <rect width="400" height="300" fill="#FFF1F1"/>
+  <g>
+    <!-- Plate -->
+    <rect x="80" y="120" width="240" height="90" rx="10" fill="#B00711"/>
+    <g stroke="#4E0508" stroke-width="3" opacity="0.5">
+      <line x1="100" y1="140" x2="300" y2="140"/>
+      <line x1="100" y1="158" x2="300" y2="158"/>
+      <line x1="100" y1="176" x2="300" y2="176"/>
+      <line x1="100" y1="194" x2="300" y2="194"/>
+    </g>
+    <!-- Handle -->
+    <rect x="316" y="150" width="34" height="12" rx="6" fill="#1F2937"/>
+    <!-- Base -->
+    <rect x="70" y="210" width="260" height="14" rx="4" fill="#0A0A0A"/>
+    <circle cx="100" cy="234" r="6" fill="#1F2937"/>
+    <circle cx="300" cy="234" r="6" fill="#1F2937"/>
+    <!-- Control knob -->
+    <circle cx="60" cy="165" r="16" fill="#1F2937"/>
+    <circle cx="60" cy="165" r="4" fill="#E10600"/>
+  </g>
+</svg>

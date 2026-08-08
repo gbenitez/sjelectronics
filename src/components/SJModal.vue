@@ -6,8 +6,11 @@
         <div class="absolute inset-0 bg-black/55" @click="close"></div>
         
         <!-- Panel -->
-        <div 
+        <div
           class="relative bg-white rounded-xl shadow-lg max-w-2xl w-full p-5 max-h-[90vh] overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="title || 'Diálogo'"
           @click.stop
         >
           <!-- Header -->

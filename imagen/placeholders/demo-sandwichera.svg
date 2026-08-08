@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Sandwichera SJ">
+  <rect width="400" height="300" fill="#FFF1F1"/>
+  <g>
+    <!-- Base plate -->
+    <rect x="90" y="176" width="220" height="34" rx="8" fill="#1F2937"/>
+    <!-- Top lid (angled open) -->
+    <g transform="rotate(-10 100 176)">
+      <rect x="90" y="120" width="200" height="30" rx="8" fill="#B00711"/>
+      <rect x="90" y="120" width="200" height="10" rx="5" fill="#E10600"/>
+    </g>
+    <!-- Hinge -->
+    <circle cx="98" cy="168" r="10" fill="#0A0A0A"/>
+    <!-- Handle -->
+    <rect x="250" y="150" width="14" height="40" rx="6" fill="#111827" transform="rotate(-10 257 170)"/>
+    <!-- Indicator lights -->
+    <circle cx="120" cy="193" r="5" fill="#E10600"/>
+    <circle cx="140" cy="193" r="5" fill="#FF9494"/>
+    <!-- Feet -->
+    <rect x="100" y="210" width="200" height="8" rx="4" fill="#0A0A0A"/>
+  </g>
+</svg>

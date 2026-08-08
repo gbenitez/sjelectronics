@@ -20,7 +20,7 @@
       />
     </div>
 
-    <!-- Overlay -->
+    <!-- Overlay direccional: protege el texto (izquierda) sin apagar el producto (derecha). -->
     <div class="absolute inset-0" :class="overlayClass" />
     <div class="absolute inset-0" :class="gradientClass" />
 
@@ -28,7 +28,7 @@
     <button
       v-if="showControls && slideCount > 1"
       type="button"
-      class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-11 w-11 rounded-full border border-white/20 bg-black/25 hover:bg-black/35 transition focus-ring"
+      class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-11 w-11 rounded-full border border-white/25 bg-sj-black/40 hover:bg-sj-black/60 backdrop-blur-sm transition focus-ring"
       aria-label="Anterior"
       @click="prev"
     >
@@ -40,7 +40,7 @@
     <button
       v-if="showControls && slideCount > 1"
       type="button"
-      class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-11 w-11 rounded-full border border-white/20 bg-black/25 hover:bg-black/35 transition focus-ring"
+      class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-11 w-11 rounded-full border border-white/25 bg-sj-black/40 hover:bg-sj-black/60 backdrop-blur-sm transition focus-ring"
       aria-label="Siguiente"
       @click="next"
     >
@@ -64,7 +64,7 @@
             {{ activeSlide.dateLabel }}
           </p>
 
-          <h1 class="mt-4 font-display font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
+          <h1 class="mt-4 font-display font-bold tracking-tight text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
             {{ activeSlide.title }}
           </h1>
           <p v-if="activeSlide.subtitle" class="mt-5 text-base sm:text-lg text-white/80 leading-relaxed">
@@ -78,6 +78,10 @@
           >
             {{ slideCtaLabel }}
           </a>
+
+          <div v-if="$slots.ctas" class="flex flex-wrap gap-4 mt-6">
+            <slot name="ctas" />
+          </div>
         </div>
       </div>
     </div>
@@ -119,15 +123,15 @@ const props = defineProps({
     type: String,
     default: 'min-h-[520px] sm:min-h-[560px] lg:min-h-[620px]',
   },
+  // Overlay direccional: oscurece solo la zona del texto (izquierda), deja el producto
+  // legible y con su color real a la derecha. Nunca oscurecer la imagen completa.
   overlayClass: {
     type: String,
-    default: 'bg-neutral-950/70 dark:bg-neutral-950/55',
+    default: 'bg-gradient-to-r from-sj-black/85 sm:from-sj-black/80 via-sj-black/35 to-transparent',
   },
   gradientClass: {
     type: String,
-    default:
-      'bg-gradient-to-b from-neutral-950/75 via-neutral-950/35 to-neutral-950/80 ' +
-      'dark:from-neutral-950/65 dark:via-neutral-950/30 dark:to-neutral-950/75',
+    default: 'bg-gradient-to-t from-sj-black/55 via-transparent to-transparent',
   },
 })
 

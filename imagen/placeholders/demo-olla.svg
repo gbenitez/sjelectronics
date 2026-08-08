@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Olla eléctrica SJ">
+  <rect width="400" height="300" fill="#FFF1F1"/>
+  <g>
+    <!-- Body -->
+    <rect x="120" y="120" width="160" height="100" rx="14" fill="#1F2937"/>
+    <!-- Lid -->
+    <path d="M112 120 a88 26 0 0 1 176 0 Z" fill="#B00711"/>
+    <rect x="190" y="86" width="20" height="14" rx="4" fill="#0A0A0A"/>
+    <!-- Handles -->
+    <rect x="96" y="150" width="26" height="10" rx="5" fill="#111827"/>
+    <rect x="278" y="150" width="26" height="10" rx="5" fill="#111827"/>
+    <!-- Control panel -->
+    <rect x="150" y="160" width="100" height="34" rx="6" fill="#0A0A0A"/>
+    <rect x="162" y="170" width="30" height="8" rx="4" fill="#E10600"/>
+    <circle cx="222" cy="174" r="8" fill="none" stroke="#FF9494" stroke-width="2.5"/>
+    <!-- Base -->
+    <rect x="120" y="220" width="160" height="10" rx="3" fill="#0A0A0A"/>
+  </g>
+</svg>

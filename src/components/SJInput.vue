@@ -9,11 +9,13 @@
       :value="modelValue"
       :placeholder="placeholder"
       :disabled="disabled"
+      :aria-invalid="error ? 'true' : undefined"
+      :aria-describedby="error ? `${id}-error` : (helperText ? `${id}-helper` : undefined)"
       :class="inputClasses"
       @input="$emit('update:modelValue', $event.target.value)"
     />
-    <p v-if="error" class="text-sm text-red-700">{{ error }}</p>
-    <p v-else-if="helperText" class="text-sm text-neutral-500 dark:text-white/60">{{ helperText }}</p>
+    <p v-if="error" :id="`${id}-error`" class="text-sm text-red-700 dark:text-red-400">{{ error }}</p>
+    <p v-else-if="helperText" :id="`${id}-helper`" class="text-sm text-neutral-500 dark:text-white/60">{{ helperText }}</p>
   </div>
 </template>
 
@@ -37,17 +39,17 @@ const props = defineProps({
 defineEmits(['update:modelValue'])
 
 const inputClasses = computed(() => {
-  const base = 'w-full min-h-[44px] px-3 py-2.5 rounded-md border bg-white text-neutral-900 placeholder:text-neutral-400 transition-colors focus:outline-none focus:ring-3 focus:ring-brand-secondary-500/35 focus:ring-offset-2'
+  const base = 'w-full min-h-[44px] px-3 py-2.5 rounded-md border bg-white text-neutral-900 placeholder:text-neutral-400 transition-colors focus:outline-none focus:ring-3 focus:ring-brand-primary-500/35 focus:ring-offset-2'
   const themed = 'dark:bg-neutral-950 dark:text-white dark:placeholder:text-white/35 dark:border-white/10'
-  
+
   if (props.disabled) {
     return `${base} ${themed} bg-neutral-100 dark:bg-white/5 text-neutral-500 dark:text-white/45 cursor-not-allowed border-neutral-200 dark:border-white/10`
   }
-  
+
   if (props.error) {
     return `${base} ${themed} border-red-300 focus:border-red-500`
   }
-  
-  return `${base} ${themed} border-neutral-200 focus:border-brand-secondary-500`
+
+  return `${base} ${themed} border-neutral-200 focus:border-brand-primary-500`
 })
 </script>

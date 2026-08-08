@@ -8,49 +8,65 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Paleta institucional SJ Electronics: negro, rojo, blanco.
+        // El rojo es acento (CTAs, subrayados, estado activo), nunca fondo de pantalla completa.
+        sj: {
+          black: '#0A0A0A',
+          graphite: '#1A1A1C',
+          red: '#B00711',
+          redBright: '#E10600',
+          white: '#FFFFFF',
+          offWhite: '#F7F6F4',
+        },
         brand: {
+          // Rojo institucional. 600 = #B00711 (marca), 500 = #E10600 (acento vivo / estados activos).
           primary: {
             50: '#FFF1F1',
-            100: '#FFE0E0',
-            200: '#FFC2C2',
-            300: '#FF9494',
-            400: '#FF5C5C',
-            500: '#D3151E',
-            600: '#B80F16',
-            700: '#930C12',
-            800: '#74090E',
-            900: '#4E0508',
+            100: '#FFDCDC',
+            200: '#FFB4B4',
+            300: '#FF8080',
+            400: '#F53D3D',
+            500: '#E10600',
+            600: '#B00711',
+            700: '#8C0710',
+            800: '#66050C',
+            900: '#3D0308',
           },
+          // Escala neutra negra: reemplaza el turquesa anterior en focus-rings, checkboxes,
+          // switches y enlaces secundarios. Sin segundo color de marca.
           secondary: {
-            50: '#EFF6FF',
-            100: '#DBEAFE',
-            200: '#BFDBFE',
-            300: '#93C5FD',
-            400: '#60A5FA',
-            500: '#2563EB',
-            600: '#1D4ED8',
-            700: '#1E40AF',
-            800: '#1E3A8A',
-            900: '#172554',
+            50: '#F7F6F4',
+            100: '#EDEBE7',
+            200: '#D8D5D0',
+            300: '#B8B4AD',
+            400: '#8C8880',
+            500: '#5C5954',
+            600: '#3A3836',
+            700: '#242220',
+            800: '#1A1A1C',
+            900: '#0A0A0A',
           }
         },
+        // Escala neutra cálida (blanco cálido F7F6F4) en vez del gris azulado anterior.
+        // neutral-950 hereda el valor por defecto de Tailwind (#0A0A0A == sj.black).
         neutral: {
           0: '#FFFFFF',
-          50: '#F8FAFC',
-          100: '#F1F5F9',
-          200: '#E2E8F0',
-          300: '#CBD5E1',
-          400: '#94A3B8',
-          500: '#64748B',
-          600: '#475569',
-          700: '#334155',
-          800: '#1F2937',
-          900: '#0B1220',
+          50: '#F7F6F4',
+          100: '#EEECE9',
+          200: '#DFDCD7',
+          300: '#C7C3BC',
+          400: '#9C978E',
+          500: '#6E6A63',
+          600: '#4A4743',
+          700: '#333130',
+          800: '#1A1A1C',
+          900: '#141416',
         }
       },
       fontFamily: {
-        display: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        body: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Display: geometría bold/italic que dialoga con el isotipo. Cuerpo: lectura cómoda.
+        display: ['Archivo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       letterSpacing: {

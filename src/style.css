@@ -36,8 +36,10 @@
 }
 
 @layer utilities {
+  /* Anillo de foco en rojo institucional: visible en AA sobre fondo claro u oscuro,
+     sin recurrir a un segundo color de marca (antes era azul/turquesa). */
   .focus-ring {
-    @apply focus:outline-none focus:ring-4 focus:ring-brand-secondary-500/35 focus:ring-offset-2;
+    @apply focus:outline-none focus:ring-4 focus:ring-brand-primary-500/45 focus:ring-offset-2;
   }
 
   .sj-img-grayscale-hover {

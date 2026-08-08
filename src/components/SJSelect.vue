@@ -43,12 +43,12 @@ defineEmits(['update:modelValue'])
 
 const selectClasses = computed(() => {
   const base =
-    'w-full min-h-[44px] px-3 py-2.5 rounded-md border bg-white text-neutral-900 transition-colors focus:outline-none focus:ring-3 focus:ring-brand-secondary-500/35 focus:ring-offset-2'
+    'w-full min-h-[44px] px-3 py-2.5 rounded-md border bg-white text-neutral-900 transition-colors focus:outline-none focus:ring-3 focus:ring-brand-primary-500/35 focus:ring-offset-2'
   const themed = 'dark:bg-neutral-950 dark:text-white dark:border-white/10'
 
   if (props.disabled) return `${base} ${themed} bg-neutral-100 dark:bg-white/5 text-neutral-500 dark:text-white/45 cursor-not-allowed border-neutral-200 dark:border-white/10`
   if (props.error) return `${base} ${themed} border-red-300 focus:border-red-500`
-  return `${base} ${themed} border-neutral-200 focus:border-brand-secondary-500`
+  return `${base} ${themed} border-neutral-200 focus:border-brand-primary-500`
 })
 </script>
 

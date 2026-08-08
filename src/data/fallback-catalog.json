@@ -1,144 +1,149 @@
 {
   "categories": [
-    { "id": 1, "slug": "neveras", "name": "Neveras", "count": 2 },
-    { "id": 2, "slug": "batidoras", "name": "Batidoras", "count": 2 },
-    { "id": 3, "slug": "cafeteras", "name": "Cafeteras", "count": 2 },
-    { "id": 4, "slug": "planchas", "name": "Planchas", "count": 2 },
+    { "id": 1, "slug": "air-fryers", "name": "Air fryers", "count": 2 },
+    { "id": 2, "slug": "sandwicheras", "name": "Sandwicheras", "count": 2 },
+    { "id": 3, "slug": "parrillas", "name": "Parrillas eléctricas", "count": 2 },
+    { "id": 4, "slug": "ollas", "name": "Ollas", "count": 2 },
     { "id": 5, "slug": "licuadoras", "name": "Licuadoras", "count": 2 },
-    { "id": 6, "slug": "exprimidor", "name": "Exprimidor", "count": 2 }
+    { "id": 6, "slug": "repuestos", "name": "Repuestos", "count": 2 }
   ],
   "products": [
     {
       "id": 9001,
-      "slug": "sj-nevera-elegance-200",
-      "name": "Nevera SJ Elegance 200",
-      "category": "neveras",
-      "categoryName": "Neveras",
-      "image": "placeholders/sj-nevera.jpg",
-      "images": [
-        "placeholders/sj-nevera.jpg",
-        "placeholders/nevera2.jpg"
-      ],
-      "excerpt": "200 L, clase A, bandejas cristal, iluminación LED interior.",
-      "descriptionHtml": "<p>Línea residencial compacta. Ideal para cocinas urbanas: acabado inox, control mecánico preciso y cajones de alto deslizamiento.</p>",
+      "slug": "sj-air-fryer-55",
+      "name": "Air Fryer SJ 5.5L",
+      "model": "AIR055B",
+      "category": "air-fryers",
+      "categoryName": "Air fryers",
+      "image": "placeholders/demo-air-fryer.svg",
+      "images": ["placeholders/demo-air-fryer.svg"],
+      "excerpt": "5.5 L, panel táctil, cesta antiadherente apta lavavajillas.",
+      "descriptionHtml": "<p>Fríe, hornea y deshidrata con poco o ningún aceite. Cesta de gran capacidad para porciones familiares y apagado automático por seguridad.</p>",
       "attributes": [
-        { "label": "Capacidad neta", "value": "200 L" },
-        { "label": "Clase energética", "value": "A" },
-        { "label": "Color", "value": "Acero inoxidable" }
+        { "label": "Capacidad", "value": "5.5 L" },
+        { "label": "Potencia", "value": "1700 W" },
+        { "label": "Panel", "value": "Táctil digital" },
+        { "label": "Voltaje", "value": "120 V" }
       ]
     },
     {
       "id": 9002,
-      "slug": "sj-nevera-comercial-ex450",
-      "name": "Nevera Comercial EX-450",
-      "category": "neveras",
-      "categoryName": "Neveras",
-      "image": "placeholders/nevera2.jpg",
-      "images": [
-        "placeholders/nevera2.jpg",
-        "placeholders/sj-nevera.jpg"
-      ],
-      "excerpt": "450 L, uso intensivo, ventilación forzada y cerradura.",
-      "descriptionHtml": "<p>Diseñada para comercio y gastronomía. Soporta ciclos de apertura frecuentes y mantiene temperatura estable en climas cálidos.</p>",
+      "slug": "sj-air-fryer-80-digital",
+      "name": "Air Fryer SJ Digital 8L",
+      "model": "AIR080D",
+      "category": "air-fryers",
+      "categoryName": "Air fryers",
+      "image": "placeholders/demo-air-fryer.svg",
+      "images": ["placeholders/demo-air-fryer.svg"],
+      "excerpt": "8 L, doble cesta, 8 programas preestablecidos.",
+      "descriptionHtml": "<p>Formato familiar con dos cestas independientes para cocinar dos alimentos a distinta temperatura al mismo tiempo.</p>",
       "attributes": [
-        { "label": "Capacidad", "value": "450 L" },
-        { "label": "Tipo", "value": "Vertical comercial" }
+        { "label": "Capacidad", "value": "8 L" },
+        { "label": "Potencia", "value": "1800 W" },
+        { "label": "Programas", "value": "8 preestablecidos" }
       ]
     },
     {
       "id": 9003,
-      "slug": "sj-batidora-pro-5q",
-      "name": "Batidora SJ Pro 5Q",
-      "category": "batidoras",
-      "categoryName": "Batidoras",
-      "image": "placeholders/Carrete-Batidora-2_01.png",
-      "images": [
-        "placeholders/Carrete-Batidora-2_01.png",
-        "placeholders/Carrete-Batidora-2_02.png"
-      ],
-      "excerpt": "5 velocidades, bowl 4,5 L acero, accesorios aptos lavavajillas.",
-      "descriptionHtml": "<p>Motor silencioso con protección anti-sobrecalentamiento. Perfecta para masas pesadas y merengues.</p>",
-      "attributes": [{ "label": "Potencia", "value": "800 W" }]
+      "slug": "sj-sandwichera-grill-900",
+      "name": "Sandwichera SJ Grill 900W",
+      "model": "SAND900",
+      "category": "sandwicheras",
+      "categoryName": "Sandwicheras",
+      "image": "placeholders/demo-sandwichera.svg",
+      "images": ["placeholders/demo-sandwichera.svg"],
+      "excerpt": "Placas antiadherentes fijas, luces indicadoras, base antideslizante.",
+      "descriptionHtml": "<p>Sandwiches y paninis dorados en minutos. Cierre firme para un prensado parejo en cada tostada.</p>",
+      "attributes": [
+        { "label": "Potencia", "value": "900 W" },
+        { "label": "Placas", "value": "Antiadherentes fijas" }
+      ]
     },
     {
       "id": 9004,
-      "slug": "sj-batidora-compact-mix",
-      "name": "Batidora Compact Mix",
-      "category": "batidoras",
-      "categoryName": "Batidoras",
-      "image": "placeholders/Carrete-Batidora-2_02.png",
-      "images": [
-        "placeholders/Carrete-Batidora-2_02.png",
-        "placeholders/Carrete-Batidora-2_01.png"
-      ],
-      "excerpt": "Formato compacto, 3 accesorios, ideal para repostería diaria.",
-      "descriptionHtml": "<p>Ligera y estable. Incluye varillas y ganchos de amasado intercambiables.</p>",
-      "attributes": [{ "label": "Velocidades", "value": "6 + pulso" }]
+      "slug": "sj-sandwichera-doble-plancha",
+      "name": "Sandwichera SJ Doble Plancha",
+      "model": "SAND2PL",
+      "category": "sandwicheras",
+      "categoryName": "Sandwicheras",
+      "image": "placeholders/demo-sandwichera.svg",
+      "images": ["placeholders/demo-sandwichera.svg"],
+      "excerpt": "Placas intercambiables (sandwich / parrilla), bisagra flotante.",
+      "descriptionHtml": "<p>Dos usos en un equipo: cambia de placas para hacer sandwiches o carnes a la parrilla según lo que necesites.</p>",
+      "attributes": [
+        { "label": "Potencia", "value": "1000 W" },
+        { "label": "Placas", "value": "Intercambiables" }
+      ]
     },
     {
       "id": 9005,
-      "slug": "sj-cafetera-barista-touch",
-      "name": "Cafetera Barista Touch",
-      "category": "cafeteras",
-      "categoryName": "Cafeteras",
-      "image": "placeholders/Carrete-Cafetera-porsiaca-4_031_01.png",
-      "images": [
-        "placeholders/Carrete-Cafetera-porsiaca-4_031_01.png",
-        "placeholders/Carrete-Cafetera-porsiaca-4_031_02.png"
-      ],
-      "excerpt": "Presión 15 bar, caldera rápida, vaporizador orientable.",
-      "descriptionHtml": "<p>Extrae espresso con ángulos de filtrado uniforme. Panel frontal con indicadores de temperatura listos.</p>",
-      "attributes": [{ "label": "Presión", "value": "15 bar" }]
+      "slug": "sj-parrilla-xl-1200",
+      "name": "Parrilla Eléctrica SJ XL",
+      "model": "PARR1200",
+      "category": "parrillas",
+      "categoryName": "Parrillas eléctricas",
+      "image": "placeholders/demo-parrilla.svg",
+      "images": ["placeholders/demo-parrilla.svg"],
+      "excerpt": "Superficie XL, control de temperatura independiente, bandeja de grasa.",
+      "descriptionHtml": "<p>Para reuniones familiares: superficie amplia con zonas de calor uniforme y bandeja recolectora de grasa desmontable.</p>",
+      "attributes": [
+        { "label": "Potencia", "value": "1800 W" },
+        { "label": "Superficie", "value": "XL antiadherente" }
+      ]
     },
     {
       "id": 9006,
-      "slug": "sj-cafetera-drip-thermal",
-      "name": "Cafetera Drip Térmica 1,2 L",
-      "category": "cafeteras",
-      "categoryName": "Cafeteras",
-      "image": "placeholders/Carrete-Cafetera-porsiaca-4_031_03.png",
-      "images": [
-        "placeholders/Carrete-Cafetera-porsiaca-4_031_03.png",
-        "placeholders/Carrete-Cafetera-porsiaca-4_031_04.png"
-      ],
-      "excerpt": "Jarra térmica, filtro permanente, temporizador 24 h.",
-      "descriptionHtml": "<p>Café americano por goteo con conservación de aroma gracias a la jarra aislada.</p>",
-      "attributes": [{ "label": "Capacidad", "value": "1,2 L" }]
+      "slug": "sj-parrilla-compacta-600",
+      "name": "Parrilla Eléctrica SJ Compacta",
+      "model": "PARR600",
+      "category": "parrillas",
+      "categoryName": "Parrillas eléctricas",
+      "image": "placeholders/demo-parrilla.svg",
+      "images": ["placeholders/demo-parrilla.svg"],
+      "excerpt": "Formato compacto, ideal apartamentos, guardado vertical.",
+      "descriptionHtml": "<p>El tamaño justo para cocinas pequeñas, sin perder potencia ni superficie útil de cocción.</p>",
+      "attributes": [
+        { "label": "Potencia", "value": "1200 W" },
+        { "label": "Formato", "value": "Compacto" }
+      ]
     },
     {
       "id": 9007,
-      "slug": "sj-plancha-vapor-steam80",
-      "name": "Plancha vapor Steam 80",
-      "category": "planchas",
-      "categoryName": "Planchas",
-      "image": "placeholders/Carrete-Planchas_01.png",
-      "images": [
-        "placeholders/Carrete-Planchas_01.png",
-        "placeholders/Carrete-Planchas_02.png"
-      ],
-      "excerpt": "Suela cerámica, vapor vertical, anti-goteo.",
-      "descriptionHtml": "<p>Listo en segundos. Golpe de vapor para tejidos gruesos y delicados sin quemar.</p>",
-      "attributes": [{ "label": "Potencia", "value": "2400 W" }]
+      "slug": "sj-olla-arrocera-10",
+      "name": "Olla Arrocera SJ 10 Tazas",
+      "model": "OLLA10T",
+      "category": "ollas",
+      "categoryName": "Ollas",
+      "image": "placeholders/demo-olla.svg",
+      "images": ["placeholders/demo-olla.svg"],
+      "excerpt": "10 tazas, cocción y mantenimiento de calor automático, olla interior antiadherente.",
+      "descriptionHtml": "<p>Arroz en su punto todos los días. Cambia a modo \"mantener caliente\" automáticamente al terminar la cocción.</p>",
+      "attributes": [
+        { "label": "Capacidad", "value": "10 tazas" },
+        { "label": "Función", "value": "Mantener caliente" }
+      ]
     },
     {
       "id": 9008,
-      "slug": "sj-plancha-viaje-tiny",
-      "name": "Plancha de viaje Tiny",
-      "category": "planchas",
-      "categoryName": "Planchas",
-      "image": "placeholders/Carrete-Planchas_03.png",
-      "images": [
-        "placeholders/Carrete-Planchas_03.png",
-        "placeholders/Carrete-Planchas_01.png"
-      ],
-      "excerpt": "Peso mínimo, mango plegable, dual voltaje.",
-      "descriptionHtml": "<p>Cabe en cualquier maleta. No sacrifica calidad de planchado.</p>",
-      "attributes": [{ "label": "Peso", "value": "0,85 kg" }]
+      "slug": "sj-olla-presion-electrica-6l",
+      "name": "Olla de Presión Eléctrica SJ 6L",
+      "model": "OLLA6PE",
+      "category": "ollas",
+      "categoryName": "Ollas",
+      "image": "placeholders/demo-olla.svg",
+      "images": ["placeholders/demo-olla.svg"],
+      "excerpt": "6 L, múltiples programas, válvula de liberación de presión segura.",
+      "descriptionHtml": "<p>Guisos, granos y carnes listos en una fracción del tiempo, con programas preconfigurados para cada preparación.</p>",
+      "attributes": [
+        { "label": "Capacidad", "value": "6 L" },
+        { "label": "Programas", "value": "Múltiples preconfigurados" }
+      ]
     },
     {
       "id": 9009,
       "slug": "sj-licuadora-titan-1200",
-      "name": "Licuadora Titan 1200",
+      "name": "Licuadora SJ Titan 1200",
+      "model": "LIC1200",
       "category": "licuadoras",
       "categoryName": "Licuadoras",
       "image": "placeholders/Carrusel-Licuadoras_01.png",
@@ -146,14 +151,19 @@
         "placeholders/Carrusel-Licuadoras_01.png",
         "placeholders/Carrusel-Licuadoras_02.png"
       ],
-      "excerpt": "1200 W, vaso Tritan 1,8 L, cuchillas 6 filos.",
-      "descriptionHtml": "<p>Rompe hielo y frutos secos. Base antideslizante con ventosas de succión.</p>",
-      "attributes": [{ "label": "Programas", "value": "3 + manual" }]
+      "excerpt": "1200 W, vaso Tritan 1.8 L, cuchillas de 6 filos.",
+      "descriptionHtml": "<p>Rompe hielo y frutos secos sin esfuerzo. Base antideslizante con ventosas de succión para mayor estabilidad.</p>",
+      "attributes": [
+        { "label": "Potencia", "value": "1200 W" },
+        { "label": "Capacidad vaso", "value": "1.8 L" },
+        { "label": "Programas", "value": "3 + manual" }
+      ]
     },
     {
       "id": 9010,
       "slug": "sj-licuadora-personal-fit",
-      "name": "Licuadora personal Fit",
+      "name": "Licuadora SJ Personal",
+      "model": "LICPERS",
       "category": "licuadoras",
       "categoryName": "Licuadoras",
       "image": "placeholders/Carrusel-Licuad2oras_01.png",
@@ -162,39 +172,44 @@
         "placeholders/Carrusel-Licuadoras3_01.png",
         "placeholders/Carrusel-Licuadoras4_01.png"
       ],
-      "excerpt": "Botella deportiva incluida, tapa anti-fuga.",
-      "descriptionHtml": "<p>Smoothies en segundos. Llévala al gym con motor compacto pero potente.</p>",
-      "attributes": [{ "label": "Capacidad vaso", "value": "600 ml" }]
+      "excerpt": "Botella deportiva incluida, tapa anti-fuga, motor compacto.",
+      "descriptionHtml": "<p>Smoothies en segundos y listos para llevar: la botella se convierte en vaso de viaje con tapa hermética.</p>",
+      "attributes": [
+        { "label": "Capacidad vaso", "value": "600 ml" },
+        { "label": "Potencia", "value": "500 W" }
+      ]
     },
     {
       "id": 9011,
-      "slug": "sj-exprimidor-citrus-pro",
-      "name": "Exprimidor Cítricos Pro",
-      "category": "exprimidor",
-      "categoryName": "Exprimidor",
-      "image": "placeholders/Exprimidor-de-jugo_02.png",
-      "images": [
-        "placeholders/Exprimidor-de-jugo_02.png",
-        "placeholders/Exprimidor-de-jugo_03.png"
-      ],
-      "excerpt": "Cono universal, palanca profesional, filtro pulpa ajustable.",
-      "descriptionHtml": "<p>Jugo fresco sin esfuerzo. Base con depósito graduado de 1 L.</p>",
-      "attributes": [{ "label": "Potencia", "value": "160 W" }]
+      "slug": "sj-repuestos-kit-universal",
+      "name": "Kit de Repuestos SJ Universal",
+      "model": "REP-KIT01",
+      "category": "repuestos",
+      "categoryName": "Repuestos",
+      "image": "placeholders/demo-repuestos.svg",
+      "images": ["placeholders/demo-repuestos.svg"],
+      "excerpt": "Empaques, cuchillas y accesorios compatibles con varias líneas SJ.",
+      "descriptionHtml": "<p>Kit de mantenimiento con las piezas de reemplazo más solicitadas para prolongar la vida útil de tu equipo SJ.</p>",
+      "attributes": [
+        { "label": "Contenido", "value": "Empaques + cuchillas + accesorios" },
+        { "label": "Compatibilidad", "value": "Varias líneas SJ" }
+      ]
     },
     {
       "id": 9012,
-      "slug": "sj-exprimidor-compact-juice",
-      "name": "Exprimidor Compact Juice",
-      "category": "exprimidor",
-      "categoryName": "Exprimidor",
-      "image": "placeholders/Exprimidor-de-jugo_03.png",
-      "images": [
-        "placeholders/Exprimidor-de-jugo_03.png",
-        "placeholders/Exprimidor-de-jugo_02.png"
-      ],
-      "excerpt": "Guardado vertical, pie antideslizante, desmontable al lavavajillas.",
-      "descriptionHtml": "<p>Para cocinas pequeñas. Misma eficiencia que modelos grandes.</p>",
-      "attributes": [{ "label": "Garantía", "value": "2 años" }]
+      "slug": "sj-repuestos-jarra-licuadora",
+      "name": "Jarra de Repuesto para Licuadora SJ",
+      "model": "REP-JAR01",
+      "category": "repuestos",
+      "categoryName": "Repuestos",
+      "image": "placeholders/demo-repuestos.svg",
+      "images": ["placeholders/demo-repuestos.svg"],
+      "excerpt": "Jarra Tritan compatible con licuadoras SJ Titan y SJ Personal.",
+      "descriptionHtml": "<p>Reemplazo original para tu licuadora SJ: mismo ajuste y resistencia que la jarra de fábrica.</p>",
+      "attributes": [
+        { "label": "Material", "value": "Tritan" },
+        { "label": "Compatibilidad", "value": "SJ Titan 1200 / SJ Personal" }
+      ]
     }
   ]
 }
