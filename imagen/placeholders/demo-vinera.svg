@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Vinera">
+  <rect width="400" height="300" fill="#FFF1F1"/>
+  <g>
+    <!-- Wine cooler body -->
+    <rect x="130" y="50" width="140" height="210" rx="8" fill="#1F2937"/>
+    <rect x="140" y="60" width="120" height="190" rx="4" fill="#4E0508"/>
+    <!-- Glass door tint -->
+    <rect x="146" y="66" width="108" height="178" rx="3" fill="#74090E" opacity="0.85"/>
+    <!-- Shelves with bottles -->
+    <g fill="none" stroke="#FF9494" stroke-width="2">
+      <line x1="146" y1="110" x2="254" y2="110"/>
+      <line x1="146" y1="154" x2="254" y2="154"/>
+      <line x1="146" y1="198" x2="254" y2="198"/>
+    </g>
+    <g fill="#D3151E" stroke="#FF5C5C" stroke-width="1.5">
+      <circle cx="170" cy="96" r="8"/>
+      <circle cx="200" cy="96" r="8"/>
+      <circle cx="230" cy="96" r="8"/>
+      <circle cx="170" cy="140" r="8"/>
+      <circle cx="200" cy="140" r="8"/>
+      <circle cx="230" cy="140" r="8"/>
+      <circle cx="170" cy="184" r="8"/>
+      <circle cx="200" cy="184" r="8"/>
+      <circle cx="230" cy="184" r="8"/>
+    </g>
+    <!-- Handle -->
+    <rect x="256" y="90" width="8" height="70" rx="4" fill="#9CA3AF"/>
+    <!-- Base -->
+    <rect x="130" y="260" width="140" height="10" rx="2" fill="#111827"/>
+  </g>
+</svg>

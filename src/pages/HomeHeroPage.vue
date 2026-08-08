@@ -206,10 +206,10 @@ const heroPostBackgrounds = computed(() => heroBackgrounds.value.slice(0, 3))
 const contentImage = computed(() => heroBackgrounds.value[1] ?? heroBackgrounds.value[0])
 
 const placeholderFeatured = [
-  { id: 1, slug: null, name: 'Nevera SJ (demo)', category: 'refrigeradores', image: null },
-  { id: 2, slug: null, name: 'Campana de cocina (demo)', category: 'campanas', image: null },
-  { id: 3, slug: null, name: 'Horno eléctrico (demo)', category: 'hornos', image: null },
-  { id: 4, slug: null, name: 'Vinera (demo)', category: 'vineras', image: null }
+  { id: 1, slug: null, name: 'Nevera SJ (demo)', category: 'refrigeradores', image: 'placeholders/sj-nevera.jpg' },
+  { id: 2, slug: null, name: 'Campana de cocina (demo)', category: 'campanas', image: 'placeholders/demo-campana.svg' },
+  { id: 3, slug: null, name: 'Horno eléctrico (demo)', category: 'hornos', image: 'placeholders/demo-horno.svg' },
+  { id: 4, slug: null, name: 'Vinera (demo)', category: 'vineras', image: 'placeholders/demo-vinera.svg' }
 ]
 
 const featured = ref(placeholderFeatured)
