@@ -9,7 +9,7 @@
  * Mientras esté vacío, wa.me abre el selector de contacto de WhatsApp en vez de un chat directo
  * (no se inventa un teléfono).
  */
-export const WHATSAPP_PHONE = ''
+export const WHATSAPP_PHONE = '584127085268'
 
 /** Arma el link de WhatsApp con el mensaje ya cargado, usando WHATSAPP_PHONE si está definido. */
 export function whatsappLink(message) {
