@@ -302,6 +302,7 @@ import { useProduct, imgSrc, defaultCategoryLabel } from '../composables/useCata
 import { safeHref } from '../utils/publicAssetUrl'
 import { usePageMeta, useJsonLd } from '../composables/usePageMeta'
 import { useSanitizedHtml } from '../composables/useSanitizedHtml'
+import { whatsappLink } from '../config/whatsapp'
 
 const { fullPath } = useHashRoute()
 
@@ -370,8 +371,7 @@ const activeImage = computed(() => gallery.value[selectedIdx.value] ?? gallery.v
 const whatsappHref = computed(() => {
   const name = product.value?.name || 'este producto'
   const model = product.value?.model ? ` (${product.value.model})` : ''
-  const text = encodeURIComponent(`Hola SJ Electronics, quiero más información sobre ${name}${model}.`)
-  return `https://wa.me/?text=${text}`
+  return whatsappLink(`Hola SJ Electronics, quiero más información sobre ${name}${model}.`)
 })
 
 const specSheetHref = computed(() => safeHref(product.value?.documents?.specSheet?.url))

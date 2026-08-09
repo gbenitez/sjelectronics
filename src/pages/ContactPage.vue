@@ -168,6 +168,7 @@ import SJSelect from '../components/SJSelect.vue'
 import SJButton from '../components/SJButton.vue'
 import SJHeroSlideshow from '../components/SJHeroSlideshow.vue'
 import { usePageMeta } from '../composables/usePageMeta'
+import { whatsappLink } from '../config/whatsapp'
 
 usePageMeta({
   title: 'Contacto',
@@ -222,10 +223,7 @@ watch(form, () => {
 
 const topicLabel = computed(() => topics.find((t) => t.value === form.topic)?.label || form.topic)
 
-const whatsappHref = computed(() => {
-  const text = encodeURIComponent('Hola SJ Electronics, quisiera más información sobre sus productos.')
-  return `https://wa.me/?text=${text}`
-})
+const whatsappHref = computed(() => whatsappLink('Hola SJ Electronics, quisiera más información sobre sus productos.'))
 
 const onSubmit = async () => {
   attempted.value = true
@@ -245,9 +243,8 @@ const onSubmit = async () => {
     `Mensaje: ${form.message.trim()}`,
   ].filter(Boolean)
 
-  const text = encodeURIComponent(lines.join('\n'))
   await new Promise((resolve) => setTimeout(resolve, 350))
-  window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer')
+  window.open(whatsappLink(lines.join('\n')), '_blank', 'noreferrer')
   status.value = 'success'
 }
 

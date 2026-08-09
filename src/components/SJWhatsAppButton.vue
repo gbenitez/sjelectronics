@@ -15,6 +15,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { whatsappLink } from '../config/whatsapp'
 
 const props = defineProps({
   message: {
@@ -23,12 +24,5 @@ const props = defineProps({
   },
 })
 
-// TODO: agregar número real en formato E.164 sin "+" (ej. 584121234567) cuando esté disponible.
-// Sin número, wa.me abre el selector de contacto de WhatsApp (no se inventa un teléfono).
-const phone = ''
-
-const href = computed(() => {
-  const text = encodeURIComponent(props.message)
-  return phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`
-})
+const href = computed(() => whatsappLink(props.message))
 </script>

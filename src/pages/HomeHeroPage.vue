@@ -216,6 +216,7 @@ import SJHeroSlideshow from '../components/SJHeroSlideshow.vue'
 import { publicAssetUrl } from '../utils/publicAssetUrl'
 import { useProductList, usePostList, categoryLabelFrom, defaultCategoryLabel } from '../composables/useCatalogSource'
 import { usePageMeta } from '../composables/usePageMeta'
+import { whatsappLink } from '../config/whatsapp'
 
 usePageMeta({
   path: '/',
@@ -248,8 +249,7 @@ const heroSlides = [
   },
 ]
 
-const whatsappMessage = 'Hola SJ Electronics, quiero más información sobre sus productos.'
-const whatsappHref = computed(() => `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`)
+const whatsappHref = computed(() => whatsappLink('Hola SJ Electronics, quiero más información sobre sus productos.'))
 
 const categories = [
   { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: srcFor('banner 2026-02-07 at 15.09.20.png') },

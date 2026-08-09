@@ -133,6 +133,7 @@ import { computed, ref, watch } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
 import { useProductList, imgSrc, normalizeCategory, categoryLabelFrom, defaultCategoryLabel } from '../composables/useCatalogSource'
 import { usePageMeta } from '../composables/usePageMeta'
+import { whatsappLink } from '../config/whatsapp'
 
 const { fullPath, setPath } = useHashRoute()
 
@@ -150,10 +151,8 @@ const productHref = (p) => {
   return `#/producto?id=${encodeURIComponent(String(id ?? ''))}`
 }
 
-const whatsappHrefFor = (p) => {
-  const text = encodeURIComponent(`Hola SJ Electronics, quiero más información sobre ${p.name}${p.model ? ` (${p.model})` : ''}.`)
-  return `https://wa.me/?text=${text}`
-}
+const whatsappHrefFor = (p) =>
+  whatsappLink(`Hola SJ Electronics, quiero más información sobre ${p.name}${p.model ? ` (${p.model})` : ''}.`)
 
 const categoryLabel = (id) => categoryLabelFrom(categories, id) || defaultCategoryLabel(id)
 
