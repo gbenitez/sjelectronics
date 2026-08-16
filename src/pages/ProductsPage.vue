@@ -9,70 +9,127 @@
           Productos
         </h1>
         <p class="mt-4 text-lg sm:text-xl text-neutral-600 dark:text-white/70 max-w-2xl">
-          Air fryers, sandwicheras, parrillas, ollas, licuadoras y repuestos para tu cocina y tu hogar.
+          Línea blanca, climatización, electrodomésticos y equipos para el hogar, el comercio y la oficina.
         </p>
       </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-      <!-- Filtro por categoría + buscador -->
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+    <section class="border-b border-neutral-200 dark:border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col gap-5">
+        <!-- Selector de categoría (mega-menú) -->
+        <div class="relative w-full max-w-md">
           <button
             type="button"
-            class="shrink-0 text-xs font-semibold uppercase tracking-wide px-3.5 py-2 border transition focus-ring"
-            :class="selectedCategory === 'all'
-              ? 'bg-brand-primary-600 border-brand-primary-600 text-white'
-              : 'border-neutral-300 dark:border-white/15 text-neutral-700 dark:text-white/75 hover:border-neutral-900/30 dark:hover:border-white/30'"
-            @click="setCategory('all')"
+            class="w-full flex items-center justify-between gap-3 min-h-[48px] px-4 py-3 rounded-md border text-left transition focus-ring"
+            :class="menuOpen
+              ? 'bg-neutral-100 dark:bg-white/10 border-brand-primary-500'
+              : 'bg-neutral-50 dark:bg-white/5 border-neutral-200 dark:border-white/15 hover:border-neutral-900/30 dark:hover:border-white/30'"
+            @click="toggleMenu"
           >
-            Todos
+            <span class="flex items-center gap-2.5 min-w-0">
+              <span class="text-sm font-semibold uppercase tracking-wide truncate">{{ selectedLabel }}</span>
+              <span class="shrink-0 font-mono text-[11px] font-medium text-neutral-500 dark:text-white/45">{{ selectedCount }}</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" class="shrink-0 h-4 w-4 text-brand-primary-600 dark:text-brand-primary-400 transition-transform" :class="menuOpen ? 'rotate-180' : ''">
+              <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
           </button>
+
           <button
-            v-for="c in categories"
-            :key="c.id"
+            v-if="menuOpen"
             type="button"
-            class="shrink-0 text-xs font-semibold uppercase tracking-wide px-3.5 py-2 border transition focus-ring"
-            :class="selectedCategory === c.id
-              ? 'bg-brand-primary-600 border-brand-primary-600 text-white'
-              : 'border-neutral-300 dark:border-white/15 text-neutral-700 dark:text-white/75 hover:border-neutral-900/30 dark:hover:border-white/30'"
-            @click="setCategory(c.id)"
+            class="fixed inset-0 z-20 cursor-default"
+            aria-label="Cerrar selector de categorías"
+            @click="menuOpen = false"
+          />
+
+          <div
+            v-if="menuOpen"
+            class="absolute top-[56px] left-0 z-30 w-[min(520px,calc(100vw-2rem))] rounded-lg border border-neutral-200 dark:border-white/15 bg-white dark:bg-[#121212] p-3 shadow-lg flex flex-col gap-2.5"
           >
-            {{ c.label }}
+            <div class="flex items-center gap-2.5 rounded-md border border-neutral-200 dark:border-white/15 bg-neutral-50 dark:bg-white/5 px-3 py-2.5">
+              <svg viewBox="0 0 24 24" fill="none" class="shrink-0 h-4 w-4 text-neutral-400 dark:text-white/40">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7" />
+                <path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              </svg>
+              <input
+                v-model="qCat"
+                type="text"
+                :placeholder="`Escribe para filtrar las ${categoriesWithCount.length} categorías…`"
+                class="w-full bg-transparent border-0 outline-none text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-white/40"
+              />
+            </div>
+
+            <button
+              type="button"
+              class="text-left pb-3 border-b border-neutral-200 dark:border-white/10 text-xs font-bold uppercase tracking-wide hover:text-brand-primary-600 dark:hover:text-brand-primary-400 transition"
+              @click="pickCategory('all')"
+            >
+              Todos los productos
+              <span class="font-mono font-normal normal-case text-neutral-500 dark:text-white/45">{{ totalCount }}</span>
+            </button>
+
+            <div class="grid gap-x-3.5 gap-y-0.5 max-h-[340px] overflow-auto" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr))">
+              <button
+                v-for="c in menuCategories"
+                :key="c.id"
+                type="button"
+                class="flex items-center justify-between gap-2.5 rounded px-2 py-2.5 min-h-[40px] text-sm text-left transition"
+                :class="selectedCategory === c.id
+                  ? 'bg-brand-primary-600 text-white'
+                  : 'text-neutral-700 dark:text-white/75 hover:bg-neutral-100 dark:hover:bg-white/10'"
+                @click="pickCategory(c.id)"
+              >
+                <span class="truncate">{{ c.label }}</span>
+                <span
+                  class="font-mono text-[11px] shrink-0"
+                  :class="selectedCategory === c.id ? 'text-white/80' : 'text-neutral-400 dark:text-white/40'"
+                >{{ c.count }}</span>
+              </button>
+            </div>
+
+            <p v-if="!menuCategories.length" class="font-mono text-xs text-neutral-400 dark:text-white/35 px-1.5">
+              Ninguna categoría coincide.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chips: categorías más buscadas -->
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-neutral-400 dark:text-white/40">Más buscados</span>
+          <button
+            v-for="t in topCategories"
+            :key="t.id"
+            type="button"
+            class="rounded-pill px-4 py-2.5 min-h-[40px] text-xs font-semibold uppercase tracking-wide border transition"
+            :class="selectedCategory === t.id
+              ? 'bg-brand-primary-600 border-brand-primary-600 text-white'
+              : 'bg-neutral-50 dark:bg-white/5 border-neutral-200 dark:border-white/15 text-neutral-700 dark:text-white/75 hover:border-neutral-900/30 dark:hover:border-white/30'"
+            @click="toggleTopChip(t.id)"
+          >
+            {{ t.label }}
           </button>
         </div>
 
-        <label class="relative block w-full lg:w-72 shrink-0">
-          <span class="sr-only">Buscar productos</span>
-          <svg viewBox="0 0 24 24" fill="none" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 dark:text-white/40">
-            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7" />
-            <path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-          </svg>
-          <input
-            v-model="query"
-            type="search"
-            placeholder="Buscar por nombre o modelo…"
-            class="w-full min-h-[44px] pl-9 pr-3 py-2.5 rounded-md border bg-white dark:bg-white/5 text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-white/40 border-neutral-200 dark:border-white/10 focus:outline-none focus:ring-3 focus:ring-brand-primary-500/35 focus:border-brand-primary-500"
-          />
-        </label>
+        <p v-if="isFallback" class="w-fit text-xs font-medium text-neutral-500 dark:text-white/45 border border-neutral-200 dark:border-white/10 px-3 py-2">
+          Mostrando catálogo de demostración.
+        </p>
+
+        <div class="border-t border-neutral-200 dark:border-white/10 pt-4">
+          <span class="font-mono text-sm text-neutral-600 dark:text-white/55">{{ resultLabel }}</span>
+        </div>
       </div>
+    </section>
 
-      <p v-if="isFallback" class="mb-6 text-xs font-medium text-neutral-500 dark:text-white/45 border border-neutral-200 dark:border-white/10 px-3 py-2 inline-block">
-        Mostrando catálogo de demostración.
-      </p>
-
-      <!-- Grid -->
-      <div v-if="visibleProducts.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <article
-          v-for="p in visibleProducts"
+    <!-- Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <div v-if="shownProducts.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <a
+          v-for="p in shownProducts"
           :key="p.id"
-          class="group relative bg-white dark:bg-white/[0.03] border border-neutral-200 dark:border-white/10 hover:border-neutral-900/25 dark:hover:border-white/25 transition"
+          :href="productHref(p)"
+          class="group bg-white dark:bg-white/[0.03] border border-neutral-200 dark:border-white/10 hover:border-neutral-900/25 dark:hover:border-white/25 rounded-lg overflow-hidden flex flex-col transition focus-ring"
         >
-          <a
-            class="absolute inset-0 z-[1] focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary-500/45"
-            :href="productHref(p)"
-            :aria-label="`Ver ${p.name}`"
-          />
           <div class="aspect-[4/3] bg-neutral-50 dark:bg-white/5 flex items-center justify-center overflow-hidden">
             <img
               v-if="imgSrc(p.image)"
@@ -91,39 +148,36 @@
             </div>
           </div>
 
-          <div class="p-5">
-            <div class="flex items-start justify-between gap-3">
-              <h3 class="text-base font-semibold leading-snug line-clamp-2">{{ p.name }}</h3>
-              <span v-if="p.model" class="shrink-0 text-[11px] font-mono font-semibold text-neutral-500 dark:text-white/45 mt-0.5">
-                {{ p.model }}
-              </span>
-            </div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-brand-primary-600 dark:text-brand-primary-400 mt-2">
-              {{ categoryLabel(p.category) }}
-            </p>
-            <p v-if="p.excerpt" class="text-sm text-neutral-600 dark:text-white/60 mt-2 line-clamp-2">
-              {{ p.excerpt }}
-            </p>
-
-            <a
-              :href="whatsappHrefFor(p)"
-              target="_blank"
-              rel="noreferrer"
-              class="relative z-[2] mt-4 inline-flex items-center justify-center min-h-[40px] px-4 border-2 border-neutral-900 dark:border-white text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-900 transition focus-ring"
-            >
-              Consultar
-            </a>
+          <div class="p-4 flex flex-col gap-1.5">
+            <span class="font-mono text-[10px] font-semibold uppercase tracking-wide text-brand-primary-600 dark:text-brand-primary-400">
+              {{ p.categoryName || categoryLabel(p.category) }}
+            </span>
+            <span class="text-[15px] font-semibold leading-snug line-clamp-2">{{ p.name }}</span>
+            <span v-if="p.model" class="font-mono text-[11px] text-neutral-500 dark:text-white/45">{{ p.model }}</span>
           </div>
-        </article>
+        </a>
       </div>
 
-      <p v-else class="text-neutral-600 dark:text-white/60 py-16 text-center">
-        No encontramos productos con ese filtro.
-      </p>
+      <div v-else class="flex flex-col items-start gap-4 py-16">
+        <span class="font-mono text-sm text-neutral-500 dark:text-white/55">Ningún producto coincide con la búsqueda.</span>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center min-h-[44px] px-5 rounded-pill bg-brand-primary-600 text-white text-xs font-bold uppercase tracking-wide hover:bg-brand-primary-700 transition focus-ring"
+          @click="reset"
+        >
+          Limpiar filtros
+        </button>
+      </div>
 
-      <p class="mt-8 text-sm text-neutral-600 dark:text-white/55">
-        Mostrando {{ visibleProducts.length }} de {{ products.length }} productos
-      </p>
+      <div v-if="hasMore" class="flex justify-center pt-10">
+        <button
+          type="button"
+          class="inline-flex items-center justify-center min-h-[48px] px-7 rounded-pill border border-neutral-300 dark:border-white/15 text-sm font-bold uppercase tracking-wide hover:border-brand-primary-500 hover:text-brand-primary-600 dark:hover:text-brand-primary-400 transition focus-ring"
+          @click="loadMore"
+        >
+          Cargar {{ moreCount }} más
+        </button>
+      </div>
     </section>
   </div>
 </template>
@@ -133,13 +187,15 @@ import { computed, ref, watch } from 'vue'
 import { useHashRoute } from '../composables/useHashRoute'
 import { useProductList, imgSrc, normalizeCategory, categoryLabelFrom, defaultCategoryLabel } from '../composables/useCatalogSource'
 import { usePageMeta } from '../composables/usePageMeta'
-import { whatsappLink } from '../config/whatsapp'
+
+const PAGE = 24
+const TOP_CHIPS = 5
 
 const { fullPath, setPath } = useHashRoute()
 
 usePageMeta({
   title: 'Productos',
-  description: 'Catálogo SJ Electronics: air fryers, sandwicheras, parrillas, ollas, licuadoras y repuestos.',
+  description: 'Catálogo SJ Electronics: línea blanca, climatización, electrodomésticos y equipos para el hogar, el comercio y la oficina.',
   path: '/productos',
 })
 const { products, categories, isFallback } = useProductList()
@@ -151,13 +207,12 @@ const productHref = (p) => {
   return `#/producto?id=${encodeURIComponent(String(id ?? ''))}`
 }
 
-const whatsappHrefFor = (p) =>
-  whatsappLink(`Hola SJ Electronics, quiero más información sobre ${p.name}${p.model ? ` (${p.model})` : ''}.`)
-
 const categoryLabel = (id) => categoryLabelFrom(categories, id) || defaultCategoryLabel(id)
 
 const selectedCategory = ref('all')
-const query = ref('')
+const menuOpen = ref(false)
+const qCat = ref('')
+const shown = ref(PAGE)
 
 const categoryFromRoute = computed(() => {
   try {
@@ -177,6 +232,8 @@ const setCategory = (cat) => {
   const ids = categories.value.map((c) => c.id)
   const finalCat = norm && ids.includes(norm) ? norm : 'all'
   selectedCategory.value = finalCat
+  menuOpen.value = false
+  qCat.value = ''
   setPath(finalCat !== 'all' ? `/productos/${finalCat}` : '/productos')
 }
 
@@ -194,16 +251,81 @@ watch(
   { immediate: true },
 )
 
-const visibleProducts = computed(() => {
-  const q = query.value.trim().toLowerCase()
-  return products.value.filter((p) => {
-    if (selectedCategory.value !== 'all' && p.category !== selectedCategory.value) return false
-    if (!q) return true
-    return (
-      p.name.toLowerCase().includes(q) ||
-      (p.model || '').toLowerCase().includes(q) ||
-      (p.excerpt || '').toLowerCase().includes(q)
-    )
-  })
+watch(selectedCategory, () => {
+  shown.value = PAGE
 })
+
+const totalCount = computed(() => products.value.length)
+
+const countsByCategory = computed(() => {
+  const m = new Map()
+  for (const p of products.value) {
+    m.set(p.category, (m.get(p.category) || 0) + 1)
+  }
+  return m
+})
+
+const categoriesWithCount = computed(() =>
+  categories.value.map((c) => ({ id: c.id, label: c.label, count: countsByCategory.value.get(c.id) || 0 })),
+)
+
+const menuCategories = computed(() => {
+  const q = qCat.value.trim().toLowerCase()
+  return categoriesWithCount.value
+    .slice()
+    .sort((a, b) => a.label.localeCompare(b.label, 'es'))
+    .filter((c) => !q || c.label.toLowerCase().includes(q))
+})
+
+const topCategories = computed(() =>
+  categoriesWithCount.value
+    .slice()
+    .sort((a, b) => b.count - a.count)
+    .slice(0, TOP_CHIPS),
+)
+
+const selectedLabel = computed(() =>
+  selectedCategory.value === 'all'
+    ? 'Todas las categorías'
+    : categoriesWithCount.value.find((c) => c.id === selectedCategory.value)?.label || categoryLabel(selectedCategory.value),
+)
+
+const selectedCount = computed(() =>
+  selectedCategory.value === 'all'
+    ? totalCount.value
+    : countsByCategory.value.get(selectedCategory.value) || 0,
+)
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+  qCat.value = ''
+}
+
+const pickCategory = (id) => setCategory(id)
+
+const toggleTopChip = (id) => {
+  setCategory(selectedCategory.value === id ? 'all' : id)
+}
+
+const visibleProducts = computed(() => {
+  if (selectedCategory.value === 'all') return products.value
+  return products.value.filter((p) => p.category === selectedCategory.value)
+})
+
+const shownProducts = computed(() => visibleProducts.value.slice(0, shown.value))
+const hasMore = computed(() => shown.value < visibleProducts.value.length)
+const moreCount = computed(() => Math.min(PAGE, visibleProducts.value.length - shown.value))
+const loadMore = () => {
+  shown.value += PAGE
+}
+
+const resultLabel = computed(() => {
+  const total = visibleProducts.value.length
+  const n = shownProducts.value.length
+  const base = n < total ? `${n} de ${total}` : `${total}`
+  const suffix = selectedCategory.value !== 'all' ? ` · ${selectedLabel.value}` : ''
+  return `${base} producto${total === 1 ? '' : 's'}${suffix}`
+})
+
+const reset = () => setCategory('all')
 </script>

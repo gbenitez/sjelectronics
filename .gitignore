@@ -40,3 +40,4 @@ skills-lock.json
 .agents
 .claude
 .kiro
+docs/*

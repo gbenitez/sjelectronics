@@ -17,11 +17,22 @@
  *
  * Variables opcionales:
  * - WP_PRODUCTS_ALLOWED_HOSTS="localhost,127.0.0.1,miwp.com" (whitelist anti-SSRF)
- * - WP_PRODUCTS_TIMEOUT=5 (segundos)
- * - WP_PRODUCTS_MAX_BYTES=8000000 (límite de bytes; subilo si el catálogo es muy grande)
- * - WP_PRODUCTS_PER_PAGE=50 (1–100; menos ítems = JSON más chico con _embed)
+ * - WP_PRODUCTS_TIMEOUT=5 (segundos, por página pedida a WP)
+ * - WP_PRODUCTS_MAX_BYTES=8000000 (límite de bytes por página; subilo si el catálogo es muy grande)
+ * - WP_PRODUCTS_PER_PAGE=50 (1–100; menos ítems = JSON más chico con _embed, por página)
+ * - WP_PRODUCTS_MAX_PAGES=20 (tope de páginas a recorrer; evita loops si WP responde raro)
  * - WP_PRODUCTS_CACHE_TTL=30 (segundos; 0 desactiva cache)
  * - WP_API_CORS_ORIGINS="https://miweb.com,http://localhost:3000" (CORS allowlist)
+ *
+ * PAGINACIÓN: WordPress limita `per_page` a 100 como máximo, así que si el catálogo
+ * tiene más productos que eso hace falta pedir varias páginas (`page=1`, `page=2`, ...)
+ * y juntarlas. Este archivo recorre automáticamente todas las páginas hasta:
+ *   - que una página devuelva menos ítems que WP_PRODUCTS_PER_PAGE (última página), o
+ *   - que WP responda "rest_post_invalid_page_number" (se pasó del total), o
+ *   - que se llegue a WP_PRODUCTS_MAX_PAGES.
+ * Si la página 1 falla, se comporta igual que antes (cae al catálogo local de fallback).
+ * Si falla una página posterior, se devuelve lo que se alcanzó a traer (parcial) en vez
+ * de descartar todo, marcado con meta.partial = true.
  */
 
 declare(strict_types=1);
@@ -57,16 +68,22 @@ function normalize_text(?string $html): string {
   return trim($text ?? '');
 }
 
-function build_url(string $base): string {
+function build_url(string $base, int $perPage, int $page): string {
   $base = rtrim($base, '/');
-  // _embed infla mucho el JSON; per_page alto + catálogo grande supera WP_PRODUCTS_MAX_BYTES.
-  $perPage = (int) (getenv('WP_PRODUCTS_PER_PAGE') ?: 50);
-  $perPage = max(1, min(100, $perPage));
+  // _embed infla mucho el JSON; por eso per_page se pagina en vez de pedirse todo de una.
   $qs = http_build_query([
     '_embed' => '1',
     'per_page' => (string)$perPage,
+    'page' => (string)$page,
   ]);
   return $base . '/?' . $qs;
+}
+
+function is_invalid_page_response(array $httpGetResult): bool {
+  // WP REST API responde 400 con este código cuando `page` supera el total de páginas.
+  // No es un error real: es la señal de "ya no hay más resultados".
+  return $httpGetResult['status'] === 400
+    && stripos($httpGetResult['body'], 'rest_post_invalid_page_number') !== false;
 }
 
 function parse_csv_env(?string $v): array {
@@ -188,7 +205,6 @@ function http_get(string $url, int $timeoutSeconds = 4, int $maxBytes = 2000000)
     $curlErr = curl_error($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curlCode = (int) curl_errno($ch);
-    curl_close($ch);
 
     if ($okExec === false || $curlCode !== 0) {
       $msg = $curlErr ?: 'cURL error';
@@ -217,12 +233,15 @@ function http_get(string $url, int $timeoutSeconds = 4, int $maxBytes = 2000000)
   }
 
   $status = 200;
-  if (isset($http_response_header) && is_array($http_response_header)) {
-    foreach ($http_response_header as $h) {
-      if (preg_match('#^HTTP/\S+\s+(\d{3})#', $h, $m)) {
-        $status = (int)$m[1];
-        break;
-      }
+  // PHP 8.5 deprecó la variable mágica $http_response_header (basta con nombrarla
+  // en el código, aunque esta rama nunca se ejecute, para que el parser la marque
+  // como deprecada y la imprima ANTES del JSON de respuesta, rompiendo el parseo
+  // en el frontend). http_get_last_response_headers() es su reemplazo desde 8.5.
+  $responseHeaders = function_exists('http_get_last_response_headers') ? http_get_last_response_headers() : [];
+  foreach ($responseHeaders as $h) {
+    if (preg_match('#^HTTP/\S+\s+(\d{3})#', $h, $m)) {
+      $status = (int)$m[1];
+      break;
     }
   }
   return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => (string)$body, 'error' => null];
@@ -272,8 +291,11 @@ if (!$validated['ok']) {
 }
 
 $endpoint = $validated['endpoint'];
-$url = build_url($endpoint);
-sj_api_debug_headers($endpoint, $url);
+
+$perPage = (int) (getenv('WP_PRODUCTS_PER_PAGE') ?: 50);
+$perPage = max(1, min(100, $perPage));
+$maxPages = (int) (getenv('WP_PRODUCTS_MAX_PAGES') ?: 20);
+$maxPages = max(1, min(100, $maxPages));
 
 $timeout = (int) (getenv('WP_PRODUCTS_TIMEOUT') ?: 5);
 $timeout = max(1, min(30, $timeout));
@@ -282,8 +304,12 @@ $maxBytes = max(250000, min(15728640, $maxBytes));
 $ttl = (int) (getenv('WP_PRODUCTS_CACHE_TTL') ?: 30);
 $ttl = max(0, min(3600, $ttl));
 
+// Clave de cache para el payload YA paginado/agregado (no es la URL de una sola página).
+$cacheKey = $endpoint . '?_embed=1&per_page=' . $perPage . '&all_pages=1';
+sj_api_debug_headers($endpoint, build_url($endpoint, $perPage, 1));
+
 // Cache + ETag
-$cached = cache_read($url, $ttl);
+$cached = cache_read($cacheKey, $ttl);
 if ($cached) {
   header('ETag: ' . $cached['etag']);
   header('Cache-Control: private, max-age=' . $ttl);
@@ -301,66 +327,99 @@ if ($cached) {
 }
 
 header('X-Cache: MISS');
-$res = http_get($url, $timeout, $maxBytes);
-sj_api_debug_headers($endpoint, $url, $res);
 
-if (!$res['ok']) {
-  sj_log_upstream_error('wp-products upstream_unavailable', $res['error'], $endpoint);
-  require_once __DIR__ . '/fallback_lib.php';
-  $fb = sj_fallback_products_for_list();
-  if ($fb !== []) {
-    respond(200, [
-      'ok' => true,
-      'products' => $fb,
-      'meta' => [
-        'count' => count($fb),
-        'fallback' => true,
-        'source' => 'local_catalog',
-        'reason' => 'upstream_unavailable',
-      ],
-    ]);
+// Recorre páginas de la REST API de WP hasta agotar el catálogo (ver comentario arriba).
+$data = [];
+$lastUrl = '';
+$lastRes = null;
+$partial = false;
+for ($page = 1; $page <= $maxPages; $page++) {
+  $lastUrl = build_url($endpoint, $perPage, $page);
+  $res = http_get($lastUrl, $timeout, $maxBytes);
+  $lastRes = $res;
+
+  if (!$res['ok']) {
+    if (is_invalid_page_response($res)) {
+      break; // Se pasó del total de páginas: fin normal de la paginación.
+    }
+    if ($page === 1) {
+      // La primera página falló: mismo comportamiento que antes (fallback completo).
+      sj_log_upstream_error('wp-products upstream_unavailable', $res['error'], $endpoint);
+      require_once __DIR__ . '/fallback_lib.php';
+      $fb = sj_fallback_products_for_list();
+      if ($fb !== []) {
+        respond(200, [
+          'ok' => true,
+          'products' => $fb,
+          'meta' => [
+            'count' => count($fb),
+            'fallback' => true,
+            'source' => 'local_catalog',
+            'reason' => 'upstream_unavailable',
+          ],
+        ]);
+      }
+      respond(502, [
+        'ok' => false,
+        'error' => ['message' => 'No se pudo obtener respuesta del API.', 'status' => $res['status']],
+        'products' => [],
+      ]);
+    }
+    // Falló una página posterior a la primera: nos quedamos con lo que ya tenemos.
+    sj_log_upstream_error('wp-products upstream_unavailable_partial', $res['error'], $endpoint);
+    $partial = true;
+    break;
   }
-  respond(502, [
-    'ok' => false,
-    'error' => [
-      'message' => 'No se pudo obtener respuesta del API.',
-      'status' => $res['status'],
-    ],
-    'products' => [],
-  ]);
+
+  try {
+    $pageData = json_decode($res['body'], true, 512, JSON_THROW_ON_ERROR);
+  } catch (Throwable $e) {
+    $pageData = null;
+  }
+
+  if (!is_array($pageData)) {
+    if ($page === 1) {
+      require_once __DIR__ . '/fallback_lib.php';
+      $fb = sj_fallback_products_for_list();
+      if ($fb !== []) {
+        respond(200, [
+          'ok' => true,
+          'products' => $fb,
+          'meta' => [
+            'count' => count($fb),
+            'fallback' => true,
+            'source' => 'local_catalog',
+            'reason' => 'invalid_json',
+          ],
+        ]);
+      }
+      sj_log_upstream_error('wp-products invalid_json', 'JSON inválido en ' . $lastUrl, $endpoint);
+      respond(502, [
+        'ok' => false,
+        'error' => ['message' => 'Respuesta inválida: JSON no decodificable.', 'status' => $res['status']],
+        'products' => [],
+      ]);
+    }
+    // JSON inválido en una página posterior: nos quedamos con lo que ya tenemos.
+    sj_log_upstream_error('wp-products invalid_json_partial', 'JSON inválido en ' . $lastUrl, $endpoint);
+    $partial = true;
+    break;
+  }
+
+  if (count($pageData) === 0) {
+    break; // Página vacía: no hay más productos.
+  }
+
+  foreach ($pageData as $item) {
+    $data[] = $item;
+  }
+
+  if (count($pageData) < $perPage) {
+    break; // Trajo menos de lo pedido: era la última página.
+  }
 }
 
-// Responde JSON; validamos decode.
-try {
-  $data = json_decode($res['body'], true, 512, JSON_THROW_ON_ERROR);
-} catch (Throwable $e) {
-  $data = null;
-}
-if (!is_array($data)) {
-  require_once __DIR__ . '/fallback_lib.php';
-  $fb = sj_fallback_products_for_list();
-  if ($fb !== []) {
-    respond(200, [
-      'ok' => true,
-      'products' => $fb,
-      'meta' => [
-        'count' => count($fb),
-        'fallback' => true,
-        'source' => 'local_catalog',
-        'reason' => 'invalid_json',
-      ],
-    ]);
-  }
-  sj_log_upstream_error('wp-products invalid_json', 'JSON inválido en ' . $url, $endpoint);
-  respond(502, [
-    'ok' => false,
-    'error' => [
-      'message' => 'Respuesta inválida: JSON no decodificable.',
-      'status' => $res['status'],
-    ],
-    'products' => [],
-  ]);
-}
+sj_api_debug_headers($endpoint, $lastUrl, $lastRes);
 
 $products = [];
 foreach ($data as $item) {
@@ -405,10 +464,10 @@ $payload = [
   'ok' => true,
   'products' => $products,
   'meta' => sj_api_debug_merge_meta(
-    ['count' => count($products)],
+    ['count' => count($products), 'pages' => $page, 'partial' => $partial],
     $endpoint,
-    $url,
-    $res
+    $lastUrl,
+    $lastRes
   ),
 ];
 
@@ -418,7 +477,7 @@ $etag = '"' . sha1($body ?: '') . '"';
 header('ETag: ' . $etag);
 header('Cache-Control: private, max-age=' . $ttl);
 if (is_string($body)) {
-  cache_write($url, $body, $etag);
+  cache_write($cacheKey, $body, $etag);
   if (!$isHead) {
     echo $body;
   }

@@ -191,7 +191,6 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
     $curlErr = curl_error($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curlCode = (int) curl_errno($ch);
-    curl_close($ch);
     if ($okExec === false || $curlCode !== 0) {
       $msg = $curlErr ?: 'cURL error';
       if ($curlCode === CURLE_WRITE_ERROR) $msg = 'Respuesta demasiado grande (limitada por servidor).';
@@ -216,12 +215,15 @@ function http_get(string $url, int $timeoutSeconds = 5, int $maxBytes = 2000000)
     return ['ok' => false, 'status' => 0, 'body' => '', 'error' => 'Respuesta demasiado grande (limitada por servidor).'];
   }
   $status = 200;
-  if (isset($http_response_header) && is_array($http_response_header)) {
-    foreach ($http_response_header as $h) {
-      if (preg_match('#^HTTP/\S+\s+(\d{3})#', $h, $m)) {
-        $status = (int)$m[1];
-        break;
-      }
+  // PHP 8.5 deprecó la variable mágica $http_response_header (basta con nombrarla
+  // en el código, aunque esta rama nunca se ejecute, para que el parser la marque
+  // como deprecada y la imprima ANTES del JSON de respuesta, rompiendo el parseo
+  // en el frontend). http_get_last_response_headers() es su reemplazo desde 8.5.
+  $responseHeaders = function_exists('http_get_last_response_headers') ? http_get_last_response_headers() : [];
+  foreach ($responseHeaders as $h) {
+    if (preg_match('#^HTTP/\S+\s+(\d{3})#', $h, $m)) {
+      $status = (int)$m[1];
+      break;
     }
   }
   return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => (string)$body, 'error' => null];

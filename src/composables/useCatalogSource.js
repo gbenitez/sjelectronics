@@ -11,29 +11,52 @@ import { publicAssetUrl } from '../utils/publicAssetUrl'
 const TIMEOUT_MS = 5000
 const RETRIES = 1
 
-/** Categorías reales de la marca (aire, sandwichera, parrilla, olla, licuadora, repuestos). */
-export const CATEGORY_ORDER = ['air-fryers', 'sandwicheras', 'parrillas', 'ollas', 'licuadoras', 'repuestos']
+/** Orden de categorías: se toma tal cual del catálogo (JSON local o respuesta de WordPress). */
+export const CATEGORY_ORDER = (fallbackCatalog.categories || []).map((c) => c.slug)
 
-const CATEGORY_ALIASES = {
-  // Compatibilidad con slugs antiguos del catálogo genérico anterior.
-  refrigeradores: 'ollas',
-  neveras: 'ollas',
-  batidoras: 'licuadoras',
-  cafeteras: 'ollas',
-  planchas: 'parrillas',
-  exprimidor: 'licuadoras',
-  campanas: 'parrillas',
-  hornos: 'ollas',
-  vineras: 'repuestos',
-}
+// Sin alias: cada slug del catálogo es su propia categoría. Se mantiene el objeto (vacío)
+// para no romper importaciones existentes de normalizeCategory.
+const CATEGORY_ALIASES = {}
+
+const DEFAULT_ICON = 'M4 7h16M4 12h16M4 17h10'
 
 const CATEGORY_ICONS = {
   'air-fryers': 'M6 10h12a1 1 0 0 1 1 1v2a7 7 0 0 1-14 0v-2a1 1 0 0 1 1-1Zm1-4h10M9 6V4h6v2',
+  'freidoras-aire': 'M6 10h12a1 1 0 0 1 1 1v2a7 7 0 0 1-14 0v-2a1 1 0 0 1 1-1Zm1-4h10M9 6V4h6v2',
   sandwicheras: 'M4 9h16v3H4V9Zm0 3v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3M8 6l2 3m6-3-2 3',
   parrillas: 'M4 10h16v5H4v-5Zm2 5v2m12-2v2M4 10l2-4h12l2 4',
+  'plancha-grill': 'M4 10h16v5H4v-5Zm2 5v2m12-2v2M4 10l2-4h12l2 4',
   ollas: 'M6 11h12v5a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-5Zm-2 0h16M9 11V8a3 3 0 0 1 6 0v3',
+  'olla-presion': 'M6 11h12v5a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-5Zm-2 0h16M9 11V8a3 3 0 0 1 6 0v3',
   licuadoras: 'M10 3h4m-5 6h6l-1 12H10L9 9Zm1-3h4',
   repuestos: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2 2.6-2.6Z',
+  neveras: 'M5 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm0 8h10M7 6v2M7 14v2',
+  'neveras-ejecutivas': 'M5 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm0 8h10M7 6v2M7 14v2',
+  freezer: 'M5 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm0 8h10M7 6v2M7 14v2',
+  'congeladores-duales': 'M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Zm0 0 2-4h12l2 4',
+  'exhibidor-horizontal': 'M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Zm0 0 2-4h12l2 4',
+  'exhibidor-vertical': 'M6 3h12v18H6zM6 9h12M9 3v6',
+  'exhibidor-vertical-congelador': 'M6 3h12v18H6zM6 9h12M9 3v6',
+  cocinas: 'M4 10h16v5H4v-5Zm2 5v2m12-2v2M4 10l2-4h12l2 4',
+  microondas: 'M4 6h16v12H4zM8 8h8v8H8zM17 10v4',
+  cafeteras: 'M4 8h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8Zm12 2h2a2 2 0 0 1 0 4h-2M8 4v2m4-2v2',
+  batidoras: 'M10 3h4m-5 6h6l-1 12H10L9 9Zm1-3h4',
+  picatodo: 'M6 6h12l-1 12H7L6 6Zm3 0V4h6v2',
+  'exprimidor-jugo': 'M6 6h12l-1 12H7L6 6Zm3 0V4h6v2',
+  planchas: 'M4 18h16M6 18l1-9a2 2 0 0 1 2-2h6l4 5v6H6Z',
+  'lavadoras-semi-automaticas': 'M5 4h14v16H5zM12 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 6h.01M11 6h.01',
+  'lavadoras-automaticas': 'M5 4h14v16H5zM12 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 6h.01M11 6h.01',
+  'secadora-automaticas': 'M5 4h14v16H5zM12 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 6h.01M11 6h.01',
+  'aire-ventana': 'M4 9h16v6H4zM7 15v2m10-2v2M4 9l2-3h12l2 3',
+  'aire-split': 'M4 9h16v3H4zM6 12v2m4-2v2m4-2v2m4-2v2',
+  'aire-tipo-techo': 'M4 9h16v3H4zM6 12v2m4-2v2m4-2v2m4-2v2',
+  'ventiladores-pedestal': 'M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0M12 3v3M12 18v3M4.2 6.2l2.1 2.1M17.7 15.7l2.1 2.1M4.2 17.8l2.1-2.1M17.7 8.3l2.1-2.1',
+  'ventiladores-recargables': 'M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0M12 3v3M12 18v3M4.2 6.2l2.1 2.1M17.7 15.7l2.1 2.1M4.2 17.8l2.1-2.1M17.7 8.3l2.1-2.1',
+  'ventiladores-piso': 'M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0M12 3v3M12 18v3M4.2 6.2l2.1 2.1M17.7 15.7l2.1 2.1M4.2 17.8l2.1-2.1M17.7 8.3l2.1-2.1',
+  'dispensadores-agua': 'M8 3h8l1 6a5 5 0 0 1-10 0l1-6ZM6 21h12M9 15v6m6-6v6',
+  televisores: 'M4 5h16v10H4zM9 19h6M12 15v4',
+  'altavoces-portatiles': 'M6 4h12v16H6zM12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM9 6h6',
+  'protector-voltaje': 'M13 2 4 14h7l-1 8 9-12h-7l1-8Z',
 }
 
 const humanizeSlug = (id) => {
@@ -49,7 +72,7 @@ export const normalizeCategory = (v) => {
   return CATEGORY_ALIASES[s] ?? s
 }
 
-export const categoryIcon = (id) => CATEGORY_ICONS[id] || CATEGORY_ICONS.ollas
+export const categoryIcon = (id) => CATEGORY_ICONS[id] || DEFAULT_ICON
 
 export const defaultCategoryLabel = (id) => humanizeSlug(id)
 
@@ -96,10 +119,11 @@ const mapListItem = (p, idx) => ({
 const fallbackList = () => (fallbackCatalog.products || []).map(mapListItem)
 
 const fallbackCategories = () =>
-  CATEGORY_ORDER.map((id) => {
-    const fromJson = (fallbackCatalog.categories || []).find((c) => c.slug === id)
-    return { id, label: fromJson?.name || humanizeSlug(id), icon: categoryIcon(id) }
-  })
+  (fallbackCatalog.categories || []).map((c) => ({
+    id: c.slug,
+    label: c.name || humanizeSlug(c.slug),
+    icon: categoryIcon(c.slug),
+  }))
 
 export function categoryLabelFrom(categories, id) {
   return categories.value?.find?.((c) => c.id === id)?.label ?? humanizeSlug(id)
@@ -122,12 +146,14 @@ export function useProductList() {
     try {
       const payload = await fetchJson('/api/wp-product-categories.php')
       if (!payload?.ok || !Array.isArray(payload.categories)) throw new Error('Payload inválido')
-      const bySlug = new Map(payload.categories.map((t) => [String(t.slug), String(t.name)]))
-      categories.value = CATEGORY_ORDER.map((id) => ({
-        id,
-        label: bySlug.get(id) || humanizeSlug(id),
-        icon: categoryIcon(id),
-      }))
+      const list = payload.categories.filter((t) => t?.slug)
+      categories.value = list.length
+        ? list.map((t) => ({
+            id: String(t.slug),
+            label: String(t.name || humanizeSlug(t.slug)),
+            icon: categoryIcon(String(t.slug)),
+          }))
+        : fallbackCategories()
     } catch {
       categories.value = fallbackCategories()
     }
