@@ -226,11 +226,19 @@ usePageMeta({
 const srcFor = (filename) => publicAssetUrl(filename)
 const imgSrc = (value) => publicAssetUrl(value)
 
-// Fondos: banners existentes (publicDir = imagen/), producto + ambiente ya fotografiado.
+// Fondos: banners existentes (publicDir = imagen/), producto + ambiente ya fotografiado,
+// más los banners nuevos de imagen/banner/ agregados como ítems extra del mismo carrusel
+// (mismo hero, sin crear una sección aparte).
 const heroBackgrounds = computed(() => [
   srcFor('banner 2026-02-07 at 15.10.29.png'),
   srcFor('banner 2026-02-07 at 15.09.20.png'),
   srcFor('banner 2026-02-07 at 15.11.01.png'),
+  srcFor('banner/baner1.jpeg'),
+  srcFor('banner/banner2.jpeg'),
+  srcFor('banner/banner3.jpeg'),
+  srcFor('banner/banner4.jpeg'),
+  srcFor('banner/banner5.jpeg'),
+  srcFor('banner/banner6.jpeg'),
 ])
 
 // Hero producto-protagonista: máx. 3 slides, copy corto, mismo CTA (catálogo + WhatsApp).
