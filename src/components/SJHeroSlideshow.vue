@@ -129,11 +129,11 @@ const props = defineProps({
   // legible y con su color real a la derecha. Nunca oscurecer la imagen completa.
   overlayClass: {
     type: String,
-    default: 'bg-gradient-to-r from-sj-black/85 sm:from-sj-black/80 via-sj-black/35 to-transparent',
+    default: 'bg-gradient-to-r from-sj-black/50 sm:from-sj-black/45 via-sj-black/15 to-transparent',
   },
   gradientClass: {
     type: String,
-    default: 'bg-gradient-to-t from-sj-black/55 via-transparent to-transparent',
+    default: 'bg-gradient-to-t from-sj-black/25 via-transparent to-transparent',
   },
 })
 
