@@ -9,7 +9,7 @@ import { toValue, watchEffect } from 'vue'
 const SITE_NAME = 'SJ Electronics'
 export const DEFAULT_DESCRIPTION =
   'Electrodomésticos para el hogar y la cocina: air fryers, sandwicheras, parrillas, ollas, licuadoras y repuestos. Más cerca de ti.'
-export const DEFAULT_IMAGE = '/Logotipo-Red-sin-fondo.png'
+export const DEFAULT_IMAGE = '/site/og-share.jpg'
 
 function setMetaTag(attr, key, content) {
   if (!content) return
