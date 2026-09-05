@@ -41,3 +41,6 @@ skills-lock.json
 .claude
 .kiro
 docs/*
+graphify-out/*
+PaginawebSJ/*
+.graphifyignore

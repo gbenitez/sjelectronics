@@ -226,19 +226,12 @@ usePageMeta({
 const srcFor = (filename) => publicAssetUrl(filename)
 const imgSrc = (value) => publicAssetUrl(value)
 
-// Fondos: banners existentes (publicDir = imagen/), producto + ambiente ya fotografiado,
-// más los banners nuevos de imagen/banner/ agregados como ítems extra del mismo carrusel
-// (mismo hero, sin crear una sección aparte).
+// Heroes A1 (guía SJ-medidas): escritorio 2560×1240 + móvil 1200×1600 en imagen/site/
 const heroBackgrounds = computed(() => [
-  srcFor('banner 2026-02-07 at 15.10.29.png'),
-  srcFor('banner 2026-02-07 at 15.09.20.png'),
-  srcFor('banner 2026-02-07 at 15.11.01.png'),
-  srcFor('banner/baner1.jpeg'),
-  srcFor('banner/banner2.jpeg'),
-  srcFor('banner/banner3.jpeg'),
-  srcFor('banner/banner4.jpeg'),
-  srcFor('banner/banner5.jpeg'),
-  srcFor('banner/banner6.jpeg'),
+  srcFor('site/hero-desk-01.jpg'),
+  srcFor('site/hero-desk-02.jpg'),
+  srcFor('site/hero-mobile-01.jpg'),
+  srcFor('site/hero-mobile-02.jpg'),
 ])
 
 // Hero producto-protagonista: máx. 3 slides, copy corto, mismo CTA (catálogo + WhatsApp).
@@ -259,10 +252,11 @@ const heroSlides = [
 
 const whatsappHref = computed(() => whatsappLink('Hola SJ Electronics, quiero más información sobre sus productos.'))
 
+const categoryImage = srcFor('site/category-01.jpg')
 const categories = [
-  { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: srcFor('banner 2026-02-07 at 15.09.20.png') },
-  { label: 'Hogar', hint: 'Ollas y licuadoras', href: '#/productos', image: srcFor('banner 2026-02-07 at 15.10.29.png') },
-  { label: 'Repuestos', hint: 'Piezas y asesoría técnica', href: '#/productos/repuestos', image: srcFor('banner 2026-02-07 at 15.11.01.png') },
+  { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: categoryImage },
+  { label: 'Hogar', hint: 'Ollas y licuadoras', href: '#/productos', image: categoryImage },
+  { label: 'Repuestos', hint: 'Piezas y asesoría técnica', href: '#/productos/repuestos', image: categoryImage },
 ]
 
 const trustIcons = {

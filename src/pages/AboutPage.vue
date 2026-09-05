@@ -32,7 +32,7 @@
           <div class="lg:col-span-6">
             <div class="aspect-[4/3] border border-neutral-200 dark:border-white/10 overflow-hidden">
               <img
-                :src="heroBackgrounds[1]"
+                :src="editorialImage"
                 alt="Cocina equipada con electrodomésticos SJ"
                 class="w-full h-full object-cover"
                 loading="lazy"
@@ -186,12 +186,13 @@ usePageMeta({
 const srcFor = (filename) => `/${encodeURI(String(filename))}`
 
 const heroBackgrounds = computed(() => [
-  srcFor('banner 2026-02-07 at 15.10.29.png'),
-  srcFor('banner 2026-02-07 at 15.09.20.png'),
-  srcFor('banner 2026-02-07 at 15.14.55.png'),
-  srcFor('banner 2026-02-07 at 15.16.21.png'),
-  srcFor('banner 2026-02-07 at 15.11.01.png')
+  srcFor('site/hero-desk-01.jpg'),
+  srcFor('site/hero-desk-02.jpg'),
+  srcFor('site/hero-mobile-01.jpg'),
+  srcFor('site/hero-mobile-02.jpg'),
 ])
+
+const editorialImage = srcFor('site/about-editorial.jpg')
 
 // TODO: reemplazar por cifras reales (años en el mercado, distribuidores activos,
 // unidades entregadas) cuando estén confirmadas por la marca.
@@ -214,9 +215,9 @@ const coverageFacts = [
 ]
 
 const valueImages = {
-  innovacion: srcFor('banner 2026-02-07 at 15.10.29.png'),
-  compromiso: srcFor('banner 2026-02-07 at 15.09.20.png'),
-  seguridad: srcFor('banner 2026-02-07 at 15.11.01.png'),
+  innovacion: srcFor('site/about-value-01.jpg'),
+  compromiso: srcFor('site/about-value-02.jpg'),
+  seguridad: srcFor('site/about-value-03.jpg'),
 }
 
 const values = [

@@ -96,11 +96,10 @@ usePageMeta({
 const srcFor = (filename) => imgSrc(filename)
 
 const heroBackgrounds = computed(() => [
-  srcFor('banner 2026-02-07 at 15.10.29.png'),
-  srcFor('banner 2026-02-07 at 15.09.20.png'),
-  srcFor('banner 2026-02-07 at 15.14.55.png'),
-  srcFor('banner 2026-02-07 at 15.16.21.png'),
-  srcFor('banner 2026-02-07 at 15.11.01.png')
+  srcFor('site/hero-desk-01.jpg'),
+  srcFor('site/hero-desk-02.jpg'),
+  srcFor('site/hero-mobile-01.jpg'),
+  srcFor('site/hero-mobile-02.jpg'),
 ])
 
 const { posts, isFallback } = usePostList(12)
