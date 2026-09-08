@@ -5,6 +5,7 @@
       title="Componentes"
       subtitle="Showcase del sistema de diseño y componentes reutilizables."
       :backgrounds="heroBackgrounds"
+      :mobile-backgrounds="heroMobileBackgrounds"
       :interval-ms="3600"
     >
       <template #ctas>
@@ -163,11 +164,14 @@ import SJProductCard from '../components/SJProductCard.vue'
 
 const srcFor = (filename) => `/${encodeURI(String(filename))}`
 
+const HERO_V = '20260908b'
 const heroBackgrounds = computed(() => [
-  srcFor('banner 2026-02-07 at 15.11.01.png'),
-  srcFor('banner 2026-02-07 at 15.15.32.png'),
-  srcFor('banner 2026-02-07 at 15.16.21.png'),
-  srcFor('banner 2026-02-07 at 15.10.29.png')
+  srcFor(`site/hero-desk-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-desk-02.jpg?v=${HERO_V}`),
+])
+const heroMobileBackgrounds = computed(() => [
+  srcFor(`site/hero-mobile-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-mobile-02.jpg?v=${HERO_V}`),
 ])
 
 const scrollToId = (id) => {
