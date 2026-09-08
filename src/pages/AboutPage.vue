@@ -5,6 +5,7 @@
       title="Esto es lo que nos define"
       subtitle="SJ Electronics nace para acercar tecnología y electrodomésticos a más hogares, con un enfoque en calidad, garantía y soporte."
       :backgrounds="heroBackgrounds"
+      :mobile-backgrounds="heroMobileBackgrounds"
       :interval-ms="3600"
     />
 
@@ -185,11 +186,14 @@ usePageMeta({
 
 const srcFor = (filename) => `/${encodeURI(String(filename))}`
 
+const HERO_V = '20260908b'
 const heroBackgrounds = computed(() => [
-  srcFor('site/hero-desk-01.jpg'),
-  srcFor('site/hero-desk-02.jpg'),
-  srcFor('site/hero-mobile-01.jpg'),
-  srcFor('site/hero-mobile-02.jpg'),
+  srcFor(`site/hero-desk-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-desk-02.jpg?v=${HERO_V}`),
+])
+const heroMobileBackgrounds = computed(() => [
+  srcFor(`site/hero-mobile-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-mobile-02.jpg?v=${HERO_V}`),
 ])
 
 const editorialImage = srcFor('site/about-editorial.jpg')

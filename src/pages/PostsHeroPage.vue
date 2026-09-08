@@ -5,6 +5,7 @@
       title="Recetas y consejos"
       subtitle="Ideas rápidas, guías de uso y cuidado para sacarle el máximo provecho a tu equipo SJ."
       :backgrounds="heroBackgrounds"
+      :mobile-backgrounds="heroMobileBackgrounds"
       :interval-ms="4200"
     >
       <template #ctas>
@@ -95,11 +96,14 @@ usePageMeta({
 
 const srcFor = (filename) => imgSrc(filename)
 
+const HERO_V = '20260908b'
 const heroBackgrounds = computed(() => [
-  srcFor('site/hero-desk-01.jpg'),
-  srcFor('site/hero-desk-02.jpg'),
-  srcFor('site/hero-mobile-01.jpg'),
-  srcFor('site/hero-mobile-02.jpg'),
+  srcFor(`site/hero-desk-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-desk-02.jpg?v=${HERO_V}`),
+])
+const heroMobileBackgrounds = computed(() => [
+  srcFor(`site/hero-mobile-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-mobile-02.jpg?v=${HERO_V}`),
 ])
 
 const { posts, isFallback } = usePostList(12)

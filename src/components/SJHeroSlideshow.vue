@@ -5,19 +5,28 @@
     @mouseenter="pause"
     @mouseleave="resume"
   >
-    <!-- Backgrounds -->
+    <!-- Backgrounds: art direction desk/móvil por <picture> (misma diapositiva) -->
     <div class="absolute inset-0">
-      <img
+      <picture
         v-for="(src, idx) in backgrounds"
-        :key="`${src}-${idx}`"
-        :src="src"
-        alt=""
-        aria-hidden="true"
-        class="absolute inset-0 h-full w-full object-cover will-change-transform transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none"
-        :class="idx === current ? 'opacity-100' : 'opacity-0'"
-        :loading="idx === 0 ? 'eager' : 'lazy'"
-        decoding="async"
-      />
+        :key="`bg-${idx}-${src}`"
+        class="absolute inset-0 block h-full w-full"
+      >
+        <source
+          v-if="mobileBackgroundsResolved[idx]"
+          media="(max-width: 1023px)"
+          :srcset="mobileBackgroundsResolved[idx]"
+        />
+        <img
+          :src="src"
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 h-full w-full object-cover will-change-transform transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none"
+          :class="idx === currentBg ? 'opacity-100' : 'opacity-0'"
+          :loading="idx === 0 ? 'eager' : 'lazy'"
+          decoding="async"
+        />
+      </picture>
     </div>
 
     <!-- Overlay direccional: protege el texto (izquierda) sin apagar el producto (derecha). -->
@@ -112,6 +121,8 @@ import { safeHref } from '../utils/publicAssetUrl'
 
 const props = defineProps({
   backgrounds: { type: Array, required: true },
+  /** Versiones verticales (p. ej. 1200×1600). Si hay, se usan bajo `md` y `backgrounds` desde `md`. */
+  mobileBackgrounds: { type: Array, default: null },
   // Solo obligatorio si no se usa `slides` con título propio por slide (ver HomeHeroPage).
   title: { type: String, default: '' },
   subtitle: { type: String, default: '' },
@@ -141,11 +152,19 @@ const current = ref(0)
 let timer = null
 let reduceMotion = false
 
+const mobileBackgroundsResolved = computed(() =>
+  Array.isArray(props.mobileBackgrounds) ? props.mobileBackgrounds.filter(Boolean) : [],
+)
+
+const bgCount = computed(() => Math.max(Array.isArray(props.backgrounds) ? props.backgrounds.length : 0, 1))
+
 const slideCount = computed(() => {
   const nSlides = Array.isArray(props.slides) ? props.slides.length : 0
-  const nBgs = Array.isArray(props.backgrounds) ? props.backgrounds.length : 0
-  return Math.max(nSlides, nBgs, 1)
+  return Math.max(nSlides, bgCount.value, 1)
 })
+
+/** Índice de fondo: si hay más slides de texto que imágenes, cicla las imágenes. */
+const currentBg = computed(() => current.value % bgCount.value)
 
 const activeSlide = computed(() => {
   const idx = current.value || 0
@@ -196,7 +215,12 @@ onMounted(() => {
 onBeforeUnmount(stop)
 
 watch(
-  () => [props.intervalMs, props.backgrounds.length, Array.isArray(props.slides) ? props.slides.length : 0],
+  () => [
+    props.intervalMs,
+    props.backgrounds.length,
+    mobileBackgroundsResolved.value.length,
+    Array.isArray(props.slides) ? props.slides.length : 0,
+  ],
   () => {
     stop()
     current.value = 0

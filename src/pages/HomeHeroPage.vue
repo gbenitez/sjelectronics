@@ -4,6 +4,7 @@
       eyebrow="SJ Electronics"
       :slides="heroSlides"
       :backgrounds="heroBackgrounds"
+      :mobile-backgrounds="heroMobileBackgrounds"
       show-controls
       :interval-ms="4200"
     >
@@ -226,15 +227,18 @@ usePageMeta({
 const srcFor = (filename) => publicAssetUrl(filename)
 const imgSrc = (value) => publicAssetUrl(value)
 
-// Heroes A1 (guía SJ-medidas): escritorio 2560×1240 + móvil 1200×1600 en imagen/site/
+// Heroes A1: escritorio + móvil (archivos de hoy en imagen/site/). ?v= fuerza recarga.
+const HERO_V = '20260908b'
 const heroBackgrounds = computed(() => [
-  srcFor('site/hero-desk-01.jpg'),
-  srcFor('site/hero-desk-02.jpg'),
-  srcFor('site/hero-mobile-01.jpg'),
-  srcFor('site/hero-mobile-02.jpg'),
+  srcFor(`site/hero-desk-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-desk-02.jpg?v=${HERO_V}`),
+])
+const heroMobileBackgrounds = computed(() => [
+  srcFor(`site/hero-mobile-01.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-mobile-02.jpg?v=${HERO_V}`),
 ])
 
-// Hero producto-protagonista: máx. 3 slides, copy corto, mismo CTA (catálogo + WhatsApp).
+// Hero producto-protagonista: 2 slides = 2 fondos (desk + móvil emparejados).
 const heroSlides = [
   {
     title: 'Tecnología que se siente cerca',
@@ -243,10 +247,6 @@ const heroSlides = [
   {
     title: 'Cocina como quieras cocinar',
     subtitle: 'Air fryers, parrillas, sandwicheras y más: potencia y diseño en tu día a día.',
-  },
-  {
-    title: 'Soporte y repuestos cuando los necesitas',
-    subtitle: 'Distribución a nivel nacional, asesoría clara y repuestos disponibles.',
   },
 ]
 
