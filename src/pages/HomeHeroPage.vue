@@ -252,11 +252,10 @@ const heroSlides = [
 
 const whatsappHref = computed(() => whatsappLink('Hola SJ Electronics, quiero más información sobre sus productos.'))
 
-const categoryImage = srcFor('site/category-01.jpg')
 const categories = [
-  { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: categoryImage },
-  { label: 'Hogar', hint: 'Ollas y licuadoras', href: '#/productos', image: categoryImage },
-  { label: 'Repuestos', hint: 'Piezas y asesoría técnica', href: '#/productos/repuestos', image: categoryImage },
+  { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: srcFor('site/category-cocina.jpg') },
+  { label: 'Hogar', hint: 'Ollas y licuadoras', href: '#/productos', image: srcFor('site/category-hogar.jpg') },
+  { label: 'Repuestos', hint: 'Piezas y asesoría técnica', href: '#/productos/repuestos', image: srcFor('site/category-01.jpg') },
 ]
 
 const trustIcons = {
