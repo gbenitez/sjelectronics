@@ -228,14 +228,14 @@ const srcFor = (filename) => publicAssetUrl(filename)
 const imgSrc = (value) => publicAssetUrl(value)
 
 // Heroes A1: escritorio + móvil (archivos de hoy en imagen/site/). ?v= fuerza recarga.
-const HERO_V = '20260908b'
+const HERO_V = '20260910'
 const heroBackgrounds = computed(() => [
-  srcFor(`site/hero-desk-01.jpg?v=${HERO_V}`),
-  srcFor(`site/hero-desk-02.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-desk-01.png?v=${HERO_V}`),
+  srcFor(`site/hero-desk-02.png?v=${HERO_V}`),
 ])
 const heroMobileBackgrounds = computed(() => [
-  srcFor(`site/hero-mobile-01.jpg?v=${HERO_V}`),
-  srcFor(`site/hero-mobile-02.jpg?v=${HERO_V}`),
+  srcFor(`site/hero-mobile-01.png?v=${HERO_V}`),
+  srcFor(`site/hero-mobile-02.png?v=${HERO_V}`),
 ])
 
 // Hero producto-protagonista: 2 slides = 2 fondos (desk + móvil emparejados).
@@ -253,9 +253,9 @@ const heroSlides = [
 const whatsappHref = computed(() => whatsappLink('Hola SJ Electronics, quiero más información sobre sus productos.'))
 
 const categories = [
-  { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: srcFor('site/category-cocina.jpg') },
-  { label: 'Hogar', hint: 'Ollas y licuadoras', href: '#/productos', image: srcFor('site/category-hogar.jpg') },
-  { label: 'Repuestos', hint: 'Piezas y asesoría técnica', href: '#/productos/repuestos', image: srcFor('site/category-01.jpg') },
+  { label: 'Cocina', hint: 'Air fryers, parrillas, sandwicheras', href: '#/productos', image: srcFor('site/category-cocina.png') },
+  { label: 'Hogar', hint: 'Ollas y licuadoras', href: '#/productos', image: srcFor('site/category-hogar.png') },
+  { label: 'Repuestos', hint: 'Piezas y asesoría técnica', href: '#/productos/repuestos', image: srcFor('site/category-01.png') },
 ]
 
 const trustIcons = {
