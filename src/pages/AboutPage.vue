@@ -7,6 +7,8 @@
       :backgrounds="heroBackgrounds"
       :mobile-backgrounds="heroMobileBackgrounds"
       :interval-ms="3600"
+      image-animation="slats"
+      animate-text
     />
 
     <!-- Historia / Propósito -->
@@ -188,12 +190,10 @@ const srcFor = (filename) => `/${encodeURI(String(filename))}`
 
 const HERO_V = '20260910'
 const heroBackgrounds = computed(() => [
-  srcFor(`site/hero-desk-01.png?v=${HERO_V}`),
-  srcFor(`site/hero-desk-02.png?v=${HERO_V}`),
+  srcFor(`site/quienes_somos.png?v=${HERO_V}`)
 ])
 const heroMobileBackgrounds = computed(() => [
-  srcFor(`site/hero-mobile-01.png?v=${HERO_V}`),
-  srcFor(`site/hero-mobile-02.png?v=${HERO_V}`),
+  srcFor(`site/quienes_somos_mobile.png?v=${HERO_V}`),
 ])
 
 const editorialImage = srcFor('site/about-editorial.jpg')

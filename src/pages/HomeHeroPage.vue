@@ -7,6 +7,8 @@
       :mobile-backgrounds="heroMobileBackgrounds"
       show-controls
       :interval-ms="4200"
+      image-animation="slats"
+      animate-text
     >
       <template #ctas>
         <a class="btn btn-primary" href="#/productos">Ver catálogo</a>
@@ -24,14 +26,14 @@
     <!-- Categorías destacadas -->
     <section class="pt-14 sm:pt-16 lg:pt-20 pb-6 sm:pb-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-wide text-brand-primary-600 dark:text-brand-primary-400">
+        <p v-reveal class="text-xs font-semibold uppercase tracking-wide text-brand-primary-600 dark:text-brand-primary-400">
           Más cerca de ti
         </p>
-        <h2 class="mt-3 font-display font-bold text-3xl sm:text-4xl leading-tight">
+        <h2 v-reveal.mask="80" class="mt-3 font-display font-bold text-3xl sm:text-4xl leading-tight">
           Encuentra lo que tu hogar necesita
         </h2>
 
-        <div class="grid sm:grid-cols-3 gap-5 sm:gap-6 mt-10">
+        <div v-reveal.stagger="160" class="grid sm:grid-cols-3 gap-5 sm:gap-6 mt-10">
           <a
             v-for="c in categories"
             :key="c.label"
@@ -58,7 +60,7 @@
     <!-- Destacados -->
     <section class="pt-6 sm:pt-8 pb-16 sm:pb-20 lg:pb-24 bg-sj-black text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap items-end justify-between gap-6">
+        <div v-reveal class="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-brand-primary-400">Catálogo</p>
             <h2 class="mt-3 font-display font-bold text-3xl sm:text-4xl">
@@ -76,7 +78,7 @@
           </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-10">
+        <div v-reveal.stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-10">
           <a
             v-for="p in featuredTop4"
             :key="p.id"
@@ -119,7 +121,7 @@
     <!-- Bloque de confianza -->
     <section class="py-14 sm:py-16 lg:py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+        <div v-reveal.stagger class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <div v-for="t in trust" :key="t.title">
             <div class="h-10 w-10 flex items-center justify-center text-brand-primary-600 dark:text-brand-primary-500">
               <svg viewBox="0 0 24 24" fill="none" class="h-8 w-8">
@@ -136,7 +138,7 @@
     <!-- Últimos posts -->
     <section class="py-16 sm:py-20 lg:py-24 bg-neutral-50 dark:bg-white/[0.03]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-end justify-between gap-6">
+        <div v-reveal class="flex items-end justify-between gap-6">
           <div>
             <h2 class="font-display font-bold text-3xl sm:text-4xl">Últimos posts</h2>
             <p class="text-neutral-600 dark:text-white/70 mt-2 text-base sm:text-lg">Lo más reciente.</p>
@@ -149,7 +151,7 @@
           </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+        <div v-reveal.stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
           <a
             v-for="p in latestPosts"
             :key="p.id"
@@ -191,7 +193,7 @@
 
     <!-- CTA de cierre -->
     <section class="bg-brand-primary-600">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+      <div v-reveal.stagger class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
         <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
           SJ Electronics, <span class="italic">más cerca de ti</span>
         </h2>
@@ -232,10 +234,13 @@ const HERO_V = '20260910'
 const heroBackgrounds = computed(() => [
   srcFor(`site/hero-desk-01.png?v=${HERO_V}`),
   srcFor(`site/hero-desk-02.png?v=${HERO_V}`),
+  srcFor(`site/banner_isabela.png?v=${HERO_V}`),
+
 ])
 const heroMobileBackgrounds = computed(() => [
   srcFor(`site/hero-mobile-01.png?v=${HERO_V}`),
   srcFor(`site/hero-mobile-02.png?v=${HERO_V}`),
+  srcFor(`site/banner_isabela_mobile.png?v=${HERO_V}`),
 ])
 
 // Hero producto-protagonista: 2 slides = 2 fondos (desk + móvil emparejados).
