@@ -19,6 +19,14 @@ const VARIANTS = ['mask', 'left', 'right']
 
 let observer = null
 
+/**
+ * Elementos a revelar por cada target observado. Con `.mask` el elemento arranca
+ * totalmente recortado (clip-path) y Chrome lo reporta como NO intersecante para
+ * siempre: el observer nunca dispara y el bloque se queda invisible. Por eso en
+ * ese caso se observa el contenedor (que no está recortado) y se revela el hijo.
+ */
+const watched = new WeakMap()
+
 const indexChildren = (el) => {
   Array.from(el.children).forEach((child, i) => {
     child.style.setProperty('--sj-reveal-i', String(i))
@@ -34,7 +42,10 @@ const getObserver = () => {
     (entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue
-        entry.target.classList.add(VISIBLE)
+        for (const el of watched.get(entry.target) || [entry.target]) {
+          el.classList.add(VISIBLE)
+        }
+        watched.delete(entry.target)
         // Una sola vez: al volver a subir el bloque no se vuelve a ocultar.
         observer.unobserve(entry.target)
       }
@@ -61,7 +72,14 @@ export const reveal = {
       el.classList.add(BASE)
     }
 
-    getObserver().observe(el)
+    // Ver `watched`: el recorte del propio elemento ciega al IntersectionObserver.
+    const target = binding.modifiers.mask ? el.parentElement || el : el
+    const group = watched.get(target) || new Set()
+    group.add(el)
+    watched.set(target, group)
+    el.__sjRevealTarget = target
+
+    getObserver().observe(target)
   },
 
   // Las rejillas de productos y posts se llenan con datos asíncronos: reindexamos
@@ -71,7 +89,13 @@ export const reveal = {
   },
 
   unmounted(el) {
-    observer?.unobserve(el)
+    const target = el.__sjRevealTarget || el
+    const group = watched.get(target)
+    group?.delete(el)
+    if (!group || group.size === 0) {
+      watched.delete(target)
+      observer?.unobserve(target)
+    }
   },
 }
 

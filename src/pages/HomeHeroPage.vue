@@ -135,6 +135,31 @@
       </div>
     </section>
 
+    <!-- Catálogo 2026: solo la imagen (desk/móvil) y el botón al PDF, sin textos. -->
+    <section class="relative overflow-hidden w-full aspect-[3/4] lg:aspect-[2560/1240]">
+      <!-- Fundido, no `.mask`: un recorte total impide que el navegador dispare el
+           lazy-load de la imagen (nunca la ve "en pantalla"). -->
+      <picture v-reveal class="absolute inset-0 block h-full w-full">
+        <source media="(max-width: 1023px)" :srcset="catalogMobileImage" />
+        <img
+          :src="catalogImage"
+          alt="Catálogo SJ Electronics 2026"
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+
+      <!-- Solo una sombra abajo, para que el botón se lea sobre cualquier foto. -->
+      <div v-reveal="260" class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-sj-black/60 to-transparent" aria-hidden="true" />
+
+      <div v-reveal="420" class="absolute inset-x-0 bottom-6 sm:bottom-8 lg:bottom-10 flex justify-center px-4">
+        <a class="btn btn-primary" :href="catalogPdfHref" target="_blank" rel="noopener">
+          Ver catálogo 2026 (PDF)
+        </a>
+      </div>
+    </section>
+
     <!-- Últimos posts -->
     <section class="py-16 sm:py-20 lg:py-24 bg-neutral-50 dark:bg-white/[0.03]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -220,6 +245,7 @@ import { publicAssetUrl } from '../utils/publicAssetUrl'
 import { useProductList, usePostList, categoryLabelFrom, defaultCategoryLabel } from '../composables/useCatalogSource'
 import { usePageMeta } from '../composables/usePageMeta'
 import { whatsappLink } from '../config/whatsapp'
+import { CATALOG_PDF_URL } from '../config/catalog'
 
 usePageMeta({
   path: '/',
@@ -243,6 +269,11 @@ const heroMobileBackgrounds = computed(() => [
   srcFor(`site/banner_isabela_mobile.png?v=${HERO_V}`),
 ])
 
+// Bloque de catálogo: imágenes de imagen/site/ + PDF alojado en WordPress (ver config/catalog.js).
+const catalogImage = srcFor(`site/catalago_productos_elegantes.png?v=${HERO_V}`)
+const catalogMobileImage = srcFor(`site/catalago_productos_elegantes_mobile.png?v=${HERO_V}`)
+const catalogPdfHref = CATALOG_PDF_URL
+
 // Hero producto-protagonista: 2 slides = 2 fondos (desk + móvil emparejados).
 const heroSlides = [
   {
@@ -253,6 +284,11 @@ const heroSlides = [
     title: 'Cocina como quieras cocinar',
     subtitle: 'Air fryers, parrillas, sandwicheras y más: potencia y diseño en tu día a día.',
   },
+  {
+    title:"Recetas y consejos",
+    subtitle:"Ideas rápidas, guías de uso y cuidado para sacarle el máximo provecho a tu equipo SJ."
+  }
+      
 ]
 
 const whatsappHref = computed(() => whatsappLink('Hola SJ Electronics, quiero más información sobre sus productos.'))
